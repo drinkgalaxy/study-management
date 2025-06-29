@@ -46,11 +46,11 @@
                     <div class="div-left-top-2-this">
                         <div class="this-time">이번달 공부 시간</div>
                         <div class="month-time">
-                            <span id="hours"></span>
+                            <span class="hours"></span>
                             :
-                            <span id="minutes"></span>
+                            <span class="minutes"></span>
                             :
-                            <span id="seconds"></span>
+                            <span class="seconds"></span>
                         </div>
                     </div>
 
@@ -131,11 +131,30 @@
     </div>
 </div>
 
-<!-- 특정 멤버 선택 모달창 -->
+<!-- 공통 오버레이 -->
+<div class="modal-overlay" id="modal-overlay"></div>
 
+<!-- 특정 멤버 선택 모달창 -->
+<div class="member-modal" id="member-modal">
+    <button class="close-btn" id="close-member-modal">&times;</button>
+    <p class="member-name">
+        <span class="member-name-text">이름</span>
+        <span class="member-email">이메일</span>
+    </p>
+    <p class="member-intro">자기소개</p>
+    <p class="member-study-time">이번 달 누적 공부 시간
+        <span class="blue-text">이번 달 실제 시간</span>
+    </p>
+</div>
 
 <!-- 초기화 모달창 -->
-
+<div class="reset-modal" id="reset-modal">
+    <p class="reset-title">정말 초기화하시겠습니까?</p>
+    <div class="reset-buttons">
+        <button class="reset-cancel">취소</button>
+        <button class="reset-confirm" id="reset-confirm">확인</button>
+    </div>
+</div>
 
 
 <script src="../static/js/main.js"></script>

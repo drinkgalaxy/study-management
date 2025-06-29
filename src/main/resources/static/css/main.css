@@ -379,4 +379,128 @@
     font-size: 14px;
 }
 
+/* 모달 공통 오버레이 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(33, 33, 33, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* 특정 멤버 선택 모달창 */
+.member-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 480px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.member-name {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.member-email {
+    color: gray;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.member-intro {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.member-study-time {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.blue-text {
+    color: #1D4ED8;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 30px;
+}
+
+/* 초기화 모달창 */
+.reset-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 24px 32px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    z-index: 999;
+    display: none;
+    text-align: center;
+}
+
+.reset-title {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.reset-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.reset-cancel {
+    padding: 10px;
+    width: 149px;
+    height: 56px;
+    background-color: #FFFFFF;
+    color: #6B7684;
+    border: 1px solid #E5E8EB;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.reset-confirm {
+    padding: 10px;
+    width: 149px;
+    height: 56px;
+    background-color: #0169EA;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+
 

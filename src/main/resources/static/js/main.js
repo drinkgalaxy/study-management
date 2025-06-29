@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     // todo 백엔드에서 유저네임 호출
     const username = "이현진";
@@ -16,9 +15,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let hours = 13;
     let minutes = 10;
     let seconds = 15;
-    document.getElementById('hours').textContent = hours;
-    document.getElementById('minutes').textContent = minutes;
-    document.getElementById('seconds').textContent = seconds;
+    document.querySelector('.hours').textContent = hours;
+    document.querySelector('.minutes').textContent = minutes;
+    document.querySelector('.seconds').textContent = seconds;
 
     // todo 백엔드에서 오늘의 날짜 호출
     let year = 2025;
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('day').textContent = day;
     document.getElementById('week').textContent = week;
 
-    // todo 타임 블럭 시간 가는 기능 넣어야 함
     const nowHour = '00';
     const nowMinute = '00';
     const nowSecond = '00';
@@ -40,19 +38,55 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('nowSecond').textContent = nowSecond;
 
     // todo 참석한 사람들 / 전체 인원 수 데이터 가져와야 함
-    let attendanceTrue = 3;
+    let attendanceTrue = 2;
     let attendanceAll = 6;
     document.getElementById('attendance-status-true').textContent = attendanceTrue;
     document.getElementById('attendance-all').textContent = attendanceAll;
 
-    // todo 전체 유저 각 이름, 참석 상태 박스 데이터 가져오기
-    // 출석 정보 예시
-    const attendanceList = [
-        { name: '이현진', status: 'attended' },
-        { name: '이유림', status: 'attended' },
-        { name: '이스딧', status: 'not-attended' },
-        { name: '이이름', status: 'not-attended' },
-        { name: '이름름', status: 'on-leave' }
+    // todo 전체 유저 각 이름, 참석 상태, 이메일, 자기소개, 상태 데이터 가져오기
+    const userDataList = [
+        {
+            name: '김일등',
+            time: '104 : 20 : 02',
+            email: 'first@study.com',
+            intro: '열심히 공부하는 김일등입니다!',
+            status: 'attended'
+        },
+        {
+            name: '김이등',
+            time: '64 : 10 : 02',
+            email: 'second@study.com',
+            intro: '매일 조금씩 성장하는 김이등입니다.',
+            status: 'attended'
+        },
+        {
+            name: '김삼등',
+            time: '57 : 50 : 02',
+            email: 'third@study.com',
+            intro: '성실함이 무기인 김삼등입니다.',
+            status: 'not-attended'
+        },
+        {
+            name: '김사등',
+            time: '43 : 20 : 02',
+            email: 'fourth@study.com',
+            intro: '',
+            status: 'not-attended'
+        },
+        {
+            name: '김오등',
+            time: '37 : 16 : 02',
+            email: 'fifth@study.com',
+            intro: '아직 갈 길이 멀지만 열심히 하는 김오등입니다.',
+            status: 'on-leave'
+        },
+        {
+            name: '김육등',
+            time: '25 : 02 : 02',
+            email: 'sixth@study.com',
+            intro: '조용히 실력을 쌓는 김육등입니다.',
+            status: 'on-leave'
+        }
     ];
 
     // 출석 박스가 들어갈 부모 요소
@@ -63,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     container.innerHTML = ''; // 기존 내용 초기화
 
-    attendanceList.forEach(user => {
+    userDataList.forEach(user => {
         // 사용자 한 명의 출석 상태 묶음 div 생성
         const userDiv = document.createElement('div');
         userDiv.classList.add('attendance-item');
@@ -100,8 +134,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // todo 지금 공부 중인 멤버 수, 멤버 가져오기
     // 공부중인 멤버 정보 예시
     const studyingMemberList = [
-        { name: '이현진', status: 'attended' },
-        { name: '이유림', status: 'attended' }
+        { name: '김일등', status: 'attended' },
+        { name: '김이등', status: 'attended' }
     ];
 
     // 멤버 수 추가
@@ -123,20 +157,12 @@ document.addEventListener('DOMContentLoaded', function () {
         studyingContainer.appendChild(itemDiv);
     });
 
-    // todo 이번 달 랭킹 가져오기
-    const rankingList = [
-        { name: '김일등', time: '104 : 20 : 02' },
-        { name: '김이등', time: '64 : 10 : 02' },
-        { name: '김삼등', time: '57 : 50 : 02' },
-        { name: '김사등', time: '43 : 20 : 02' },
-        { name: '김오등', time: '37 : 16 : 02' },
-        { name: '김육등', time: '25 : 02 : 02' }
-    ];
+    // todo 이번 달 랭킹 및 데이터 가져오기
 
     const rankingContainer = document.querySelector('.ranking-container');
     rankingContainer.innerHTML = ''; // 기존 초기화
 
-    rankingList.forEach((user, index) => {
+    userDataList.forEach((user, index) => {
         const item = document.createElement('div');
         item.classList.add('ranking-item');
 
@@ -260,12 +286,126 @@ document.addEventListener('DOMContentLoaded', function () {
         //     body: JSON.stringify({ hour, minute, second, username })
         // });
 
+        alert('오늘의 공부 시간이 저장되었습니다.');
+
         // 성공 후 시간 데이터 초기화
+        document.getElementById('nowHour').textContent = '00';
+        document.getElementById('nowMinute').textContent = '00';
+        document.getElementById('nowSecond').textContent = '00';
+        totalSeconds = 0;
+    });
+
+    // 특정 멤버 선택 모달창 열고 닫기
+
+    const modalOverlay = document.getElementById('modal-overlay');
+    const memberModal = document.getElementById('member-modal');
+    const closeMemberModalBtn = document.getElementById('close-member-modal');
+
+    // 모달 내 요소
+    const modalName = memberModal.querySelector('.member-name-text');
+    const modalEmail = memberModal.querySelector('.member-email');
+    const modalIntro = memberModal.querySelector('.member-intro');
+    const modalStudyTime = memberModal.querySelector('.member-study-time .blue-text');
+
+    // 모달 열기 함수 (userDataList에서 멤버 데이터 찾아서 모달에 세팅)
+    function openMemberModal(name) {
+        const user = userDataList.find(u => u.name === name);
+        if (!user) return;
+
+        modalName.textContent = user.name;
+        modalEmail.textContent = user.email || '이메일 정보 없음';
+        modalIntro.textContent = user.intro || '소개 정보 없음';
+        modalStudyTime.textContent = user.time || '0 : 00 : 00';
+
+        modalOverlay.style.display = 'flex';
+        memberModal.style.display = 'block';
+    }
+
+    // 모달 닫기 함수
+    function closeMemberModal() {
+        modalOverlay.style.display = 'none';
+        memberModal.style.display = 'none';
+    }
+
+    // 출석 현황 이름 클릭 이벤트 추가
+    document.querySelectorAll('.attendance-user-name').forEach(el => {
+        el.addEventListener('click', () => {
+            openMemberModal(el.textContent);
+        });
+    });
+
+    // 공부 중인 멤버 이름 클릭 이벤트 추가
+    document.querySelectorAll('.studying-user-name').forEach(el => {
+        el.addEventListener('click', () => {
+            openMemberModal(el.textContent);
+        });
+    });
+
+    // 이번 달 랭킹 이름 클릭 이벤트 추가
+    document.querySelectorAll('.ranking-name').forEach(el => {
+        el.addEventListener('click', () => {
+            openMemberModal(el.textContent);
+        });
+    });
+
+    // 모달 닫기 버튼 클릭 시 닫기
+    closeMemberModalBtn.addEventListener('click', closeMemberModal);
+
+    // 오버레이 클릭 시 닫기
+    modalOverlay.addEventListener('click', closeMemberModal);
+
+    // 초기화 모달창 열고 닫기
+    const resetModal = document.getElementById('reset-modal');
+    const resetText = document.querySelector('.reset-text');
+    const cancelBtn = document.querySelector('.reset-cancel');
+    const confirmBtn = document.getElementById('reset-confirm');
+
+    function openResetModal() {
+        modalOverlay.style.display = 'flex';
+        resetModal.style.display = 'block';
+    }
+
+    function closeResetModal() {
+        modalOverlay.style.display = 'none';
+        resetModal.style.display = 'none';
+    }
+
+    // 모달 열기
+    resetText.addEventListener('click', openResetModal);
+
+    // 취소 모달 닫기
+    cancelBtn.addEventListener('click', closeResetModal);
+
+    // 오버레이 모달 닫기
+    modalOverlay.addEventListener('click', closeResetModal);
+
+    // 확인 후 초기화 -> alert -> 모달 닫기
+    confirmBtn.addEventListener('click', () => {
+        // 버튼 상태 초기화
         document.getElementById('nowHour').textContent = '00';
         document.getElementById('nowMinute').textContent = '00';
         document.getElementById('nowSecond').textContent = '00';
 
         totalSeconds = 0;
+        clearInterval(timerInterval);
+
+        startButton.disabled = false;
+        startButton.classList.remove('button-disabled');
+        startButton.classList.add('button-enabled-blue');
+
+        stopButton.disabled = true;
+        stopButton.textContent = '중단';
+        stopButton.classList.remove('button-enabled-yellow');
+        stopButton.classList.remove('button-enabled-blue');
+        stopButton.classList.add('button-disabled');
+
+        endButton.disabled = true;
+        endButton.classList.remove('button-enabled-blue');
+        endButton.classList.add('button-disabled');
+
+        alert('타이머가 초기화되었습니다.');
+
+        closeResetModal();
     });
 
 });
