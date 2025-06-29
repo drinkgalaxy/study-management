@@ -1,0 +1,506 @@
+.main-header {
+    display: flex;
+    justify-content: space-between; /* 좌우 끝 정렬 */
+    align-items: center;            /* 세로 정렬 */
+    padding: 20px;
+    height: 60px;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo-and-text {
+    display: flex;
+}
+
+.header-text {
+    margin-left: 10px;
+    color: #333D4B;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.header-contents {
+    display: flex;
+    gap: 30px; /* 요소 간 간격 */
+    align-items: center;
+}
+
+.header-main, .header-my {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;    /* 내부 비율 유지하면서 빈 공간은 투명 처리 */
+    object-position: center; /* 가운데 정렬 */
+    margin-right: 5px;
+}
+
+.main-logo {
+    width: 100px;
+    height: 75px;
+    object-fit: contain;
+}
+
+/* 메인 css 시작 */
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hello-text {
+    width: 960px;
+    font-size: 30px;
+    margin-bottom: -10px;
+}
+
+#username {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.main-div {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
+
+.div-left-top-1,
+.div-left-top-2 {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 473px;
+    height: 100px;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin: 10px;
+}
+
+
+.div-left-bottom {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin: 10px;
+    margin-top: 30px;
+}
+
+.div-right-top {
+    display: flex;
+    flex-direction: column;
+    width: 473px;
+    height: auto;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.div-right-middle {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 473px;
+    height: auto;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.div-right-bottom {
+    display: flex;
+    flex-direction: column;
+    width: 473px;
+    height: auto;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+}
+
+.div-left-top-1-this,
+.div-left-top-2-this {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.logo {
+    width: 30px;
+    height: 30px;
+}
+
+.this-time {
+    color: #6B7684;
+}
+
+.week-time,
+.month-time {
+    font-weight: bold;
+}
+
+.today-date {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.div-left-bottom-timeBlock {
+    display: flex;
+    font-size: 40px;
+    font-weight: bold;
+    justify-content: center;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin: 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.start-button {
+    margin-top: 30px;
+    display: block;
+    background-color: #0169EA;
+    width: 425px;
+    height: 56px;
+    font-size: 15px;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.stop-and-end-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+
+}
+
+.stop-button,
+.end-button {
+    margin: 10px;
+    display: block;
+    background-color: #F2F4F6;
+    width: 205px;
+    height: 56px;
+    font-size: 15px;
+    color: #B0B8C1;
+    border-radius: 5px;
+    border: none;
+    cursor: not-allowed;
+}
+
+/*버튼 비활성화*/
+.button-disabled {
+    background-color: #F2F4F6;
+    color: #B0B8C1;
+    cursor: not-allowed;
+}
+
+/*버튼 노란색 활성화*/
+.button-enabled-yellow {
+    background-color: #FBB12C;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+/*버튼 파란색 활성화*/
+.button-enabled-blue {
+    background-color: #0169EA;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.reset-text {
+    color: #B0B8C1;
+    cursor: pointer;
+}
+
+.attendance-status-and-member-count,
+.studying-users {
+    display: flex;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.member-count,
+#studying-user-count {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+#attendance-status-true,
+#studying-user-count {
+    color: #0169EA;
+}
+
+.div-right-top-hr {
+    border: none;
+    border-top: 2px solid #E5E8EB;
+}
+
+.attendance-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 425px;
+    height: 173px;
+}
+
+.attendance-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: calc((100% / 2) - 10px); /* 한 줄에 2개씩 */
+    box-sizing: border-box;
+}
+
+.attendance-user-name {
+    font-size: 15px;
+    margin-right: 30px;
+    white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.attendance-user-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 74px;
+    height: 37px;
+    font-size: 12px;
+    border-radius: 5px;
+    color: #FFFFFF;
+    white-space: nowrap;
+}
+
+/* 출석 완료 */
+.attended {
+    background-color: #0169EA;
+}
+
+/* 출석 전 */
+.not-attended {
+    background-color: #FF3B30;
+}
+
+/* 휴가 */
+.on-leave {
+    color: #090909;
+    background-color: #F2F4F6;
+}
+
+.studying-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.studying-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% / 3 - 10px); /* 한 줄에 3개씩 */
+    height: 40px;
+    border-radius: 5px;
+    color: #191F28;
+    box-sizing: border-box;
+}
+
+
+.studying-user-name {
+    margin-left: 10px;
+}
+
+.month-ranking-text-and {
+    display: flex;
+    align-items: center;
+}
+
+.month-ranking-text {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.month-ranking-and {
+    font-size: 15px;
+    color: #B0B8C1;
+    margin-left: 10px;
+}
+
+.ranking-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.ranking-rank {
+    background-color: #F2F4F6;
+    color: #191F28;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.ranking-name {
+    flex: 1;
+    font-weight: bold;
+    margin-left: 15px;
+    color: #191F28;
+}
+
+.ranking-time {
+    color: #B0B8C1;
+    font-size: 14px;
+}
+
+/* 모달 공통 오버레이 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(33, 33, 33, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* 특정 멤버 선택 모달창 */
+.member-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 480px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.member-name {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.member-email {
+    color: gray;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.member-intro {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.member-study-time {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.blue-text {
+    color: #1D4ED8;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 30px;
+}
+
+/* 초기화 모달창 */
+.reset-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 24px 32px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    z-index: 999;
+    display: none;
+    text-align: center;
+}
+
+.reset-title {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.reset-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.reset-cancel {
+    padding: 10px;
+    width: 149px;
+    height: 56px;
+    background-color: #FFFFFF;
+    color: #6B7684;
+    border: 1px solid #E5E8EB;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.reset-confirm {
+    padding: 10px;
+    width: 149px;
+    height: 56px;
+    background-color: #0169EA;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+
+
