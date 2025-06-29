@@ -1,0 +1,162 @@
+.main-header {
+    display: flex;
+    justify-content: space-between; /* 좌우 끝 정렬 */
+    align-items: center;            /* 세로 정렬 */
+    padding: 20px;
+    height: 60px;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo-and-text {
+    display: flex;
+}
+
+.header-text {
+    margin-left: 10px;
+    color: #333D4B;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.header-contents {
+    display: flex;
+    gap: 30px; /* 요소 간 간격 */
+    align-items: center;
+}
+
+.header-main, .header-my {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;    /* 내부 비율 유지하면서 빈 공간은 투명 처리 */
+    object-position: center; /* 가운데 정렬 */
+    margin-right: 5px;
+}
+
+.main-logo {
+    width: 100px;
+    height: 75px;
+    object-fit: contain;
+}
+
+/* 메인 css 시작 */
+.hello-text {
+    font-size: 30px;
+}
+
+#username {
+    font-weight: bold;
+}
+
+.main-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px;
+}
+
+.div-left-top-1,
+.div-left-top-2{
+    display: flex;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin: 10px;
+}
+
+
+.div-left-bottom {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin: 10px;
+}
+
+.div-left-top-1-this,
+.div-left-top-2-this {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    width: 30px;
+    height: 30px;
+}
+
+.this-time {
+    color: #6B7684;
+}
+
+.week-time,
+.month-time {
+    font-weight: bold;
+}
+
+.today-date {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.div-left-bottom-timeBlock {
+    display: flex;
+    font-size: 40px;
+    font-weight: bold;
+    justify-content: center;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin: 10px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.start-button {
+    margin-top: 30px;
+    display: block;
+    background-color: #0169EA;
+    width: 425px;
+    height: 56px;
+    font-size: 15px;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.stop-and-end-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+
+}
+
+.stop-button,
+.end-button {
+    margin: 10px;
+    display: block;
+    background-color: #F2F4F6;
+    width: 205px;
+    height: 56px;
+    font-size: 15px;
+    color: #B0B8C1;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.reset-text {
+    color: #B0B8C1;
+}
+
+
