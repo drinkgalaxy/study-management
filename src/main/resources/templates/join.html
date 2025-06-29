@@ -7,20 +7,37 @@
 </head>
 <body>
 <div class="contents">
-    <p class="login">로그인</p>
-    <form id="login-form">
+    <p class="join">회원가입</p>
+    <form id="join-form">
+        <div class="contents-name">
+            <p class="name">이름</p>
+            <input type="text" class="input-name" id="name" name="name" placeholder="이름을 입력해주세요." required>
+        </div>
         <div class="contents-id">
             <p class="id">아이디</p>
-            <input type="text" class="input-id" id="loginId" name="id" placeholder="아이디를 입력해주세요." required>
+            <div class="input-group">
+                <input type="text" class="input-id" id="loginId" name="id" placeholder="아이디를 입력해주세요." required>
+                <button type="button" class="input-button id-duplication">중복확인</button>
+            </div>
         </div>
         <div class="contents-pw">
             <p class="pw">비밀번호</p>
             <input type="password" class="input-pw" id="password" name="password" placeholder="비밀번호를 입력해주세요." required>
         </div>
-        <button class="login-button" type="submit">로그인</button>
+        <div class="contents-email">
+            <p class="email">이메일</p>
+            <div class="input-group">
+                <input type="email" class="input-email" id="email" name="email" placeholder="이메일을 입력해주세요." required>
+                <button type="button" class="input-button email-duplication">인증</button>
+            </div>
+            <div class="email-code-wrapper">
+                <input type="text" id="email-code" placeholder="인증번호를 입력해주세요.">
+                <button type="button" class="code-ok">확인</button>
+            </div>
+        </div>
+        <button class="join-button" type="submit">가입하기</button>
     </form>
-    <p class="move-to-join">계정이 없으신가요?</p>
 </div>
-
+<script src="../static/js/join.js"></script>
 </body>
 </html>
