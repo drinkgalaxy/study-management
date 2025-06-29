@@ -23,77 +23,121 @@
     </div>
 </header>
 <body>
-
-<div class="main-div">
+<div class="main-container">
     <p class="hello-text">안녕하세요, <span id="username">이현진</span> 님</p>
-    <div class="div-left">
-        <div class="div-left-top">
-            <div class="div-left-top-1">
-                <img class="logo" src="../static/img/fire.png" alt="불 로고">
-                <div class="div-left-top-1-this">
-                    <div class="this-time">이번주 공부 시간</div>
-                    <div class="week-time">
-                        <span id="hour"></span>
-                        :
-                        <span id="minute"></span>
-                        :
-                        <span id="second"></span>
+    <div class="main-div">
+        <div class="div-left">
+            <div class="div-left-top">
+                <div class="div-left-top-1">
+                    <img class="logo" src="../static/img/fire.png" alt="불 로고">
+                    <div class="div-left-top-1-this">
+                        <div class="this-time">이번주 공부 시간</div>
+                        <div class="week-time">
+                            <span id="hour"></span>
+                            :
+                            <span id="minute"></span>
+                            :
+                            <span id="second"></span>
+                        </div>
                     </div>
                 </div>
+                <div class="div-left-top-2">
+                    <img class="logo" src="../static/img/fire.png" alt="불 로고">
+                    <div class="div-left-top-2-this">
+                        <div class="this-time">이번달 공부 시간</div>
+                        <div class="month-time">
+                            <span id="hours"></span>
+                            :
+                            <span id="minutes"></span>
+                            :
+                            <span id="seconds"></span>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="div-left-top-2">
-                <img class="logo" src="../static/img/fire.png" alt="불 로고">
-                <div class="div-left-top-2-this">
-                    <div class="this-time">이번달 공부 시간</div>
-                    <div class="month-time">
-                        <span id="hours"></span>
-                        :
-                        <span id="minutes"></span>
-                        :
-                        <span id="seconds"></span>
+            <div class="div-left-bottom">
+                <p class="today-date">
+                    <span id="year"></span>
+                    년
+                    <span id="month"></span>
+                    월
+                    <span id="day"></span>
+                    일
+                    (<span id="week"></span>)
+                </p>
+                <div class="div-left-bottom-timeBlock">
+                    <span id="nowHour"></span>
+                    :
+                    <span id="nowMinute"></span>
+                    :
+                    <span id="nowSecond"></span>
+                </div>
+                <div class="buttons">
+                    <button class="start-button">시작</button>
+                    <div class="stop-and-end-button">
+                        <button class="stop-button">중단</button>
+                        <button class="end-button">종료</button>
+                    </div>
+                    <p class="reset-text">초기화</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="div-right">
+            <div class="div-right-top">
+                <div class="attendance-status-and-member-count">
+                    <p class="attendance-status-text">출석 현황</p>
+                    <p class="member-count">
+                        <span id="attendance-status-true"></span>
+                        /
+                        <span id="attendance-all"></span>
+                    </p>
+                </div>
+                <hr class="div-right-top-hr">
+                <div class="attendance-container">
+                    <div class="attendance-item">
+                        <span class="attendance-user-name">이현진</span>
+                        <div class="attendance-user-box attended">출석 완료</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span class="attendance-user-name">이유림</span>
+                        <div class="attendance-user-box not-attended">출석 전</div>
+                    </div>
+                    <div class="attendance-item">
+                        <span class="attendance-user-name">이스딧</span>
+                        <div class="attendance-user-box on-leave">휴가</div>
                     </div>
                 </div>
 
             </div>
-        </div>
-        <div class="div-left-bottom">
-            <p class="today-date">
-                <span id="year"></span>
-                년
-                <span id="month"></span>
-                월
-                <span id="day"></span>
-                일
-                (<span id="week"></span>)
-            </p>
-            <div class="div-left-bottom-timeBlock">
-                <span id="nowHour"></span>
-                :
-                <span id="nowMinute"></span>
-                :
-                <span id="nowSecond"></span>
-            </div>
-            <div class="buttons">
-                <button class="start-button">시작</button>
-                <div class="stop-and-end-button">
-                    <button class="stop-button">중단</button>
-                    <button class="end-button">종료</button>
+            <div class="div-right-middle">
+                <div class="studying-users">
+                    <span class="studying-text">지금 공부중인 멤버</span>
+                    <span id="studying-user-count"></span>
                 </div>
-                <p class="reset-text">초기화</p>
+                <hr class="div-right-top-hr">
+                <div class="studying-container"></div>
+            </div>
+            <div class="div-right-bottom">
+                <div class="month-ranking-text-and">
+                    <span class="month-ranking-text">이번 달 랭킹</span>
+                    <span class="month-ranking-and">매일 00시에 순위가 갱신됩니다.</span>
+                </div>
+                <hr class="div-right-top-hr">
+                <div class="ranking-container"></div>
             </div>
         </div>
-
     </div>
-    <div class="div-right">
-        <div class="div-right-top"></div>
-        <div class="div-right-middle"></div>
-        <div class="div-right-bottom"></div>
-
-    </div>
-
-
-
 </div>
+
+<!-- 특정 멤버 선택 모달창 -->
+
+
+<!-- 초기화 모달창 -->
+
+
+
 <script src="../static/js/main.js"></script>
 </body>
 </html>

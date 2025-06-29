@@ -45,24 +45,37 @@
 }
 
 /* 메인 css 시작 */
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .hello-text {
+    width: 960px;
     font-size: 30px;
+    margin-bottom: -10px;
 }
 
 #username {
+    font-size: 30px;
     font-weight: bold;
 }
 
 .main-div {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     padding: 30px;
 }
 
 .div-left-top-1,
-.div-left-top-2{
+.div-left-top-2 {
     display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 473px;
+    height: 100px;
     border: 1px solid #E5E8EB;
     border-radius: 5px;
     padding: 30px;
@@ -77,6 +90,41 @@
     border-radius: 5px;
     padding: 30px;
     margin: 10px;
+    margin-top: 30px;
+}
+
+.div-right-top {
+    display: flex;
+    flex-direction: column;
+    width: 473px;
+    height: auto;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.div-right-middle {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 473px;
+    height: auto;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.div-right-bottom {
+    display: flex;
+    flex-direction: column;
+    width: 473px;
+    height: auto;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 30px;
 }
 
 .div-left-top-1-this,
@@ -84,6 +132,7 @@
     display: flex;
     flex-direction: column;
 }
+
 
 .logo {
     width: 30px;
@@ -152,11 +201,182 @@
     color: #B0B8C1;
     border-radius: 5px;
     border: none;
+    cursor: not-allowed;
+}
+
+/*버튼 비활성화*/
+.button-disabled {
+    background-color: #F2F4F6;
+    color: #B0B8C1;
+    cursor: not-allowed;
+}
+
+/*버튼 노란색 활성화*/
+.button-enabled-yellow {
+    background-color: #FBB12C;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+/*버튼 파란색 활성화*/
+.button-enabled-blue {
+    background-color: #0169EA;
+    color: #FFFFFF;
     cursor: pointer;
 }
 
 .reset-text {
     color: #B0B8C1;
+    cursor: pointer;
+}
+
+.attendance-status-and-member-count,
+.studying-users {
+    display: flex;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.member-count,
+#studying-user-count {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+#attendance-status-true,
+#studying-user-count {
+    color: #0169EA;
+}
+
+.div-right-top-hr {
+    border: none;
+    border-top: 2px solid #E5E8EB;
+}
+
+.attendance-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 425px;
+    height: 173px;
+}
+
+.attendance-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: calc((100% / 2) - 10px); /* 한 줄에 2개씩 */
+    box-sizing: border-box;
+}
+
+.attendance-user-name {
+    font-size: 15px;
+    margin-right: 30px;
+    white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.attendance-user-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 74px;
+    height: 37px;
+    font-size: 12px;
+    border-radius: 5px;
+    color: #FFFFFF;
+    white-space: nowrap;
+}
+
+/* 출석 완료 */
+.attended {
+    background-color: #0169EA;
+}
+
+/* 출석 전 */
+.not-attended {
+    background-color: #FF3B30;
+}
+
+/* 휴가 */
+.on-leave {
+    color: #090909;
+    background-color: #F2F4F6;
+}
+
+.studying-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.studying-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% / 3 - 10px); /* 한 줄에 3개씩 */
+    height: 40px;
+    border-radius: 5px;
+    color: #191F28;
+    box-sizing: border-box;
+}
+
+
+.studying-user-name {
+    margin-left: 10px;
+}
+
+.month-ranking-text-and {
+    display: flex;
+    align-items: center;
+}
+
+.month-ranking-text {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.month-ranking-and {
+    font-size: 15px;
+    color: #B0B8C1;
+    margin-left: 10px;
+}
+
+.ranking-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.ranking-rank {
+    background-color: #F2F4F6;
+    color: #191F28;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.ranking-name {
+    flex: 1;
+    font-weight: bold;
+    margin-left: 15px;
+    color: #191F28;
+}
+
+.ranking-time {
+    color: #B0B8C1;
+    font-size: 14px;
 }
 
 
