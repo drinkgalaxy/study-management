@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 출석 현황 이름 클릭 이벤트 추가
-    document.querySelectorAll('.attendance-user-name').forEach(el => {
+    document.querySelectorAll('.atteFndance-user-name').forEach(el => {
         el.addEventListener('click', () => {
             openMemberModal(el.textContent);
         });
