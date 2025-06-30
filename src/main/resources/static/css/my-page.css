@@ -1,0 +1,52 @@
+.main-header {
+    display: flex;
+    justify-content: space-between; /* 좌우 끝 정렬 */
+    align-items: center;            /* 세로 정렬 */
+    padding: 20px;
+    height: 60px;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo-and-text {
+    display: flex;
+}
+
+.header-text {
+    margin-left: 10px;
+    color: #333D4B;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.header-contents {
+    display: flex;
+    gap: 30px; /* 요소 간 간격 */
+    align-items: center;
+}
+
+.header-main, .header-my {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;    /* 내부 비율 유지하면서 빈 공간은 투명 처리 */
+    object-position: center; /* 가운데 정렬 */
+    margin-right: 5px;
+}
+
+.main-logo {
+    width: 100px;
+    height: 75px;
+    object-fit: contain;
+}
+
+/* 메인 css 시작 */
+
+
+
+
+

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+
     // todo 백엔드에서 유저네임 호출
     const username = "이현진";
     document.getElementById('username').textContent = username;
@@ -191,13 +192,19 @@ document.addEventListener('DOMContentLoaded', function () {
     let totalSeconds = 0;
     let isPaused = false;
 
+    const savedTime = localStorage.getItem('studyTimer');
+    const savedIsPaused = localStorage.getItem('isPaused');
+    const savedIsRunning = localStorage.getItem('isRunning');
+
+    if (savedTime !== null) {
+        totalSeconds = parseInt(savedTime);
+        isPaused = savedIsPaused === 'true';
+        updateTimerDisplay();
+    }
+
     const startButton = document.querySelector('.start-button');
     const stopButton = document.querySelector('.stop-button');
     const endButton = document.querySelector('.end-button');
-
-    // 초기 버튼 상태 설정
-    stopButton.disabled = true;
-    endButton.disabled = true;
 
     function updateTimerDisplay() {
         const hours = Math.floor(totalSeconds / 3600);
@@ -209,90 +216,94 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('nowSecond').textContent = String(seconds).padStart(2, '0');
     }
 
-    startButton.addEventListener('click', () => {
-        if (isPaused) {
-            isPaused = false;
+    function setTimerButtonsState(running, paused) {
+        if (running) {
+            startButton.disabled = true;
+            startButton.classList.add('button-disabled');
+            startButton.classList.remove('button-enabled-blue');
+
+            stopButton.disabled = false;
+            stopButton.textContent = paused ? '재개' : '중단';
+            stopButton.classList.remove('button-disabled');
+            stopButton.classList.add(paused ? 'button-enabled-blue' : 'button-enabled-yellow');
+
+            endButton.disabled = false;
+            endButton.classList.remove('button-disabled');
+            endButton.classList.add('button-enabled-blue');
+        } else {
+            startButton.disabled = false;
+            startButton.classList.remove('button-disabled');
+            startButton.classList.add('button-enabled-blue');
+
+            stopButton.disabled = true;
+            stopButton.textContent = '중단';
+            stopButton.classList.remove('button-enabled-yellow', 'button-enabled-blue');
+            stopButton.classList.add('button-disabled');
+
+            endButton.disabled = true;
+            endButton.classList.remove('button-enabled-blue');
+            endButton.classList.add('button-disabled');
         }
+    }
 
-        startButton.disabled = true;
-        startButton.classList.add('button-disabled');
-        startButton.classList.remove('button-enabled-blue');
+    if (savedIsRunning === 'true') {
+        setTimerButtonsState(true, isPaused);
+        if (!isPaused) {
+            timerInterval = setInterval(() => {
+                totalSeconds++;
+                updateTimerDisplay();
+                localStorage.setItem('studyTimer', totalSeconds);
+            }, 1000);
+        }
+    } else {
+        setTimerButtonsState(false, false);
+    }
 
-        stopButton.disabled = false;
-        stopButton.classList.add('button-enabled-yellow');
-        stopButton.classList.remove('button-disabled');
-
-        endButton.disabled = false;
-        endButton.classList.add('button-enabled-blue');
-        endButton.classList.remove('button-disabled');
-
+    startButton.addEventListener('click', () => {
+        isPaused = false;
+        setTimerButtonsState(true, false);
+        localStorage.setItem('isRunning', 'true');
+        localStorage.setItem('isPaused', 'false');
 
         timerInterval = setInterval(() => {
             totalSeconds++;
             updateTimerDisplay();
+            localStorage.setItem('studyTimer', totalSeconds);
         }, 1000);
     });
 
     stopButton.addEventListener('click', () => {
-        if (!isPaused) {
-            // 중단
-            clearInterval(timerInterval);
-            isPaused = true;
-            stopButton.textContent = '재개';
-        } else {
-            // 재개
+        if (isPaused) {
+            // 재개 시 타이머 다시 시작
             isPaused = false;
             stopButton.textContent = '중단';
-            stopButton.classList.add('button-enabled-yellow');
-            stopButton.classList.remove('button-enabled-blue');
+            setTimerButtonsState(true, false);
+            localStorage.setItem('isPaused', 'false');
 
             timerInterval = setInterval(() => {
                 totalSeconds++;
                 updateTimerDisplay();
+                localStorage.setItem('studyTimer', totalSeconds);
             }, 1000);
+        } else {
+            // 중단
+            clearInterval(timerInterval);
+            isPaused = true;
+            stopButton.textContent = '재개';
+            setTimerButtonsState(true, true);
+            localStorage.setItem('isPaused', 'true');
         }
     });
 
     endButton.addEventListener('click', () => {
         clearInterval(timerInterval);
-        updateTimerDisplay();
-
-        // 버튼 상태 초기화
-        startButton.disabled = false;
-        startButton.classList.remove('button-disabled');
-        startButton.classList.add('button-enabled-blue');
-
-        stopButton.disabled = true;
-        stopButton.textContent = '중단';
-        stopButton.classList.remove('button-enabled-yellow');
-        stopButton.classList.remove('button-enabled-blue');
-        stopButton.classList.add('button-disabled');
-
-        endButton.disabled = true;
-        endButton.classList.remove('button-enabled-blue');
-        endButton.classList.add('button-disabled');
-
-        // 서버로 전송할 시간 데이터
-        let hour = Math.floor(totalSeconds / 3600);
-        let minute = Math.floor((totalSeconds % 3600) / 60);
-        let second = totalSeconds % 60;
-
-        console.log('서버 전송:', { hour, minute, second });
-
-        // fetch로 서버에 전송 (API 경로 수정 필요)
-        // fetch('/api/study-time', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ hour, minute, second, username })
-        // });
-
+        setTimerButtonsState(false, false);
+        localStorage.removeItem('studyTimer');
+        localStorage.removeItem('isRunning');
+        localStorage.removeItem('isPaused');
         alert('오늘의 공부 시간이 저장되었습니다.');
-
-        // 성공 후 시간 데이터 초기화
-        document.getElementById('nowHour').textContent = '00';
-        document.getElementById('nowMinute').textContent = '00';
-        document.getElementById('nowSecond').textContent = '00';
         totalSeconds = 0;
+        updateTimerDisplay();
     });
 
     // 특정 멤버 선택 모달창 열고 닫기
@@ -402,6 +413,8 @@ document.addEventListener('DOMContentLoaded', function () {
         endButton.disabled = true;
         endButton.classList.remove('button-enabled-blue');
         endButton.classList.add('button-disabled');
+
+        localStorage.removeItem('studyTimer');
 
         alert('타이머가 초기화되었습니다.');
 
