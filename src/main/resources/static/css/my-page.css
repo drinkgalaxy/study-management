@@ -99,23 +99,27 @@ textarea {
     height: 48px;
     resize: none;
     border: none;
+    font-weight: bold;
 }
 
 .max-word-length {
     padding: 20px;
 }
 
+.max-word-length-bold {
+    font-weight: bold;
+}
+
 .reset-button,
 .save-button {
     display: flex;
-    justify-content: left;
     align-items: center;
     width: 48px;
     height: 48px;
     border: 1px solid #E5E8EB;
     background-color: #FFFFFF;
     border-radius: 5px;
-    padding: 10px;
+    padding: 13px;
     margin: 5px;
     cursor: pointer;
 }
@@ -182,10 +186,6 @@ textarea {
 
 .leave-text {
     margin-left: 30px;
-}
-
-.leave-text-bold {
-    font-weight: bold;
 }
 
 .leave-day-text-and-day {

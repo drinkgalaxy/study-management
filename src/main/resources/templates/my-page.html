@@ -29,13 +29,17 @@
     <div class="intro-contents-and-buttons">
         <div class="intro-contents">
             <textarea name="content" id="content" placeholder="작성한 소개 글은 모든 멤버에게 공개됩니다." required></textarea>
-            <div class="max-word-length" id="max-word-length">0/60</div>
+            <div class="max-word-length" id="max-word-length">
+                <span class="max-word-length-bold">0</span>
+                /60
+            </div>
         </div>
         <button class="reset-button">
             <img class="trash" src="../static/img/trash.png" alt="리셋 버튼">
         </button>
         <button class="save-button">
-            <img class="save" src="../static/img/check.png" alt="저장 버튼">
+            <img class="save-before" src="../static/img/grayCheck.png" alt="저장 버튼 비활성화">
+            <img class="save-after" src="../static/img/check.png" alt="저장 버튼 활성화">
         </button>
     </div>
     <div class="div-left-and-right">

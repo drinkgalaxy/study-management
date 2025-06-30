@@ -500,6 +500,14 @@
     cursor: pointer;
 }
 
+.attendance-status-true,
+.attendance-all,
+.attendance-user-name,
+#studying-user-count,
+.ranking-container {
+    cursor: pointer;
+}
+
 
 
 

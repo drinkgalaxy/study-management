@@ -19,29 +19,60 @@ document.addEventListener('DOMContentLoaded', function () {
     //         maxLengthDisplay.innerText = `${textarea.value.length}/60`;
     //     });
 
-    textarea.value = '안녕하세요.'
-    maxLengthDisplay.innerText = `${textarea.value.length}/60`
+    // 초기 글자 수 세팅
+    textarea.value = '안녕하세요.';
+    maxLengthDisplay.innerHTML = `<span class="max-word-length-bold">${textarea.value.length}</span>/60`;
+    let originalText = textarea.value;
 
-    // 글자 수 표시 갱신
+    // 저장 버튼 이미지 관련 요소
+    const saveBefore = document.querySelector('.save-before');
+    const saveAfter = document.querySelector('.save-after');
+    const saveButton = document.querySelector('.save-button');
+
+    // 초기 이미지 상태 설정
+    saveBefore.style.display = 'inline';
+    saveAfter.style.display = 'none';
+    saveButton.disabled = true;
+
+    // input 이벤트 내부 수정
     textarea.addEventListener('input', () => {
         if (textarea.value.length > 60) {
             alert('최대 60글자만 작성가능합니다.');
+            textarea.value = textarea.value.substring(0, 60);
+        }
+
+        maxLengthDisplay.innerHTML = `<span class="max-word-length-bold">${textarea.value.length}</span>/60`;
+
+        if (textarea.value !== originalText) {
+            saveBefore.style.display = 'none';
+            saveAfter.style.display = 'inline';
+            saveButton.disabled = false;
         } else {
-            maxLengthDisplay.innerText = `${textarea.value.length}/60`;
+            saveBefore.style.display = 'inline';
+            saveAfter.style.display = 'none';
+            saveButton.disabled = true;
         }
     });
 
     // 리셋 버튼 기능
     document.querySelector('.reset-button').addEventListener('click', () => {
         textarea.value = '';
-        maxLengthDisplay.innerText = '0/60';
+        maxLengthDisplay.innerText = '';
+        saveBefore.style.display = 'none';
+        saveAfter.style.display = 'inline';
     });
 
     // 저장 버튼 기능
-    document.querySelector('.save-button').addEventListener('click', () => {
+    saveButton.addEventListener('click', () => {
         const content = textarea.value;
-        // todo 실제 서버에 저장
+        // todo 실제 서버로 변경 사항 전송
         alert('변경사항이 저장되었습니다.');
+
+        // 저장 완료 후 상태 초기화
+        originalText = content;
+
+        saveBefore.style.display = 'inline';
+        saveAfter.style.display = 'none';
     });
 
     // todo 백엔드에서 이번달 공부 시간 호출
