@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('minute').textContent = minute;
     document.getElementById('second').textContent = second;
 
-    // todo 백엔드에서 이번주 공부 시간 호출
+    // todo 백엔드에서 이번달 공부 시간 호출
     let hours = 13;
     let minutes = 10;
     let seconds = 15;
@@ -224,8 +224,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             stopButton.disabled = false;
             stopButton.textContent = paused ? '재개' : '중단';
-            stopButton.classList.remove('button-disabled');
-            stopButton.classList.add(paused ? 'button-enabled-blue' : 'button-enabled-yellow');
+            stopButton.classList.remove('button-disabled', 'button-enabled-blue', 'button-enabled-yellow');
+            stopButton.classList.add('button-enabled-yellow');
 
             endButton.disabled = false;
             endButton.classList.remove('button-disabled');
@@ -245,6 +245,7 @@ document.addEventListener('DOMContentLoaded', function () {
             endButton.classList.add('button-disabled');
         }
     }
+
 
     if (savedIsRunning === 'true') {
         setTimerButtonsState(true, isPaused);
@@ -302,7 +303,6 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.removeItem('isRunning');
         localStorage.removeItem('isPaused');
         alert('오늘의 공부 시간이 저장되었습니다.');
-        totalSeconds = 0;
         updateTimerDisplay();
     });
 
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
         modalName.textContent = user.name;
         modalEmail.textContent = user.email || '이메일 정보 없음';
         modalIntro.textContent = user.intro || '소개 정보 없음';
-        modalStudyTime.textContent = user.time || '0 : 00 : 00';
+        modalStudyTime.textContent = user.time || '00 : 00 : 00';
 
         modalOverlay.style.display = 'flex';
         memberModal.style.display = 'block';

@@ -31,11 +31,12 @@
 }
 
 .logo {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     object-fit: contain;    /* 내부 비율 유지하면서 빈 공간은 투명 처리 */
     object-position: center; /* 가운데 정렬 */
-    margin-right: 5px;
+    margin-right: 30px;
+    margin-left: 20px;
 }
 
 .main-logo {
@@ -56,6 +57,7 @@
     width: 960px;
     font-size: 30px;
     margin-bottom: -10px;
+    margin-left: -30px;
 }
 
 #username {
@@ -134,12 +136,6 @@
     flex-direction: column;
 }
 
-
-.logo {
-    width: 30px;
-    height: 30px;
-}
-
 .this-time {
     color: #6B7684;
 }
@@ -152,6 +148,8 @@
 .today-date {
     font-size: 20px;
     font-weight: bold;
+    margin-left: 20px;
+    padding: 10px;
 }
 
 .div-left-bottom-timeBlock {

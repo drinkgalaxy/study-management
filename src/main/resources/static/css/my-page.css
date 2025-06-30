@@ -45,8 +45,194 @@
 }
 
 /* 메인 css 시작 */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+.hello-text {
+    width: 960px;
+    font-size: 30px;
+    margin-bottom: -10px;
+    margin-left: -30px;
+}
 
+#username {
+    font-size: 30px;
+    font-weight: bold;
+}
 
+.main-div {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
+
+.intro-label {
+    width: 960px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-left: -30px;
+}
+
+.intro-contents-and-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.intro-contents {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 860px;
+    height: 48px;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+textarea {
+    width: 800px;
+    height: 48px;
+    resize: none;
+    border: none;
+}
+
+.max-word-length {
+    padding: 20px;
+}
+
+.reset-button,
+.save-button {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid #E5E8EB;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.div-left-and-right {
+    display: flex;
+}
+
+.div-left-middle,
+.div-right-middle {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 473px;
+    height: 100px;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.div-left-bottom,
+.div-right-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    width: 473px;
+    height: 454px;
+    border: 1px solid #E5E8EB;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.attendance-book {
+    margin-left: 20px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logo {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;    /* 내부 비율 유지하면서 빈 공간은 투명 처리 */
+    object-position: center; /* 가운데 정렬 */
+    margin-right: 30px;
+    margin-left: 20px;
+}
+
+.div-middle {
+    display: flex;
+    flex-direction: column;
+}
+
+.this-time {
+    color: #6B7684;
+}
+
+.month-time,
+.learning-day-text {
+    font-weight: bold;
+}
+
+.leave-text {
+    margin-left: 30px;
+}
+
+.leave-text-bold {
+    font-weight: bold;
+}
+
+.leave-day-text-and-day {
+    display: flex;
+    margin-left: 30px;
+}
+
+.leave-day-real {
+    margin-left: 10px;
+    color: #0169EA;
+    font-weight: bold;
+}
+
+.use-text {
+    margin-left: 30px;
+    font-weight: bold;
+}
+
+.ok-button {
+    display: block;
+    background-color: #0169EA;
+    width: 435px;
+    height: 56px;
+    font-size: 15px;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+.attendance-day-collect {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.attendance-day {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.box {
+    width: 15px;
+    height: 15px;
+}
 
 

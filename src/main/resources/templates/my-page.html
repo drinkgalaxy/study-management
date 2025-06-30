@@ -23,13 +23,96 @@
     </div>
 </header>
 <body>
+<div class="main-container">
+    <p class="hello-text">안녕하세요, <span id="username">이현진</span> 님</p>
+    <p class="intro-label">소개</p>
+    <div class="intro-contents-and-buttons">
+        <div class="intro-contents">
+            <textarea name="content" id="content" placeholder="작성한 소개 글은 모든 멤버에게 공개됩니다." required></textarea>
+            <div class="max-word-length" id="max-word-length">0/60</div>
+        </div>
+        <button class="reset-button">
+            <img class="trash" src="../static/img/trash.png" alt="리셋 버튼">
+        </button>
+        <button class="save-button">
+            <img class="save" src="../static/img/check.png" alt="저장 버튼">
+        </button>
+    </div>
+    <div class="div-left-and-right">
+        <div class="div-left-middle">
+            <img class="logo" src="../static/img/fire.png" alt="불 로고">
+            <div class="div-middle">
+                <div class="this-time">이번달 공부 시간</div>
+                <div class="month-time">
+                    <span class="hours"></span>
+                    :
+                    <span class="minutes"></span>
+                    :
+                    <span class="seconds"></span>
+                </div>
+            </div>
+        </div>
+        <div class="div-right-middle">
+            <img class="logo" src="../static/img/fire.png" alt="불 로고">
+            <div class="div-middle">
+                <div class="this-time">연속 학습</div>
+                <div class="learning-day-text">
+                    <span id="learning-day">13</span>
+                    일 째
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="div-left-and-right">
+        <div class="div-left-bottom">
+            <p class="attendance-book">출석부</p>
+            <div class="attendance-day-collect">
+                <div class="attendance-day">
+                    <img class="box" src="../static/img/blueBox.png" alt="출석 완료">
+                    <p class="attendance-text">출석 완료</p>
+                    <span class="attendance-count">26</span>일
+                </div>
+
+                <div class="attendance-day">
+                    <img class="box" src="../static/img/redBox.png" alt="결석">
+                    <p class="attendance-text">결석</p>
+                    <span class="attendance-count">2</span>일
+                </div>
+
+                <div class="attendance-day">
+                    <img class="box" src="../static/img/whiteBox.png" alt="휴가">
+                    <p class="attendance-text">휴가</p>
+                    <span class="attendance-count">1</span>일
+                </div>
 
 
+            </div>
+        </div>
 
-
-
-
-
+        <div class="div-right-bottom">
+            <p class="attendance-book">휴가 신청</p>
+            <p class="leave-text">
+                휴가는
+                <span class="leave-text-bold">매월 3회</span>
+                제공되며, <br>
+                남은 휴가는 다음 달로 이월되지 않고 월말에
+                <span class="leave-text-bold">소멸</span>
+                돼요.
+            </p>
+            <hr class="div-right-top-hr">
+            <div class="leave-day-text-and-day">
+                <p class="leave-day-text">이번 달 남은 휴가</p>
+                <p class="leave-day">
+                    <span class="leave-day-real">2</span>
+                    일
+                </p>
+            </div>
+            <p class="use-text">사용날짜</p>
+            <button class="ok-button">확인</button>
+        </div>
+    </div>
+</div>
 
 <script src="../static/js/my-page.js"></script>
 </body>
