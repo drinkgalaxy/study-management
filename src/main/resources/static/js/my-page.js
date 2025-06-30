@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.seconds').textContent = seconds;
 
     // todo 백엔드에서 이번달 남은 휴가 호출
-    let leaveDayReal = 3;
+    let leaveDayReal = 3; // 임시데이터
     document.querySelector('.leave-day-real').textContent = leaveDayReal;
 
 
@@ -106,8 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
         '2025-06-07': 'attended',
         '2025-06-08': 'attended',
         '2025-06-09': 'attended',
-        '2025-06-10': 'absent',
-        // 더 많은 데이터...
+        '2025-06-10': 'absent'
     };
 
     function createCalendar() {
@@ -178,7 +177,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateSelectedDateInfo(date) {
         const selectedDateInfo = document.getElementById('selectedDateInfo');
-        const selectedDateInput = document.getElementById('selectedDate');
 
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -194,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 case 'attended':
                     statusText = ' (출석 완료)';
                     break;
-                case 'attended':
+                case 'absent':
                     statusText = ' (결석)';
                     break;
                 case 'vacation':
@@ -204,7 +202,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         selectedDateInfo.textContent = `선택된 날짜: ${koreanDate}${statusText}`;
-        selectedDateInput.value = koreanDate;
     }
 
     // 이전/다음 달 버튼 이벤트
@@ -386,15 +383,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const datePicker = new DatePicker('selectedDate');
 
     // 폼 제출 처리
-
-    document.getElementById('dateForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
+    document.querySelector('.submit-btn').addEventListener('click', () => {
         const selectedDate = datePicker.getSelectedDate();
         const formattedDate = datePicker.getFormattedDate();
 
         if (!selectedDate) {
             alert('날짜를 선택해주세요.');
+            return;
+        }
+
+        if (leaveDayReal < 1) {
+            alert('잔여 휴가 일수를 초과했습니다.');
             return;
         }
 
