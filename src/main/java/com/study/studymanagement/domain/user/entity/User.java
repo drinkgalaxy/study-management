@@ -1,5 +1,6 @@
 package com.study.studymanagement.domain.user.entity;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,9 +41,9 @@ public class User {
 	private String email;
 	private Long consecutiveStudyDays;
 	private String introduce;
-	private String thisMonthStudyTimes;
-	private String thisWeekStudyTimes;
-	private String thisMonthLeave;
+	private Duration thisMonthStudyTimes;
+	private Duration thisWeekStudyTimes;
+	private Long thisMonthLeave;
 
 	@Enumerated(EnumType.STRING)
 	private AttendanceStatus todayAttendanceStatus;
