@@ -49,7 +49,7 @@ public class User {
 	private AttendanceStatus todayAttendanceStatus;
 
 	@Enumerated(EnumType.STRING)
-	private StudyStatus studyStatus;
+	private StudyStatus todayStudyStatus;
 
 	@OneToMany(mappedBy = "user")
 	private List<Attendance> attendances = new ArrayList<>();

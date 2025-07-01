@@ -20,4 +20,6 @@ public class UserResponse {
 	public record MyHome(String name, Duration thisMonthStudyTimes, Duration thisWeekStudyTimes) {}
 
 	public record AllStudyingUsers(String name, String email) {}
+
+	public record AttendedUserCount(Long count) {}
 }

@@ -46,7 +46,7 @@ public class AuthService {
 			.thisWeekStudyTimes(Duration.ZERO)
 			.thisMonthLeave(3L)
 			.todayAttendanceStatus(AttendanceStatus.NO_ATTENDED)
-			.studyStatus(StudyStatus.PAUSED)
+			.todayStudyStatus(StudyStatus.PAUSED)
 			.build();
 		userRepository.save(user);
 	}

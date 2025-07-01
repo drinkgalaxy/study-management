@@ -64,6 +64,12 @@ public class UserController {
 		return ApiResponse.ok(userService.getAllStudyingUsers());
 	}
 
+	// 출석 완료한 유저 수 조회
+	@GetMapping("/count/attending")
+	public ApiResponse<UserResponse.AttendedUserCount> getAttendedUserCount() {
+		return ApiResponse.ok(userService.getAttendedUserCount());
+	}
+
 
 
 }
