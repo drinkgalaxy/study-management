@@ -89,27 +89,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // 캘린더 기능 추가
-
     // 달력 관련 변수들
     let currentDate = new Date();
     let selectedDate = null;
 
-    // 샘플 출석 데이터 (실제로는 서버에서 가져와야 함)
-    // todo 백엔드에서 출석 데이터 호출
-    const attendanceData = {
-        '2025-06-01': 'attended',
-        '2025-06-02': 'attended',
-        '2025-06-03': 'absent',
-        '2025-06-04': 'attended',
-        '2025-06-05': 'vacation',
-        '2025-06-06': 'attended',
-        '2025-06-07': 'attended',
-        '2025-06-08': 'attended',
-        '2025-06-09': 'attended',
-        '2025-06-10': 'absent'
-    };
+    // todo 백엔드에서 해당 month 의 출석 데이터 호출
+    let attendanceData = {}; //전역에서 빈 객체로 설정
+    async function fetchAttendanceData(year, month) {
+        // 호출 임시 데이터
+        if (month == 6) {
+            return attendanceData = {
+                attendanceCount: 7,
+                absentCount: 2,
+                vacationCount: 1,
+                attendanceRecords: {
+                    '2025-06-01': 'attended',
+                    '2025-06-02': 'attended',
+                    '2025-06-03': 'absent',
+                    '2025-06-04': 'attended',
+                    '2025-06-05': 'vacation',
+                    '2025-06-06': 'attended',
+                    '2025-06-07': 'attended',
+                    '2025-06-08': 'attended',
+                    '2025-06-09': 'attended',
+                    '2025-06-10': 'absent'
+                }
+            }
+        } else if (month == 7) {
+            return attendanceData = {
+                attendanceCount: 1,
+                absentCount: 0,
+                vacationCount: 0,
+                attendanceRecords: {
+                    '2025-07-01': 'attended'
+                }
+            }
+        } else {
+            return attendanceData = {
+                attendanceCount: 0,
+                absentCount: 0,
+                vacationCount: 0,
+                attendanceRecords: {
+                }
+            }
+        }
+    }
 
-    function createCalendar() {
+    async function createCalendar() {
         const calendarGrid = document.querySelector('.calendar-grid');
         const calendarTitle = document.getElementById('calendarTitle');
 
@@ -117,20 +143,24 @@ document.addEventListener('DOMContentLoaded', function () {
         const existingDays = calendarGrid.querySelectorAll('.calendar-day');
         existingDays.forEach(day => day.remove());
 
-        // 현재 월/년 표시
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
+
+        // 출석 데이터 불러오기
+        attendanceData = await fetchAttendanceData(year, month + 1); // JS에서는 0-based month
+
+        // 출석 요약 정보 반영
+        document.querySelector('.attendance-count-1').textContent = attendanceData.attendanceCount;
+        document.querySelector('.attendance-count-2').textContent = attendanceData.absentCount;
+        document.querySelector('.attendance-count-3').textContent = attendanceData.vacationCount;
+
         calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
-        // 이번 달 1일과 마지막 날
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
-
-        // 달력 시작 날짜 (이전 달 마지막 주 포함)
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
 
-        // 42일 생성 (6주 × 7일)
         for (let i = 0; i < 42; i++) {
             const date = new Date(startDate);
             date.setDate(startDate.getDate() + i);
@@ -139,70 +169,33 @@ document.addEventListener('DOMContentLoaded', function () {
             dayElement.className = 'calendar-day';
             dayElement.textContent = date.getDate();
 
-            // 다른 달 날짜 구분
             if (date.getMonth() !== month) {
                 dayElement.classList.add('other-month');
             }
 
-            // 오늘 날짜 표시
             const today = new Date();
             if (date.toDateString() === today.toDateString()) {
                 dayElement.classList.add('today');
             }
 
-            // 출석 데이터 적용
             const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-            if (attendanceData[dateKey]) {
-                dayElement.classList.add(attendanceData[dateKey]);
+            if (attendanceData.attendanceRecords[dateKey]) {
+                dayElement.classList.add(attendanceData.attendanceRecords[dateKey]);
             }
 
-            // 클릭 이벤트
             dayElement.addEventListener('click', () => {
-                // 이전 선택 해제
                 document.querySelectorAll('.calendar-day.selected').forEach(el => {
                     el.classList.remove('selected');
                 });
 
-                // 현재 선택
                 dayElement.classList.add('selected');
                 selectedDate = new Date(date);
-
-                // 선택된 날짜 정보 업데이트
-                updateSelectedDateInfo(date);
             });
 
             calendarGrid.appendChild(dayElement);
         }
     }
 
-    function updateSelectedDateInfo(date) {
-        const selectedDateInfo = document.getElementById('selectedDateInfo');
-
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-
-        const dateString = `${year}-${month}-${day}`;
-        const koreanDate = `${year}년 ${month}월 ${day}일`;
-
-        // 출석 상태 확인
-        let statusText = '';
-        if (attendanceData[dateString]) {
-            switch(attendanceData[dateString]) {
-                case 'attended':
-                    statusText = ' (출석 완료)';
-                    break;
-                case 'absent':
-                    statusText = ' (결석)';
-                    break;
-                case 'vacation':
-                    statusText = ' (휴가)';
-                    break;
-            }
-        }
-
-        selectedDateInfo.textContent = `선택된 날짜: ${koreanDate}${statusText}`;
-    }
 
     // 이전/다음 달 버튼 이벤트
     document.getElementById('prevMonth').addEventListener('click', () => {
