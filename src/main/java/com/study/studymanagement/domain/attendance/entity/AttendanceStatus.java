@@ -1,4 +1,4 @@
-package com.study.studymanagement.attendance.entity;
+package com.study.studymanagement.domain.attendance.entity;
 
 public enum AttendanceStatus {
 	ATTENDED,
