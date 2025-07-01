@@ -37,46 +37,6 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
-	private final AuthenticationManager authenticationManager;
-	private final BCryptPasswordEncoder encoder;
-
-	@Transactional
-	public void signupUser(UserRequest.Signup request) {
-		User user = User.builder()
-			.name(request.name())
-			.loginId(request.loginId())
-			.password(encoder.encode(request.password()))
-			.email(request.email())
-			.consecutiveStudyDays(0L)
-			.introduce("")
-			.thisMonthStudyTimes(Duration.ZERO)
-			.thisWeekStudyTimes(Duration.ZERO)
-			.thisMonthLeave(3L)
-			.todayAttendanceStatus(AttendanceStatus.NO_ATTENDED)
-			.studyStatus(StudyStatus.PAUSED)
-			.build();
-		userRepository.save(user);
-	}
-
-	@Transactional
-	public void loginUser(UserRequest.Login request, HttpServletRequest httpRequest) {
-		try {
-			UsernamePasswordAuthenticationToken authToken =
-				new UsernamePasswordAuthenticationToken(request.loginId(), request.password());
-
-			Authentication authentication = authenticationManager.authenticate(authToken);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-
-			// 세션 설정
-			HttpSession session = httpRequest.getSession(true);
-			session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-				SecurityContextHolder.getContext());
-
-		} catch (AuthenticationException e) {
-			throw new UserException(LOGIN_FAILED);
-		}
-
-	}
 
 	@Transactional(readOnly = true)
 	public void checkLoginId(String loginId) {
@@ -181,5 +141,23 @@ public class UserService {
 			user.getThisWeekStudyTimes(),
 			user.getThisWeekStudyTimes()
 		);
+	}
+
+	@Transactional(readOnly = true)
+	public List<UserResponse.AllStudyingUsers> getAllStudyingUsers() {
+		List<UserResponse.AllStudyingUsers> allStudyingUsersList = new ArrayList<>();
+
+		List<User> user = userRepository.findAll();
+		for (User users : user) {
+			if (users.getStudyStatus() == StudyStatus.STUDYING) {
+				allStudyingUsersList.add(new UserResponse.AllStudyingUsers(
+					users.getName(),
+					users.getEmail()
+					)
+				);
+			}
+		}
+
+		return allStudyingUsersList;
 	}
 }

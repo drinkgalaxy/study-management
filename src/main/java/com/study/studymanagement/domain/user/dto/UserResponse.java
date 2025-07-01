@@ -18,4 +18,6 @@ public class UserResponse {
 							   List<AttendanceResponse.AttendanceDto> attendances) {}
 
 	public record MyHome(String name, Duration thisMonthStudyTimes, Duration thisWeekStudyTimes) {}
+
+	public record AllStudyingUsers(String name, String email) {}
 }
