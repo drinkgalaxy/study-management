@@ -36,4 +36,8 @@ public class Attendance {
 
 	@Enumerated(EnumType.STRING)
 	private AttendanceStatus attendanceStatus;
+
+	public void changeAttendanceStatus(AttendanceStatus status) {
+		this.attendanceStatus = status;
+	}
 }

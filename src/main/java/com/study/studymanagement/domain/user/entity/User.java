@@ -53,4 +53,8 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	private List<Attendance> attendances = new ArrayList<>();
+
+	public void changeStatus(AttendanceStatus status) {
+		this.todayAttendanceStatus = status;
+	}
 }

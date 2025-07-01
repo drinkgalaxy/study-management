@@ -19,7 +19,9 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
+import com.study.studymanagement.domain.attendance.entity.dto.AttendanceResponse;
 import com.study.studymanagement.domain.user.dto.UserRequest;
 import com.study.studymanagement.domain.user.dto.UserResponse;
 import com.study.studymanagement.domain.user.entity.StudyStatus;
@@ -127,5 +129,47 @@ public class UserService {
 		));
 
 		return allUsersList;
+	}
+
+	@Transactional
+	public List<UserResponse.MyAttendance> getMyAttendanceInfo(String month, String email) {
+
+		User user = userRepository.findByEmail(email)
+			.orElseThrow(() -> new UserException(INVALID_USER));
+
+		List<Attendance> attendanceList = user.getAttendances();
+
+		long thisMonthAttended = 0L;
+		long thisMonthAbsent = 0L;
+		long thisMonthVacation = 0L;
+
+		List<AttendanceResponse.AttendanceDto> thisMonthAttendanceDtoList = new ArrayList<>();
+
+		int targetMonth = Integer.parseInt(month);
+
+		for (Attendance attendance : attendanceList) {
+			if (attendance.getDate().getMonthValue() == targetMonth) {
+
+				// 상태별 카운트
+				switch (attendance.getAttendanceStatus()) {
+					case ATTENDED -> thisMonthAttended++;
+					case ABSENT -> thisMonthAbsent++;
+					case VACATION -> thisMonthVacation++;
+				}
+
+				// DTO 변환 후 리스트에 추가
+				thisMonthAttendanceDtoList.add(new AttendanceResponse.AttendanceDto(
+					attendance.getDate(),
+					attendance.getAttendanceStatus()
+				));
+			}
+		}
+
+		return List.of(new UserResponse.MyAttendance(
+			thisMonthAttended,
+			thisMonthAbsent,
+			thisMonthVacation,
+			thisMonthAttendanceDtoList
+		));
 	}
 }
