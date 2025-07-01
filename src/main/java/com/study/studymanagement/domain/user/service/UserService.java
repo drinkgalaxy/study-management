@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +29,6 @@ import com.study.studymanagement.domain.user.repository.UserRepository;
 import com.study.studymanagement.global.exception.exception.UserException;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -131,7 +129,7 @@ public class UserService {
 		return allUsersList;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<UserResponse.MyAttendance> getMyAttendanceInfo(String month, String email) {
 
 		User user = userRepository.findByEmail(email)
@@ -171,5 +169,17 @@ public class UserService {
 			thisMonthVacation,
 			thisMonthAttendanceDtoList
 		));
+	}
+
+	@Transactional(readOnly = true)
+	public UserResponse.MyHome getHomeInfo(String email) {
+		User user = userRepository.findByEmail(email)
+			.orElseThrow(() -> new UserException(INVALID_USER));
+
+		return new UserResponse.MyHome(
+			user.getName(),
+			user.getThisWeekStudyTimes(),
+			user.getThisWeekStudyTimes()
+		);
 	}
 }

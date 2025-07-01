@@ -16,4 +16,6 @@ public class UserResponse {
 
 	public record MyAttendance(Long thisMonthAttended, Long thisMonthAbsent, Long thisMonthVacation,
 							   List<AttendanceResponse.AttendanceDto> attendances) {}
+
+	public record MyHome(String name, Duration thisMonthStudyTimes, Duration thisWeekStudyTimes) {}
 }
