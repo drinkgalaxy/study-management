@@ -21,10 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.seconds').textContent = seconds;
 
     // todo 백엔드에서 오늘의 날짜 호출
-    let year = 2025;
-    let month = 6;
-    let day = 30;
-    const week = '월';
+    const today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
+
+    const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+    const week = days[today.getDay()];
 
     document.getElementById('year').textContent = year;
     document.getElementById('month').textContent = month;
@@ -44,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('attendance-status-true').textContent = attendanceTrue;
     document.getElementById('attendance-all').textContent = attendanceAll;
 
-    // todo 전체 유저 각 이름, 참석 상태, 이메일, 자기소개, 상태 데이터 가져오기
+    // todo 전체 유저 출석 현황 조회
     const userDataList = [
         {
             name: '김일등',
@@ -339,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 출석 현황 이름 클릭 이벤트 추가
-    document.querySelectorAll('.atteFndance-user-name').forEach(el => {
+    document.querySelectorAll('.attendance-user-name').forEach(el => {
         el.addEventListener('click', () => {
             openMemberModal(el.textContent);
         });

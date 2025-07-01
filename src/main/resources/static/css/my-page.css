@@ -351,10 +351,11 @@ textarea {
 /* 작은 달력 */
 /* 날짜 입력 컨테이너 */
 .date-input-container {
+    margin-top: 20px;
+    margin-left: 30px;
     position: relative;
-    display: inline-block;
-    width: 100%;
-    max-width: 300px;
+    width: 435px;
+    height: 56px;
 }
 
 /* 날짜 입력 필드 */
@@ -381,14 +382,15 @@ textarea {
 
 /* 달력 아이콘 */
 .calendar-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;    /* 내부 비율 유지하면서 빈 공간은 투명 처리 */
+    object-position: center;
     position: absolute;
     right: 12px;
-    top: 50%;
+    top: 35%;
     transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
     cursor: pointer;
-    color: #666;
 }
 
 .calendar-icon:hover {
@@ -491,12 +493,13 @@ textarea {
 }
 
 .calendar-btn {
+    width: 195px;
+    height: 56px;
     padding: 8px 16px;
     border: 1px solid #ddd;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    transition: all 0.2s;
 }
 
 .calendar-btn.cancel {
@@ -541,6 +544,8 @@ textarea {
 }
 
 .form-group {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
 }
 
