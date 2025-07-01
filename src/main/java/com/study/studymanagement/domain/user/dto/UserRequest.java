@@ -7,4 +7,7 @@ public class UserRequest {
 
 	public record Login(String loginId, String password) {
 	}
+
+	public record LoginId(String loginId) {
+	}
 }

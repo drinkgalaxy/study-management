@@ -1,6 +1,9 @@
 package com.study.studymanagement.domain.user.controller;
 
+import static com.study.studymanagement.global.exception.handler.ExceptionCode.*;
+
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.study.studymanagement.domain.user.dto.UserRequest;
 import com.study.studymanagement.domain.user.service.UserService;
 import com.study.studymanagement.global.common.ApiResponse;
+import com.study.studymanagement.global.exception.exception.UserException;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,6 +54,12 @@ public class UserController {
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
 
+		return ApiResponse.success();
+	}
+
+	@PostMapping("/users/loginId")
+	public ApiResponse<?> checkLoginId(@RequestBody UserRequest.LoginId request) {
+		userService.checkLoginId(request.loginId());
 		return ApiResponse.success();
 	}
 

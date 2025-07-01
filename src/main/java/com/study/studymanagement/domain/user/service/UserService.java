@@ -71,4 +71,11 @@ public class UserService {
 		}
 
 	}
+
+	@Transactional(readOnly = true)
+	public void checkLoginId(String loginId) {
+		if (userRepository.findByLoginId(loginId).isPresent()) {
+			throw new UserException(INVALID_ID);
+		}
+	}
 }
