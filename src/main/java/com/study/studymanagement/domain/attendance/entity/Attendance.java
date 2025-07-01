@@ -1,8 +1,8 @@
-package com.study.studymanagement.attendance.entity;
+package com.study.studymanagement.domain.attendance.entity;
 
 import java.time.LocalDate;
 
-import com.study.studymanagement.user.entity.User;
+import com.study.studymanagement.domain.user.entity.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,12 +15,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 public class Attendance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

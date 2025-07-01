@@ -1,10 +1,10 @@
-package com.study.studymanagement.user.entity;
+package com.study.studymanagement.domain.user.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.study.studymanagement.attendance.entity.Attendance;
-import com.study.studymanagement.attendance.entity.AttendanceStatus;
+import com.study.studymanagement.domain.attendance.entity.Attendance;
+import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,12 +17,14 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 @Table(name = "users")
 public class User {
 
