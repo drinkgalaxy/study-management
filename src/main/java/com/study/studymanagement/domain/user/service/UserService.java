@@ -3,6 +3,7 @@ package com.study.studymanagement.domain.user.service;
 import static com.study.studymanagement.global.exception.handler.ExceptionCode.*;
 
 import java.time.Duration;
+import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
 import com.study.studymanagement.domain.user.dto.UserRequest;
+import com.study.studymanagement.domain.user.dto.UserResponse;
 import com.study.studymanagement.domain.user.entity.StudyStatus;
 import com.study.studymanagement.domain.user.entity.User;
 import com.study.studymanagement.domain.user.repository.UserRepository;
@@ -77,5 +79,18 @@ public class UserService {
 		if (userRepository.findByLoginId(loginId).isPresent()) {
 			throw new UserException(INVALID_ID);
 		}
+	}
+
+	public UserResponse.MyPage getMyPageInfo(String email) {
+		User user = userRepository.findByEmail(email)
+			.orElseThrow(() -> new UserException(INVALID_USER));
+
+		return new UserResponse.MyPage(
+			user.getName(),
+			user.getConsecutiveStudyDays(),
+			user.getIntroduce(),
+			user.getThisMonthStudyTimes(),
+			user.getThisMonthLeave()
+		);
 	}
 }
