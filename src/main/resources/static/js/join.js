@@ -45,9 +45,13 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // todo 실제 백엔드 검증이 필요함 (여기선 성공했다고 가정)
-        isEmailVerified = true;
-        alert("이메일 인증이 완료되었습니다.");
+        // todo 실제 백엔드 검증이 필요함 (여기선 1111 이 유요한 인증코드라고 가정)
+        if (code === '1111') {
+            isEmailVerified = true;
+            alert("이메일 인증이 완료되었습니다.");
+        } else {
+            alert("잘못된 인증 번호입니다.");
+        }
     });
 
     // 폼 제출
