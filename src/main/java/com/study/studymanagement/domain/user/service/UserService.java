@@ -3,6 +3,10 @@ package com.study.studymanagement.domain.user.service;
 import static com.study.studymanagement.global.exception.handler.ExceptionCode.*;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -92,5 +96,36 @@ public class UserService {
 			user.getThisMonthStudyTimes(),
 			user.getThisMonthLeave()
 		);
+	}
+
+	@Transactional(readOnly = true)
+	public List<UserResponse.AllUsers> getAllUsers() {
+		List<User> user = userRepository.findAll();
+
+		List<UserResponse.AllUsers> allUsersList = new ArrayList<>();
+
+		for (User users : user) {
+			allUsersList.add(new UserResponse.AllUsers(
+				users.getName(),
+				users.getEmail(),
+				users.getIntroduce(),
+				users.getThisMonthStudyTimes(),
+				users.getTodayAttendanceStatus()
+			));
+		}
+
+		// 정렬 우선순위 정의
+		Map<AttendanceStatus, Integer> statusPriority = Map.of(
+			AttendanceStatus.ATTENDED, 1,
+			AttendanceStatus.NO_ATTENDED, 2,
+			AttendanceStatus.VACATION, 3
+		);
+
+		// 우선순위에 따라 정렬
+		allUsersList.sort(Comparator.comparing(
+			userDto -> statusPriority.getOrDefault(userDto.todayAttendanceStatus(), Integer.MAX_VALUE)
+		));
+
+		return allUsersList;
 	}
 }

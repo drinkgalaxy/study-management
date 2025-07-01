@@ -1,5 +1,7 @@
 package com.study.studymanagement.domain.user.controller;
 
+import java.util.List;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,5 +73,9 @@ public class UserController {
 		return ApiResponse.ok(userService.getMyPageInfo(userDetails.getUsername()));
 	}
 
-
+	// 전체 유저 정보 조회
+	@GetMapping("/users")
+	public ApiResponse<List<UserResponse.AllUsers>> getAllUsers() {
+		return ApiResponse.ok(userService.getAllUsers());
+	}
 }
