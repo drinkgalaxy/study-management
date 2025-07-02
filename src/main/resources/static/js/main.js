@@ -174,8 +174,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         } else if (user.status === 'not-attended') {
             statusDiv.classList.add('not-attended');
             statusDiv.textContent = '출석 전';
-        } else if (user.status === 'on-leave') {
-            statusDiv.classList.add('on-leave');
+        } else if (user.status === 'vacation') {
+            statusDiv.classList.add('vacation');
             statusDiv.textContent = '휴가';
         }
 

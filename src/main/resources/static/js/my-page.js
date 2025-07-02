@@ -158,11 +158,49 @@ document.addEventListener('DOMContentLoaded', async function () {
     // 달력 관련 변수들
     let currentDate = new Date();
     let selectedDate = null;
-
-    // todo 백엔드에서 해당 month 의 출석 데이터 호출
-    let attendanceData = {}; //전역에서 빈 객체로 설정
+    let attendanceData = {};
     async function fetchAttendanceData(year, month) {
 
+        // 백엔드에서 해당 month 의 출석 데이터 불러오기
+        try {
+            const response = await fetch(`http://localhost:8080/api/users/${month}/attendances`, {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                const res = await response.json();
+                const rawData = res.data;
+
+                // 출석 배열을 Map 형식으로 변환
+                const attendanceMap = {};
+                for (const entry of rawData.attendances) {
+                    attendanceMap[entry.date] = entry.status;
+                }
+
+                return {
+                    thisMonthAttended: rawData.thisMonthAttended,
+                    thisMonthAbsent: rawData.thisMonthAbsent,
+                    thisMonthVacation: rawData.thisMonthVacation,
+                    attendances: attendanceMap
+                };
+            } else {
+                console.error('출석 데이터 조회 실패:', response.status);
+            }
+
+        } catch (err) {
+            console.error("출석 데이터 조회 중 오류:", err);
+            alert("서버 오류가 발생했습니다.");
+        }
+        return {
+            thisMonthAttended: 0,
+            thisMonthAbsent: 0,
+            thisMonthVacation: 0,
+            attendances: {}
+        };
     }
 
     async function createCalendar() {
@@ -177,12 +215,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         const month = currentDate.getMonth();
 
         // 출석 데이터 불러오기
-        attendanceData = await fetchAttendanceData(year, month + 1); // JS에서는 0-based month
+        attendanceData = await fetchAttendanceData(year, month + 1);
 
         // 출석 요약 정보 반영
-        document.querySelector('.attendance-count-1').textContent = attendanceData.attendanceCount;
-        document.querySelector('.attendance-count-2').textContent = attendanceData.absentCount;
-        document.querySelector('.attendance-count-3').textContent = attendanceData.vacationCount;
+        document.querySelector('.attendance-count-1').textContent = attendanceData.thisMonthAttended;
+        document.querySelector('.attendance-count-2').textContent = attendanceData.thisMonthAbsent;
+        document.querySelector('.attendance-count-3').textContent = attendanceData.thisMonthVacation;
 
         calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
@@ -190,6 +228,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         const lastDay = new Date(year, month + 1, 0);
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+        const statusToClassMap = {
+            "ATTENDED": "attended",
+            "NO_ATTENDED": "absent",
+            "VACATION": "vacation"
+        };
 
         for (let i = 0; i < 42; i++) {
             const date = new Date(startDate);
@@ -209,8 +253,13 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
             const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-            if (attendanceData.attendanceRecords[dateKey]) {
-                dayElement.classList.add(attendanceData.attendanceRecords[dateKey]);
+            const attendanceStatus = attendanceData.attendances[dateKey];
+
+            if (attendanceStatus) {
+                const cssClass = statusToClassMap[attendanceStatus];
+                if (cssClass) {
+                    dayElement.classList.add(cssClass);
+                }
             }
 
             dayElement.addEventListener('click', () => {
