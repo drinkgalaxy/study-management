@@ -61,4 +61,9 @@ public class User {
 	public void changeIntroduce(String introduce) {
 		this.introduce =  introduce;
 	}
+
+	public void saveTime(Duration thisWeek, Duration thisMonth) {
+		this.thisWeekStudyTimes = this.thisWeekStudyTimes.plus(thisWeek);
+		this.thisMonthStudyTimes = this.thisMonthStudyTimes.plus(thisMonth);
+	}
 }

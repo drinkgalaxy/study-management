@@ -2,6 +2,7 @@ package com.study.studymanagement.domain.attendance.entity.service;
 
 import static com.study.studymanagement.global.exception.handler.ExceptionCode.*;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
+import com.study.studymanagement.domain.attendance.entity.dto.AttendanceRequest;
 import com.study.studymanagement.domain.attendance.entity.repository.AttendanceRepository;
 import com.study.studymanagement.domain.user.entity.User;
 import com.study.studymanagement.domain.user.repository.UserRepository;
@@ -51,5 +53,32 @@ public class AttendanceService {
 			}
 		}
 
+	}
+
+	@Transactional
+	public void saveTime(AttendanceRequest.SaveTime request, String email) {
+		User user = userRepository.findByEmail(email)
+			.orElseThrow(() -> new UserException(INVALID_USER));
+
+		Duration thisDayStudyTimes = parseStudyTime(request.thisDayStudyTimes());
+
+		Duration thisWeekStudyTimes = user.getThisWeekStudyTimes();
+		Duration thisMonthStudyTimes = user.getThisMonthStudyTimes();
+
+		Duration updatedWeek = thisWeekStudyTimes.plus(thisDayStudyTimes);
+		Duration updatedMonth = thisMonthStudyTimes.plus(thisDayStudyTimes);
+
+		user.saveTime(updatedWeek, updatedMonth);
+
+	}
+
+	private Duration parseStudyTime(String timeStr) {
+		String[] parts = timeStr.split("-");
+		int hours = Integer.parseInt(parts[0]);
+		int minutes = Integer.parseInt(parts[1]);
+		int seconds = Integer.parseInt(parts[2]);
+		return Duration.ofHours(hours)
+			.plusMinutes(minutes)
+			.plusSeconds(seconds);
 	}
 }
