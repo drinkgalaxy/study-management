@@ -57,4 +57,8 @@ public class User {
 	public void changeStatus(AttendanceStatus status) {
 		this.todayAttendanceStatus = status;
 	}
+
+	public void changeIntroduce(String introduce) {
+		this.introduce =  introduce;
+	}
 }
