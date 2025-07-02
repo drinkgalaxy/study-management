@@ -64,8 +64,8 @@ public class UserService {
 			));
 		}
 
-		// 이번달 공부 시간 기준 오름차순 정렬
-		allUsersList.sort(Comparator.comparing(UserResponse.AllUsers::thisMonthStudyTimes));
+		// 이번달 공부 시간 기준 내림차순 정렬
+		allUsersList.sort(Comparator.comparing(UserResponse.AllUsers::thisMonthStudyTimes).reversed());
 
 		return allUsersList;
 	}
