@@ -1,26 +1,82 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+
+    function parseDuration(durationStr) {
+        // 예: "PT10H10M30S", "PT10H10S", "PT5M", "PT45S"
+        const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+        const matches = durationStr.match(regex);
+
+        return {
+            hours: matches[1] ? parseInt(matches[1], 10) : 0,
+            minutes: matches[2] ? parseInt(matches[2], 10) : 0,
+            seconds: matches[3] ? parseInt(matches[3], 10) : 0,
+        };
+    }
+
+    let username = '이현진';
+    let hour;
+    let minute;
+    let second;
+    let hours;
+    let minutes;
+    let seconds;
+
+    // 서버에 로그인 한 유저 홈 정보 조회 요청
+    try {
+        const response = await fetch("http://localhost:8080/api/users/home", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            const res = await response.json();
+            const data = res.data;
+            console.log('data = '+ data);
+            // 여기서 화면에 출력 등 처리
+            username = data.name;
+
+            const thisWeek = parseDuration(data.thisWeekStudyTimes);
+            const thisMonth = parseDuration(data.thisMonthStudyTimes);
+
+            hour = thisWeek.hours;
+            minute = thisWeek.minutes;
+            second = thisWeek.seconds;
+
+            hours = thisMonth.hours;
+            minutes = thisMonth.minutes;
+            seconds = thisMonth.seconds;
+
+
+        } else {
+            console.log('헤더 정보 =========',response.headers)
+            console.log('status 정보 =========',response.status)
+            console.log('json 정보 =========',response.json)
+            console.error('홈 정보 조회 실패:', response.status);
+        }
+
+    } catch (err) {
+        console.error("홈 정보 조회 중 오류:", err);
+        alert("서버 오류가 발생했습니다.");
+    }
+
+
 
     // todo 백엔드에서 유저네임 호출
-    const username = "이현진";
     document.getElementById('username').textContent = username;
 
     // todo 백엔드에서 이번주 공부 시간 호출
-    let hour = 13;
-    let minute = 10;
-    let second = 15;
     document.getElementById('hour').textContent = hour;
     document.getElementById('minute').textContent = minute;
     document.getElementById('second').textContent = second;
 
     // todo 백엔드에서 이번달 공부 시간 호출
-    let hours = 13;
-    let minutes = 10;
-    let seconds = 15;
     document.querySelector('.hours').textContent = hours;
     document.querySelector('.minutes').textContent = minutes;
     document.querySelector('.seconds').textContent = seconds;
 
-    // todo 백엔드에서 오늘의 날짜 호출
+    // 오늘의 날짜 가져오기
     const today = new Date();
     let year = today.getFullYear();
     let month = today.getMonth() + 1;
@@ -138,8 +194,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // todo 지금 공부 중인 멤버 수, 멤버 가져오기
     // 공부중인 멤버 정보 예시
     const studyingMemberList = [
-        { name: '김일등', status: 'attended' },
-        { name: '김이등', status: 'attended' }
+        {name: '김일등', status: 'attended'},
+        {name: '김이등', status: 'attended'}
     ];
 
     // 멤버 수 추가

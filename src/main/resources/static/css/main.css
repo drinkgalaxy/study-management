@@ -328,6 +328,7 @@
 .month-ranking-text-and {
     display: flex;
     align-items: center;
+    color: #191F28;
 }
 
 .month-ranking-text {

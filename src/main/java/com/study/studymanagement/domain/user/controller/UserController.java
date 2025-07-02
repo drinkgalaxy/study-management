@@ -50,6 +50,7 @@ public class UserController {
 	// 로그인한 유저 홈 정보 조회
 	@GetMapping("/home")
 	public ApiResponse<UserResponse.MyHome> getHomeInfo(@AuthenticationPrincipal UserDetails userDetails) {
+		System.out.println("인증 객체 정보 = "+userDetails.getUsername());
 		return ApiResponse.ok(userService.getHomeInfo(userDetails.getUsername()));
 	}
 
