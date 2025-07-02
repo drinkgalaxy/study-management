@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             const data = res.data;
             username = data.name;
 
-            const thisWeek = formatStringToDuration(data.thisWeekStudyTimes);
-            const thisMonth = formatStringToDuration(data.thisMonthStudyTimes);
+            const thisWeek = formatDurationToString(data.thisWeekStudyTimes);
+            const thisMonth = formatDurationToString(data.thisMonthStudyTimes);
 
             hour = thisWeek.hours;
             minute = thisWeek.minutes;
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             userDataList = data.map(user => ({
                 name: user.name,
-                time: formatStringToDuration(user.thisMonthStudyTimes),
+                time: formatDurationToString(user.thisMonthStudyTimes),
                 email: user.email,
                 introduce: user.introduce || '',
                 status: mapAttendanceStatus(user.todayAttendanceStatus)
@@ -659,7 +659,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
-    function formatStringToDuration(durationStr) {
+    function formatDurationToString(durationStr) {
         // 예: "PT10H10M30S", "PT10H10S", "PT5M", "PT45S"
         const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
         const matches = durationStr.match(regex);

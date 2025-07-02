@@ -1,26 +1,77 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
 
-    // todo 백엔드에서 유저네임 호출
-    const username = "이현진";
+    let username;
+    let consecutiveStudyDay;
+    let introduce;
+    let thisMonthLeave;
+    let hours;
+    let minutes;
+    let seconds;
+
+    // 서버에 로그인 한 유저 마이 페이지 정보 조회
+    try {
+        const response = await fetch("http://localhost:8080/api/users/my", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (response.ok) {
+            const res = await response.json();
+            const data = res.data;
+            username = data.name;
+            consecutiveStudyDay = data.consecutiveStudyDays;
+            introduce = data.introduce;
+            const thisMonth = formatDurationToString(data.thisMonthStudyTimes);
+            hours = thisMonth.hours;
+            minutes = thisMonth.minutes;
+            seconds = thisMonth.seconds;
+            thisMonthLeave = data.thisMonthLeave;
+        } else {
+            console.error('마이 페이지 정보 조회 실패:', response.status);
+        }
+
+    } catch (err) {
+        console.error("마이 페이지 정보 조회 중 오류:", err);
+        alert("서버 오류가 발생했습니다.");
+    }
+
+    // 백엔드에서 유저네임 호출
     document.getElementById('username').textContent = username;
 
-    // todo 백엔드에서 연속 학습 일자 호출
-    const learning = 1;
-    document.getElementById('learning-day').textContent = learning;
+    // 백엔드에서 연속 학습 일자 호출
+    document.getElementById('learning-day').textContent = consecutiveStudyDay;
+
+    // 로그아웃
+    const logoutBtn = document.querySelector('.header-logout');
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            const response = await fetch("http://localhost:8080/api/logout", {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                // 버튼 상태 초기화
+                alert("로그아웃 되었습니다. 로그인 화면으로 이동합니다.")
+                window.location.href='login.html'
+            } else {
+                alert("중단 요청이 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+        }
+    })
 
     const textarea = document.getElementById("content");
     const maxLengthDisplay = document.getElementById("max-word-length");
 
-    // todo 서버에서 기존 자기소개 호출
-    // fetch('/api/my-intro') // 백엔드에서 이 엔드포인트에서 JSON 리턴한다고 가정
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         textarea.value = data.intro || ''; // intro 필드가 없으면 빈 문자열
-    //         maxLengthDisplay.innerText = `${textarea.value.length}/60`;
-    //     });
-
     // 초기 글자 수 세팅
-    textarea.value = '안녕하세요.';
+    textarea.value = introduce;
     maxLengthDisplay.innerHTML = `<span class="max-word-length-bold">${textarea.value.length}</span>/60`;
     let originalText = textarea.value;
 
@@ -63,29 +114,44 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 저장 버튼 기능
-    saveButton.addEventListener('click', () => {
+    saveButton.addEventListener('click', async () => {
         const content = textarea.value;
-        // todo 실제 서버로 변경 사항 전송
-        alert('변경사항이 저장되었습니다.');
+        // 실제 서버로 변경 사항 전송
+        try {
+            const response = await fetch("http://localhost:8080/api/users/introduce", {
+                method: "PATCH",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    introduce: content
+                })
+            });
 
-        // 저장 완료 후 상태 초기화
-        originalText = content;
+            if (response.ok) {
+                alert('변경사항이 저장되었습니다.');
 
-        saveBefore.style.display = 'inline';
-        saveAfter.style.display = 'none';
+                // 저장 완료 후 상태 초기화
+                originalText = content;
+
+                saveBefore.style.display = 'inline';
+                saveAfter.style.display = 'none';
+            } else {
+                alert("자기소개 저장에 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+        }
     });
 
-    // todo 백엔드에서 이번달 공부 시간 호출
-    let hours = 13;
-    let minutes = 10;
-    let seconds = 15;
+    // 백엔드에서 이번달 공부 시간 호출
     document.querySelector('.hours').textContent = hours;
     document.querySelector('.minutes').textContent = minutes;
     document.querySelector('.seconds').textContent = seconds;
 
-    // todo 백엔드에서 이번달 남은 휴가 호출
-    let leaveDayReal = 3; // 임시데이터
-    document.querySelector('.leave-day-real').textContent = leaveDayReal;
+    // 백엔드에서 이번달 남은 휴가 호출
+    document.querySelector('.leave-day-real').textContent = thisMonthLeave;
 
 
     // 캘린더 기능 추가
@@ -96,43 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // todo 백엔드에서 해당 month 의 출석 데이터 호출
     let attendanceData = {}; //전역에서 빈 객체로 설정
     async function fetchAttendanceData(year, month) {
-        // 호출 임시 데이터
-        if (month == 6) {
-            return attendanceData = {
-                attendanceCount: 7,
-                absentCount: 2,
-                vacationCount: 1,
-                attendanceRecords: {
-                    '2025-06-01': 'attended',
-                    '2025-06-02': 'attended',
-                    '2025-06-03': 'absent',
-                    '2025-06-04': 'attended',
-                    '2025-06-05': 'vacation',
-                    '2025-06-06': 'attended',
-                    '2025-06-07': 'attended',
-                    '2025-06-08': 'attended',
-                    '2025-06-09': 'attended',
-                    '2025-06-10': 'absent'
-                }
-            }
-        } else if (month == 7) {
-            return attendanceData = {
-                attendanceCount: 1,
-                absentCount: 0,
-                vacationCount: 0,
-                attendanceRecords: {
-                    '2025-07-01': 'attended'
-                }
-            }
-        } else {
-            return attendanceData = {
-                attendanceCount: 0,
-                absentCount: 0,
-                vacationCount: 0,
-                attendanceRecords: {
-                }
-            }
-        }
+
     }
 
     async function createCalendar() {
@@ -385,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (leaveDayReal < 1) {
+        if (thisMonthLeave < 1) {
             alert('잔여 휴가 일수를 초과했습니다.');
             return;
         }
@@ -394,6 +424,18 @@ document.addEventListener('DOMContentLoaded', function () {
         //alert(formattedDate + " => 전송된 데이터");
         alert(formattedDate + ' 날짜에 휴가 신청이 완료되었습니다.')
     });
+
+    function formatDurationToString(durationStr) {
+        // 예: "PT10H10M30S", "PT10H10S", "PT5M", "PT45S"
+        const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+        const matches = durationStr.match(regex);
+
+        return {
+            hours: matches[1] ? parseInt(matches[1], 10) : 0,
+            minutes: matches[2] ? parseInt(matches[2], 10) : 0,
+            seconds: matches[3] ? parseInt(matches[3], 10) : 0,
+        };
+    }
 });
 
 

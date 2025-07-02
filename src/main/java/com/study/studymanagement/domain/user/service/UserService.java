@@ -80,7 +80,7 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<UserResponse.MyAttendance> getMyAttendanceInfo(String month, String email) {
+	public UserResponse.MyAttendance getMyAttendanceInfo(String month, String email) {
 
 		User user = userRepository.findByEmail(email)
 			.orElseThrow(() -> new UserException(INVALID_USER));
@@ -113,12 +113,12 @@ public class UserService {
 			}
 		}
 
-		return List.of(new UserResponse.MyAttendance(
+		return new UserResponse.MyAttendance(
 			thisMonthAttended,
 			thisMonthAbsent,
 			thisMonthVacation,
 			thisMonthAttendanceDtoList
-		));
+		);
 	}
 
 	@Transactional(readOnly = true)

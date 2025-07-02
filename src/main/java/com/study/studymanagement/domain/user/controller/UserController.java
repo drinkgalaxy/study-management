@@ -42,7 +42,7 @@ public class UserController {
 
 	// 로그인한 유저 마이 페이지 출석 조회
 	@GetMapping("/{month}/attendances")
-	public ApiResponse<List<UserResponse.MyAttendance>> getMyAttendanceInfo(@PathVariable String month,
+	public ApiResponse<UserResponse.MyAttendance> getMyAttendanceInfo(@PathVariable String month,
 		@AuthenticationPrincipal UserDetails userDetails) {
 		return ApiResponse.ok(userService.getMyAttendanceInfo(month, userDetails.getUsername()));
 	}
