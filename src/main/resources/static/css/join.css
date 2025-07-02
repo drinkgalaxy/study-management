@@ -81,7 +81,7 @@
     height: 35px;
     font-size: 13px;
     color: white;
-    background-color: #5F7DE9;
+    background-color: #0169EA;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -90,7 +90,7 @@
 
 .join-button {
     margin-top: 30px;
-    background-color: #5F7DE9;
+    background-color: #0169EA;
     width: 400px;
     height: 40px;
     font-size: 15px;

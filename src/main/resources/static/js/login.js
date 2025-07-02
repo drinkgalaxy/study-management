@@ -18,7 +18,7 @@ document.getElementById("login-form").addEventListener("submit", async function(
 
         if (response.ok) {
             // 로그인 성공 처리
-            alert("로그인 성공! 홈 화면으로 이동합니다.");
+            alert("로그인이 완료되었습니다. 홈 화면으로 이동합니다.");
             window.location.href = "main.html";
         } else {
             // 실패 시 오류 메시지 처리
