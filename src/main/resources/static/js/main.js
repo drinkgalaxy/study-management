@@ -37,13 +37,16 @@ document.addEventListener('DOMContentLoaded', async function () {
             seconds = thisMonth.seconds;
 
 
+        } else if (response.status === 403) {
+            alert("로그인 후 이용해주세요.");
+            window.location.href = '/login.html';
         } else {
             console.error('홈 정보 조회 실패:', response.status);
         }
 
     } catch (err) {
         console.error("홈 정보 조회 중 오류:", err);
-        alert("서버 오류가 발생했습니다.");
+        alert("서버 연결 중 오류가 발생했습니다.");
     }
 
 
@@ -113,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     } catch (err) {
         console.error("전체 유저 정보 조회 중 오류:", err);
-        alert("서버 오류가 발생했습니다.");
+        alert("서버 연결 중 오류가 발생했습니다.");
     }
 
     // 참석한 사람들 count 호출
@@ -140,7 +143,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     } catch (err) {
         console.error("참석한 사람들 조회 중 오류:", err);
-        alert("서버 오류가 발생했습니다.");
+        alert("서버 연결 중 오류가 발생했습니다.");
+
     }
 
     let attendanceAll = userDataList.length;
@@ -204,14 +208,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (response.ok) {
             const res = await response.json();
             studyingMemberList = res.data;
-
         } else {
             console.error('공부 중인 멤버 조회 실패:', response.status);
         }
 
     } catch (err) {
         console.error("공부 중인 멤버 조회 중 오류:", err);
-        alert("서버 오류가 발생했습니다.");
+        alert("서버 연결 중 오류가 발생했습니다.");
     }
 
     // 멤버 수 추가
@@ -360,7 +363,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert("시작 요청이 실패했습니다.");
             }
         } catch (err) {
-            alert("서버 오류가 발생했습니다.");
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
 
         // 공부 중
@@ -379,7 +382,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert("시작 요청이 실패했습니다.");
             }
         } catch (err) {
-            alert("서버 오류가 발생했습니다.");
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
     });
 
@@ -411,7 +414,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     alert("시작 요청이 실패했습니다.");
                 }
             } catch (err) {
-                alert("서버 오류가 발생했습니다.");
+                alert("서버 연결 중 오류가 발생했습니다.");
             }
         } else {
             // 공부 중단
@@ -435,7 +438,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     alert("중단 요청이 실패했습니다.");
                 }
             } catch (err) {
-                alert("서버 오류가 발생했습니다.");
+                alert("서버 연결 중 오류가 발생했습니다.");
             }
         }
     });
@@ -457,7 +460,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert("중단 요청이 실패했습니다.");
             }
         } catch (err) {
-            alert("서버 오류가 발생했습니다.");
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
 
         // 시간 저장
@@ -488,7 +491,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert("오늘의 공부 시간 저장에 실패했습니다.");
             }
         } catch (err) {
-            alert("서버 오류가 발생했습니다.");
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
 
     });
@@ -604,7 +607,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert("중단 요청이 실패했습니다.");
             }
         } catch (err) {
-            alert("서버 오류가 발생했습니다.");
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
     })
 
@@ -654,10 +657,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 closeResetModal();
                 location.reload();
             } else {
-                alert("중단 요청이 실패했습니다.");
+                alert("서버 연결 중 오류가 발생했습니다.");
             }
         } catch (err) {
-            alert("서버 오류가 발생했습니다.");
+
         }
     });
 

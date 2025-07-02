@@ -28,13 +28,17 @@ document.addEventListener('DOMContentLoaded', async function () {
             minutes = thisMonth.minutes;
             seconds = thisMonth.seconds;
             thisMonthLeave = data.thisMonthLeave;
+        } else if (response.status === 403) {
+            alert("로그인 후 이용해주세요.");
+            window.location.href = '/login.html';
         } else {
             console.error('마이 페이지 정보 조회 실패:', response.status);
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
 
     } catch (err) {
         console.error("마이 페이지 정보 조회 중 오류:", err);
-        alert("서버 오류가 발생했습니다.");
+        alert("서버 연결 중 오류가 발생했습니다.");
     }
 
     // 백엔드에서 유저네임 호출
@@ -63,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert("중단 요청이 실패했습니다.");
             }
         } catch (err) {
-            alert("서버 오류가 발생했습니다.");
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
     })
 
@@ -141,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert("자기소개 저장에 실패했습니다.");
             }
         } catch (err) {
-            alert("서버 오류가 발생했습니다.");
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
     });
 
@@ -193,7 +197,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         } catch (err) {
             console.error("출석 데이터 조회 중 오류:", err);
-            alert("서버 오류가 발생했습니다.");
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
         return {
             thisMonthAttended: 0,
@@ -492,7 +496,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert("휴가 신청에 실패했습니다.");
             }
         } catch (err) {
-            alert("서버 오류가 발생했습니다.");
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
     });
 
