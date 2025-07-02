@@ -67,8 +67,8 @@ public class User {
 	}
 
 	public void saveTime(Duration thisWeek, Duration thisMonth) {
-		this.thisWeekStudyTimes = this.thisWeekStudyTimes.plus(thisWeek);
-		this.thisMonthStudyTimes = this.thisMonthStudyTimes.plus(thisMonth);
+		this.thisWeekStudyTimes = thisWeek;
+		this.thisMonthStudyTimes = thisMonth;
 	}
 
 	public void changeMonthLeave() {

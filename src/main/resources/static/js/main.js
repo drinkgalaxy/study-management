@@ -1,24 +1,14 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    function parseDuration(durationStr) {
-        // 예: "PT10H10M30S", "PT10H10S", "PT5M", "PT45S"
-        const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
-        const matches = durationStr.match(regex);
-
-        return {
-            hours: matches[1] ? parseInt(matches[1], 10) : 0,
-            minutes: matches[2] ? parseInt(matches[2], 10) : 0,
-            seconds: matches[3] ? parseInt(matches[3], 10) : 0,
-        };
-    }
-
-    let username = '이현진';
+    let username;
+    let introduce;
     let hour;
     let minute;
     let second;
     let hours;
     let minutes;
     let seconds;
+    let userDataList;
 
     // 서버에 로그인 한 유저 홈 정보 조회 요청
     try {
@@ -33,12 +23,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (response.ok) {
             const res = await response.json();
             const data = res.data;
-            console.log('data = '+ data);
-            // 여기서 화면에 출력 등 처리
             username = data.name;
 
-            const thisWeek = parseDuration(data.thisWeekStudyTimes);
-            const thisMonth = parseDuration(data.thisMonthStudyTimes);
+            const thisWeek = formatStringToDuration(data.thisWeekStudyTimes);
+            const thisMonth = formatStringToDuration(data.thisMonthStudyTimes);
 
             hour = thisWeek.hours;
             minute = thisWeek.minutes;
@@ -50,9 +38,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
         } else {
-            console.log('헤더 정보 =========',response.headers)
-            console.log('status 정보 =========',response.status)
-            console.log('json 정보 =========',response.json)
             console.error('홈 정보 조회 실패:', response.status);
         }
 
@@ -63,15 +48,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
 
-    // todo 백엔드에서 유저네임 호출
+    // 백엔드에서 유저네임 호출
     document.getElementById('username').textContent = username;
 
-    // todo 백엔드에서 이번주 공부 시간 호출
+    // 백엔드에서 이번주 공부 시간 호출
     document.getElementById('hour').textContent = hour;
     document.getElementById('minute').textContent = minute;
     document.getElementById('second').textContent = second;
 
-    // todo 백엔드에서 이번달 공부 시간 호출
+    // 백엔드에서 이번달 공부 시간 호출
     document.querySelector('.hours').textContent = hours;
     document.querySelector('.minutes').textContent = minutes;
     document.querySelector('.seconds').textContent = seconds;
@@ -97,57 +82,68 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('nowMinute').textContent = nowMinute;
     document.getElementById('nowSecond').textContent = nowSecond;
 
-    // todo 참석한 사람들 / 전체 인원 수 데이터 가져와야 함
-    let attendanceTrue = 2;
-    let attendanceAll = 6;
+    // 전체 유저 정보 조회
+    try {
+        const response = await fetch("http://localhost:8080/api/users", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            const res = await response.json();
+            const data = res.data;
+
+            userDataList = data.map(user => ({
+                name: user.name,
+                time: formatStringToDuration(user.thisMonthStudyTimes),
+                email: user.email,
+                introduce: user.introduce || '',
+                status: mapAttendanceStatus(user.todayAttendanceStatus)
+            }));
+
+
+        } else {
+            console.error('전체 유저 정보 조회 실패:', response.status);
+        }
+
+    } catch (err) {
+        console.error("전체 유저 정보 조회 중 오류:", err);
+        alert("서버 오류가 발생했습니다.");
+    }
+
+    // 참석한 사람들 count 호출
+    let attendanceTrue;
+
+    try {
+        const response = await fetch("http://localhost:8080/api/users/count/attending", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            const res = await response.json();
+            const data = res.data;
+
+            attendanceTrue = data.count;
+
+        } else {
+            console.error('참석한 사람들 조회 실패:', response.status);
+        }
+
+    } catch (err) {
+        console.error("참석한 사람들 조회 중 오류:", err);
+        alert("서버 오류가 발생했습니다.");
+    }
+
+    let attendanceAll = userDataList.length;
     document.getElementById('attendance-status-true').textContent = attendanceTrue;
     document.getElementById('attendance-all').textContent = attendanceAll;
-
-    // todo 전체 유저 출석 현황 조회
-    const userDataList = [
-        {
-            name: '김일등',
-            time: '104 : 20 : 02',
-            email: 'first@study.com',
-            intro: '열심히 공부하는 김일등입니다!',
-            status: 'attended'
-        },
-        {
-            name: '김이등',
-            time: '64 : 10 : 02',
-            email: 'second@study.com',
-            intro: '매일 조금씩 성장하는 김이등입니다.',
-            status: 'attended'
-        },
-        {
-            name: '김삼등',
-            time: '57 : 50 : 02',
-            email: 'third@study.com',
-            intro: '성실함이 무기인 김삼등입니다.',
-            status: 'not-attended'
-        },
-        {
-            name: '김사등',
-            time: '43 : 20 : 02',
-            email: 'fourth@study.com',
-            intro: '',
-            status: 'not-attended'
-        },
-        {
-            name: '김오등',
-            time: '37 : 16 : 02',
-            email: 'fifth@study.com',
-            intro: '아직 갈 길이 멀지만 열심히 하는 김오등입니다.',
-            status: 'on-leave'
-        },
-        {
-            name: '김육등',
-            time: '25 : 02 : 02',
-            email: 'sixth@study.com',
-            intro: '조용히 실력을 쌓는 김육등입니다.',
-            status: 'on-leave'
-        }
-    ];
 
     // 출석 박스가 들어갈 부모 요소
     const container = document.querySelector('.attendance-container');
@@ -191,12 +187,30 @@ document.addEventListener('DOMContentLoaded', async function () {
         container.appendChild(userDiv);
     });
 
-    // todo 지금 공부 중인 멤버 수, 멤버 가져오기
-    // 공부중인 멤버 정보 예시
-    const studyingMemberList = [
-        {name: '김일등', status: 'attended'},
-        {name: '김이등', status: 'attended'}
-    ];
+    // 공부중인 멤버 정보 가져오기
+    let studyingMemberList = [];
+
+    try {
+        const response = await fetch("http://localhost:8080/api/users/count/studying", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            const res = await response.json();
+            studyingMemberList = res.data;
+
+        } else {
+            console.error('공부 중인 멤버 조회 실패:', response.status);
+        }
+
+    } catch (err) {
+        console.error("공부 중인 멤버 조회 중 오류:", err);
+        alert("서버 오류가 발생했습니다.");
+    }
 
     // 멤버 수 추가
     document.getElementById('studying-user-count').textContent = studyingMemberList.length;
@@ -217,7 +231,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         studyingContainer.appendChild(itemDiv);
     });
 
-    // todo 이번 달 랭킹 및 데이터 가져오기
+    // 이번 달 랭킹
 
     const rankingContainer = document.querySelector('.ranking-container');
     rankingContainer.innerHTML = ''; // 기존 초기화
@@ -236,7 +250,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const time = document.createElement('div');
         time.classList.add('ranking-time');
-        time.textContent = user.time;
+        time.textContent = user.time.hours + ':' + user.time.minutes + ':' + user.time.seconds;
 
         item.appendChild(rank);
         item.appendChild(name);
@@ -245,8 +259,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         rankingContainer.appendChild(item);
     });
 
-    // 타이머 및 버튼 제어 로직 추가
-    // todo 종료 후 데이터 서버로 전송해야 함
+    // 타이머 및 버튼 제어 로직 종료 후 데이터 서버로 전송
     let timerInterval;
     let totalSeconds = 0;
     let isPaused = false;
@@ -355,14 +368,38 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
-    endButton.addEventListener('click', () => {
-        clearInterval(timerInterval);
-        setTimerButtonsState(false, false);
-        localStorage.removeItem('studyTimer');
-        localStorage.removeItem('isRunning');
-        localStorage.removeItem('isPaused');
-        alert('오늘의 공부 시간이 저장되었습니다.');
-        updateTimerDisplay();
+    endButton.addEventListener('click', async () => {
+        // 그 날의 타이머 데이터 저장
+        try {
+            const response = await fetch("http://localhost:8080/api/attendance/time", {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    thisDayStudyTimes: formatSecondsToString(totalSeconds)
+                })
+            });
+
+            console.log("thisDayStudyTimes = "+ formatSecondsToString(totalSeconds))
+
+            if (response.ok) {
+                alert('오늘의 공부 시간이 저장되었습니다.');
+                clearInterval(timerInterval);
+                setTimerButtonsState(false, false);
+                localStorage.removeItem('studyTimer');
+                localStorage.removeItem('isRunning');
+                localStorage.removeItem('isPaused');
+                updateTimerDisplay();
+                location.reload();
+            } else {
+                alert("오늘의 공부 시간 저장에 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+        }
+
     });
 
     // 특정 멤버 선택 모달창 열고 닫기
@@ -384,8 +421,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         modalName.textContent = user.name;
         modalEmail.textContent = user.email || '이메일 정보 없음';
-        modalIntro.textContent = user.intro || '소개 정보 없음';
-        modalStudyTime.textContent = user.time || '00 : 00 : 00';
+        modalIntro.textContent = user.introduce || '소개 정보 없음';
+        modalStudyTime.textContent = user.time.hours + ':' + user.time.minutes + ':' + user.time.seconds || '00 : 00 : 00';
 
         modalOverlay.style.display = 'flex';
         memberModal.style.display = 'block';
@@ -398,24 +435,31 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // 출석 현황 이름 클릭 이벤트 추가
-    document.querySelectorAll('.attendance-user-name').forEach(el => {
-        el.addEventListener('click', () => {
-            openMemberModal(el.textContent);
-        });
+    const attendanceContainerClick = document.querySelector('.attendance-container');
+
+    attendanceContainerClick.addEventListener('click', function (e) {
+        if (e.target.classList.contains('attendance-user-name')) {
+            openMemberModal(e.target.textContent);
+        }
     });
 
+
     // 공부 중인 멤버 이름 클릭 이벤트 추가
-    document.querySelectorAll('.studying-user-name').forEach(el => {
-        el.addEventListener('click', () => {
-            openMemberModal(el.textContent);
-        });
+    const studyingContainerClick = document.querySelector('.studying-container');
+
+    studyingContainerClick.addEventListener('click', function (e) {
+        if (e.target.classList.contains('studying-user-name')) {
+            openMemberModal(e.target.textContent);
+        }
     });
 
     // 이번 달 랭킹 이름 클릭 이벤트 추가
-    document.querySelectorAll('.ranking-name').forEach(el => {
-        el.addEventListener('click', () => {
-            openMemberModal(el.textContent);
-        });
+    const rankingContainerClick = document.querySelector('.ranking-container');
+
+    rankingContainerClick.addEventListener('click', function (e) {
+        if (e.target.classList.contains('ranking-name')) {
+            openMemberModal(e.target.textContent);
+        }
     });
 
     // 모달 닫기 버튼 클릭 시 닫기
@@ -480,4 +524,31 @@ document.addEventListener('DOMContentLoaded', async function () {
         closeResetModal();
     });
 
+    function formatStringToDuration(durationStr) {
+        // 예: "PT10H10M30S", "PT10H10S", "PT5M", "PT45S"
+        const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+        const matches = durationStr.match(regex);
+
+        return {
+            hours: matches[1] ? parseInt(matches[1], 10) : 0,
+            minutes: matches[2] ? parseInt(matches[2], 10) : 0,
+            seconds: matches[3] ? parseInt(matches[3], 10) : 0,
+        };
+    }
+
+    function formatSecondsToString(totalSeconds) {
+        const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        const seconds = String(totalSeconds % 60).padStart(2, '0');
+        return `${hours}-${minutes}-${seconds}`;
+    }
+
+    function mapAttendanceStatus(statusStr) {
+        switch (statusStr) {
+            case 'ATTENDED': return 'attended';
+            case 'NO_ATTENDED': return 'not-attended';
+            case 'ON_LEAVE': return 'on-leave';
+            default: return 'not-attended';
+        }
+    }
 });
