@@ -318,7 +318,7 @@ textarea {
 }
 
 .calendar-day.today {
-    background-color: #F1F1F1;
+    background-color: #A7A7A7;
 }
 
 .calendar-day.selected {
@@ -334,7 +334,7 @@ textarea {
 }
 
 .calendar-day.vacation {
-    background-color: #A7A7A7;
+    background-color: #E5E8EB;
 }
 
 .selected-date-info {
