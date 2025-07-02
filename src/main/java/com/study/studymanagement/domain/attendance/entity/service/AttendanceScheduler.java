@@ -60,6 +60,7 @@ public class AttendanceScheduler {
 
 		for (User user : users) {
 			user.resetThisMonthStudyTimes(Duration.ZERO);
+			user.resetThisMonthLeave();
 		}
 	}
 

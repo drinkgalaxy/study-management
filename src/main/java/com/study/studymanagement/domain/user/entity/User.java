@@ -82,4 +82,8 @@ public class User {
 	public void resetThisMonthStudyTimes(Duration zero) {
 		this.thisMonthStudyTimes = zero;
 	}
+
+	public void resetThisMonthLeave() {
+		this.thisMonthLeave = 3L;
+	}
 }

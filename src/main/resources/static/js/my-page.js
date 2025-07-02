@@ -456,7 +456,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     const datePicker = new DatePicker('selectedDate');
 
     // 폼 제출 처리
-    document.querySelector('.submit-btn').addEventListener('click', () => {
+    document.querySelector('.submit-btn').addEventListener('click', async (e) => {
+        e.preventDefault();
+
         const selectedDate = datePicker.getSelectedDate();
         const formattedDate = datePicker.getFormattedDate();
 
@@ -470,9 +472,28 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
-        // todo 서버로 데이터 전송 (전송할 때 휴가도 --)
-        //alert(formattedDate + " => 전송된 데이터");
-        alert(formattedDate + ' 날짜에 휴가 신청이 완료되었습니다.')
+        // 서버로 데이터 전송 (전송할 때 휴가도 --)
+        try {
+            const response = await fetch("http://localhost:8080/api/attendance/vacation", {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    leaveRequestDay: formattedDate
+                })
+            });
+
+            if (response.ok) {
+                alert(formattedDate + ' 날짜에 휴가 신청이 완료되었습니다.')
+                location.reload();
+            } else {
+                alert("휴가 신청에 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+        }
     });
 
     function formatDurationToString(durationStr) {
