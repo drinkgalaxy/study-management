@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
 import com.study.studymanagement.domain.attendance.entity.dto.AttendanceResponse;
+import com.study.studymanagement.domain.user.dto.UserRequest;
 import com.study.studymanagement.domain.user.dto.UserResponse;
 import com.study.studymanagement.domain.user.entity.StudyStatus;
 import com.study.studymanagement.domain.user.entity.User;
@@ -163,5 +164,13 @@ public class UserService {
 		}
 
 		return new UserResponse.AttendedUserCount(count);
+	}
+
+	@Transactional
+	public void changeIntroduce(UserRequest.Introduce introduce, String email) {
+		User user = userRepository.findByEmail(email)
+			.orElseThrow(() -> new UserException(INVALID_USER));
+
+		user.changeIntroduce(introduce.introduce());
 	}
 }

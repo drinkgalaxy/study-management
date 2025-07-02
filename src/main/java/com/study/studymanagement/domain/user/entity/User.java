@@ -57,4 +57,29 @@ public class User {
 	public void changeStatus(AttendanceStatus status) {
 		this.todayAttendanceStatus = status;
 	}
+
+	public void changeStudyStatus(StudyStatus studyStatus) {
+		this.todayStudyStatus = studyStatus;
+	}
+
+	public void changeIntroduce(String introduce) {
+		this.introduce =  introduce;
+	}
+
+	public void saveTime(Duration thisWeek, Duration thisMonth) {
+		this.thisWeekStudyTimes = this.thisWeekStudyTimes.plus(thisWeek);
+		this.thisMonthStudyTimes = this.thisMonthStudyTimes.plus(thisMonth);
+	}
+
+	public void changeMonthLeave() {
+		this.thisMonthLeave--;
+	}
+
+	public void resetThisWeekStudyTimes(Duration zero) {
+		this.thisWeekStudyTimes = zero;
+	}
+
+	public void resetThisMonthStudyTimes(Duration zero) {
+		this.thisMonthStudyTimes = zero;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,6 +69,14 @@ public class UserController {
 	@GetMapping("/count/attending")
 	public ApiResponse<UserResponse.AttendedUserCount> getAttendedUserCount() {
 		return ApiResponse.ok(userService.getAttendedUserCount());
+	}
+	
+	// 자기소개 업데이트
+	@PatchMapping("/introduce")
+	public ApiResponse<?> changeIntroduce(@RequestBody @Valid UserRequest.Introduce request,
+		@AuthenticationPrincipal UserDetails userDetails) {
+		userService.changeIntroduce(request, userDetails.getUsername());
+		return ApiResponse.success();
 	}
 
 
