@@ -582,6 +582,30 @@ document.addEventListener('DOMContentLoaded', async function () {
     // 오버레이 모달 닫기
     modalOverlay.addEventListener('click', closeResetModal);
 
+    // 로그아웃
+    const logoutBtn = document.querySelector('.header-logout');
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            const response = await fetch("http://localhost:8080/api/logout", {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                // 버튼 상태 초기화
+                alert("로그아웃 되었습니다. 로그인 화면으로 이동합니다.")
+                window.location.href='login.html'
+            } else {
+                alert("중단 요청이 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+        }
+    })
+
     // 확인 후 초기화 -> alert -> 모달 닫기
     confirmBtn.addEventListener('click', async () => {
 

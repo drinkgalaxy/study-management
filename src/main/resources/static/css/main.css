@@ -24,7 +24,7 @@
     align-items: center;
 }
 
-.header-main, .header-my {
+.header-main, .header-my, .header-logout {
     display: flex;
     align-items: center;
     cursor: pointer;
