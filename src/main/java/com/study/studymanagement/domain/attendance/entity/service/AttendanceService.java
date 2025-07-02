@@ -13,6 +13,7 @@ import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
 import com.study.studymanagement.domain.attendance.entity.dto.AttendanceRequest;
 import com.study.studymanagement.domain.attendance.entity.repository.AttendanceRepository;
+import com.study.studymanagement.domain.user.entity.StudyStatus;
 import com.study.studymanagement.domain.user.entity.User;
 import com.study.studymanagement.domain.user.repository.UserRepository;
 import com.study.studymanagement.global.exception.exception.UserException;
@@ -72,6 +73,42 @@ public class AttendanceService {
 
 	}
 
+	@Transactional
+	public void changeStudyStatus(String status, String email) {
+		User user = userRepository.findByEmail(email)
+			.orElseThrow(() -> new UserException(INVALID_USER));
+
+		StudyStatus studyStatus = StudyStatus.PAUSED;
+
+		if (status.equals("studying")) {
+			studyStatus = StudyStatus.STUDYING;
+		} else if (status.equals("finished")) {
+			studyStatus = StudyStatus.FINISHED;
+		}
+
+		user.changeStudyStatus(studyStatus);
+	}
+
+	@Transactional
+	public void applyVacation(AttendanceRequest.ApplyVacation request, String email) {
+		User user = userRepository.findByEmail(email)
+			.orElseThrow(() -> new UserException(INVALID_USER));
+
+		LocalDate requestDate = LocalDate.parse(request.leaveRequestDay());
+
+		boolean exists = attendanceRepository.existsByUserAndDate(user, requestDate);
+		if (!exists) {
+			Attendance attendance = Attendance.builder()
+				.user(user)
+				.date(requestDate)
+				.attendanceStatus(AttendanceStatus.VACATION)
+				.build();
+			attendanceRepository.save(attendance);
+		}
+
+		user.changeMonthLeave();
+	}
+
 	private Duration parseStudyTime(String timeStr) {
 		String[] parts = timeStr.split("-");
 		int hours = Integer.parseInt(parts[0]);
@@ -81,4 +118,6 @@ public class AttendanceService {
 			.plusMinutes(minutes)
 			.plusSeconds(seconds);
 	}
+
+
 }

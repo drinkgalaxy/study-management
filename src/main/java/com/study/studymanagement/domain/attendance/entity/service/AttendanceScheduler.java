@@ -1,5 +1,6 @@
 package com.study.studymanagement.domain.attendance.entity.service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,10 +23,8 @@ public class AttendanceScheduler {
 	private final UserRepository userRepository;
 	private final AttendanceRepository attendanceRepository;
 
-
-	// 매일 00시마다 모든 유저들 그 날짜에 대한 출석 데이터 생성
-	//@Scheduled(cron = "0 0 0 * * *")
-	@Scheduled(cron = "0 38 1 * * *") // 매일 오후 11시 29분 (테스트용)
+	@Scheduled(cron = "0 0 0 * * *")
+	//@Scheduled(cron = "0 38 1 * * *") // 매일 오후 11시 29분 (테스트용)
 	@Transactional
 	public void createTodayAttendanceForAllUsers() {
 		List<User> users = userRepository.findAll();
@@ -43,4 +42,41 @@ public class AttendanceScheduler {
 			}
 		}
 	}
+
+	@Scheduled(cron = "0 0 0 * * MON")  // 매주 월요일 00:00
+	@Transactional
+	public void resetThisWeekStudyTime() {
+		List<User> users = userRepository.findAll();
+
+		for (User user : users) {
+			user.resetThisWeekStudyTimes(Duration.ZERO);
+		}
+	}
+
+	@Scheduled(cron = "0 0 0 1 * *")  // 매월 1일 00:00
+	@Transactional
+	public void resetThisMonthStudyTime() {
+		List<User> users = userRepository.findAll();
+
+		for (User user : users) {
+			user.resetThisMonthStudyTimes(Duration.ZERO);
+		}
+	}
+
+	// 23:59:59 에도 출석 전인 유저는 자동으로 결석 상태 처리
+	@Scheduled(cron = "59 59 23 * * *")  // 매일 23시 59분 59초
+	//@Scheduled(cron = "0 49 16 * * *") // (테스트용)
+	@Transactional
+	public void markAbsentIfNotAttended() {
+		LocalDate today = LocalDate.now();
+
+		// 오늘 날짜의 출석 중, 아직 출석하지 않은 사람들
+		List<Attendance> noAttendanceList = attendanceRepository
+			.findAllByDateAndAttendanceStatus(today, AttendanceStatus.NO_ATTENDED);
+
+		for (Attendance attendance : noAttendanceList) {
+			attendance.changeAttendanceStatus(AttendanceStatus.ABSENT);
+		}
+	}
+
 }

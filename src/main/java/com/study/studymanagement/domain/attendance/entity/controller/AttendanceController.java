@@ -31,11 +31,27 @@ public class AttendanceController {
 		return ApiResponse.success();
 	}
 
-	// 상태 변경
+	// 오늘의 출석 상태 변경
 	@PatchMapping("/{status}")
 	public ApiResponse<?> changeStatus(@PathVariable String status,
 		@AuthenticationPrincipal UserDetails userDetails) {
 		attendanceService.changeStatus(status, userDetails.getUsername());
+		return ApiResponse.success();
+	}
+
+	// 오늘의 공부 상태 변경
+	@PatchMapping("/study/{status}")
+	public ApiResponse<?> changeStudyStatus(@PathVariable String status,
+		@AuthenticationPrincipal UserDetails userDetails) {
+		attendanceService.changeStudyStatus(status, userDetails.getUsername());
+		return ApiResponse.success();
+	}
+
+	// 휴가 신청
+	@PostMapping("/vacation")
+	public ApiResponse<?> applyVacation(@RequestBody AttendanceRequest.ApplyVacation request,
+		@AuthenticationPrincipal UserDetails userDetails) {
+		attendanceService.applyVacation(request, userDetails.getUsername());
 		return ApiResponse.success();
 	}
 }
