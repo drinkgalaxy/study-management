@@ -64,17 +64,8 @@ public class UserService {
 			));
 		}
 
-		// 정렬 우선순위 정의
-		Map<AttendanceStatus, Integer> statusPriority = Map.of(
-			AttendanceStatus.ATTENDED, 1,
-			AttendanceStatus.NO_ATTENDED, 2,
-			AttendanceStatus.VACATION, 3
-		);
-
-		// 우선순위에 따라 정렬
-		allUsersList.sort(Comparator.comparing(
-			userDto -> statusPriority.getOrDefault(userDto.todayAttendanceStatus(), Integer.MAX_VALUE)
-		));
+		// 이번달 공부 시간 기준 오름차순 정렬
+		allUsersList.sort(Comparator.comparing(UserResponse.AllUsers::thisMonthStudyTimes));
 
 		return allUsersList;
 	}
