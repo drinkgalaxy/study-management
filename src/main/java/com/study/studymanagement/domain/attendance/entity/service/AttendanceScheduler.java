@@ -77,6 +77,8 @@ public class AttendanceScheduler {
 
 		for (Attendance attendance : noAttendanceList) {
 			attendance.changeAttendanceStatus(AttendanceStatus.ABSENT);
+			User user = attendance.getUser();
+			user.changeConsecutiveStudyDays(false);
 		}
 	}
 

@@ -36,6 +36,7 @@ public class AttendanceService {
 
 		if (status.equals("attended")) {
 			attendanceStatus = AttendanceStatus.ATTENDED;
+			user.changeConsecutiveStudyDays(true);
 		} else if (status.equals("absent")) {
 			attendanceStatus = AttendanceStatus.ABSENT;
 		} else if (status.equals("vacation")) {

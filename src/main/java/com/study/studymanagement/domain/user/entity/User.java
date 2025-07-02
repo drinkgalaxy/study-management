@@ -86,4 +86,12 @@ public class User {
 	public void resetThisMonthLeave() {
 		this.thisMonthLeave = 3L;
 	}
+
+	public void changeConsecutiveStudyDays(boolean attended) {
+		if (attended) {
+			this.consecutiveStudyDays++;
+		} else {
+			this.consecutiveStudyDays = 0L;
+		}
+	}
 }
