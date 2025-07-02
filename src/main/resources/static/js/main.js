@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         } else if (response.status === 403) {
             alert("로그인 후 이용해주세요.");
-            window.location.href = '/login.html';
+            window.location.href = 'login.html';
         } else {
             console.error('홈 정보 조회 실패:', response.status);
         }
