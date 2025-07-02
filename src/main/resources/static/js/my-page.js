@@ -232,6 +232,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const statusToClassMap = {
             "ATTENDED": "attended",
             "NO_ATTENDED": "absent",
+            "ABSENT": "absent",
             "VACATION": "vacation"
         };
 
