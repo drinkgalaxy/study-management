@@ -64,23 +64,14 @@ public class UserService {
 			));
 		}
 
-		// 정렬 우선순위 정의
-		Map<AttendanceStatus, Integer> statusPriority = Map.of(
-			AttendanceStatus.ATTENDED, 1,
-			AttendanceStatus.NO_ATTENDED, 2,
-			AttendanceStatus.VACATION, 3
-		);
-
-		// 우선순위에 따라 정렬
-		allUsersList.sort(Comparator.comparing(
-			userDto -> statusPriority.getOrDefault(userDto.todayAttendanceStatus(), Integer.MAX_VALUE)
-		));
+		// 이번달 공부 시간 기준 내림차순 정렬
+		allUsersList.sort(Comparator.comparing(UserResponse.AllUsers::thisMonthStudyTimes).reversed());
 
 		return allUsersList;
 	}
 
 	@Transactional(readOnly = true)
-	public List<UserResponse.MyAttendance> getMyAttendanceInfo(String month, String email) {
+	public UserResponse.MyAttendance getMyAttendanceInfo(String month, String email) {
 
 		User user = userRepository.findByEmail(email)
 			.orElseThrow(() -> new UserException(INVALID_USER));
@@ -113,12 +104,12 @@ public class UserService {
 			}
 		}
 
-		return List.of(new UserResponse.MyAttendance(
+		return new UserResponse.MyAttendance(
 			thisMonthAttended,
 			thisMonthAbsent,
 			thisMonthVacation,
 			thisMonthAttendanceDtoList
-		));
+		);
 	}
 
 	@Transactional(readOnly = true)

@@ -31,7 +31,7 @@ public class SecurityConfig {
 
 		httpSecurity
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/login", "/api/signup").permitAll()
+				.requestMatchers("/api/login", "/api/signup", "/api/users/loginId").permitAll()
 				.anyRequest().authenticated()
 			);
 
@@ -52,7 +52,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource configurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 
-		configuration.setAllowedOriginPatterns(List.of("*"));
+		configuration.setAllowedOrigins(List.of("http://localhost:63342"));
 		configuration.setAllowCredentials(true);
 		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 		configuration.setAllowedHeaders(List.of("*"));

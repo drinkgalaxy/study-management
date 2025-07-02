@@ -24,7 +24,7 @@ public class AttendanceScheduler {
 	private final AttendanceRepository attendanceRepository;
 
 	@Scheduled(cron = "0 0 0 * * *")
-	//@Scheduled(cron = "0 38 1 * * *") // 매일 오후 11시 29분 (테스트용)
+	//@Scheduled(cron = "0 14 1 * * *") // 초 분 시 (수동으로 생성-테스트용)
 	@Transactional
 	public void createTodayAttendanceForAllUsers() {
 		List<User> users = userRepository.findAll();
@@ -60,12 +60,13 @@ public class AttendanceScheduler {
 
 		for (User user : users) {
 			user.resetThisMonthStudyTimes(Duration.ZERO);
+			user.resetThisMonthLeave();
 		}
 	}
 
 	// 23:59:59 에도 출석 전인 유저는 자동으로 결석 상태 처리
 	@Scheduled(cron = "59 59 23 * * *")  // 매일 23시 59분 59초
-	//@Scheduled(cron = "0 49 16 * * *") // (테스트용)
+	//@Scheduled(cron = "0 49 16 * * *") // 초 분 시 (수동으로 생성-테스트용)
 	@Transactional
 	public void markAbsentIfNotAttended() {
 		LocalDate today = LocalDate.now();
@@ -76,6 +77,8 @@ public class AttendanceScheduler {
 
 		for (Attendance attendance : noAttendanceList) {
 			attendance.changeAttendanceStatus(AttendanceStatus.ABSENT);
+			User user = attendance.getUser();
+			user.changeConsecutiveStudyDays(false);
 		}
 	}
 

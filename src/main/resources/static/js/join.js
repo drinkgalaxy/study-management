@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let isEmailVerified = false; // 이메일 인증 여부 체크
 
     // 아이디 중복확인
-    idCheckBtn.addEventListener('click', function () {
+    idCheckBtn.addEventListener('click', async function () {
         const id = document.getElementById('loginId').value.trim();
 
         if (!/^[A-Za-z]{5,10}$/.test(id)) {
@@ -18,10 +18,27 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // todo 중복확인 상태 백엔드 호출 - fetch
-        isIdChecked = true;
-        alert("사용 가능한 아이디입니다."); // 예시
+        // 중복확인 상태 백엔드 호출
+        try {
+            const response = await fetch("http://localhost:8080/api/users/loginId", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({loginId: id})
+            });
 
+            if (response.ok) {
+                isIdChecked = true;
+                alert("사용 가능한 아이디입니다.");
+            } else {
+                isIdChecked = false;
+                alert("중복되는 아이디입니다.");
+            }
+        } catch (err) {
+            console.error("아이디 중복 확인 중 오류:", err);
+            alert("서버 오류가 발생했습니다.");
+        }
     });
 
     // 이메일 인증
@@ -45,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // todo 실제 백엔드 검증이 필요함 (여기선 1111 이 유요한 인증코드라고 가정)
+        // todo 실제 백엔드 검증이 필요함 (여기선 1111 이 유효한 인증코드라고 가정)
         if (code === '1111') {
             isEmailVerified = true;
             alert("이메일 인증이 완료되었습니다.");
@@ -55,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 폼 제출
-    form.addEventListener('submit', function (event) {
+    form.addEventListener('submit', async function (event) {
         event.preventDefault();
 
         if (!isIdChecked) {
@@ -71,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const nameInput = document.getElementById('name');
         const idInput = document.getElementById('loginId');
         const passwordInput = document.getElementById('password');
+        const email = document.getElementById('email').value;
 
         const name = nameInput.value.trim();
         const id = idInput.value.trim();
@@ -102,8 +120,30 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // 서버에 회원가입 요청 또는 폼 제출
-        alert('회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.');
-        window.location.href = 'login.html';
+        // 서버에 회원가입 요청
+        try {
+            const response = await fetch("http://localhost:8080/api/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    loginId: id,
+                    password: password,
+                    email: email
+                })
+            });
+
+            if (response.ok) {
+                alert('회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.');
+                window.location.href = 'login.html';
+            } else {
+                alert("회원가입에 실패했습니다.");
+            }
+        } catch (err) {
+            console.error("회원가입 중 오류:", err);
+            alert("서버 오류가 발생했습니다.");
+        }
     });
 });

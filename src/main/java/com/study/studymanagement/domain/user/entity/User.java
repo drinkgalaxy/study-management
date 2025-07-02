@@ -67,8 +67,8 @@ public class User {
 	}
 
 	public void saveTime(Duration thisWeek, Duration thisMonth) {
-		this.thisWeekStudyTimes = this.thisWeekStudyTimes.plus(thisWeek);
-		this.thisMonthStudyTimes = this.thisMonthStudyTimes.plus(thisMonth);
+		this.thisWeekStudyTimes = thisWeek;
+		this.thisMonthStudyTimes = thisMonth;
 	}
 
 	public void changeMonthLeave() {
@@ -81,5 +81,17 @@ public class User {
 
 	public void resetThisMonthStudyTimes(Duration zero) {
 		this.thisMonthStudyTimes = zero;
+	}
+
+	public void resetThisMonthLeave() {
+		this.thisMonthLeave = 3L;
+	}
+
+	public void changeConsecutiveStudyDays(boolean attended) {
+		if (attended) {
+			this.consecutiveStudyDays++;
+		} else {
+			this.consecutiveStudyDays = 0L;
+		}
 	}
 }

@@ -3,6 +3,8 @@ package com.study.studymanagement.domain.user.service;
 import static com.study.studymanagement.global.exception.handler.ExceptionCode.*;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +16,9 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
+import com.study.studymanagement.domain.attendance.entity.repository.AttendanceRepository;
 import com.study.studymanagement.domain.user.dto.UserRequest;
 import com.study.studymanagement.domain.user.entity.StudyStatus;
 import com.study.studymanagement.domain.user.entity.User;
@@ -30,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthService {
 
 	private final UserRepository userRepository;
+	private final AttendanceRepository attendanceRepository;
 	private final AuthenticationManager authenticationManager;
 	private final BCryptPasswordEncoder encoder;
 
@@ -49,6 +54,21 @@ public class AuthService {
 			.todayStudyStatus(StudyStatus.PAUSED)
 			.build();
 		userRepository.save(user);
+
+		List<User> users = userRepository.findAll();
+		LocalDate today = LocalDate.now();
+
+		for (User findUser : users) {
+			boolean exists = attendanceRepository.existsByUserAndDate(findUser, today);
+			if (!exists) {
+				Attendance attendance = Attendance.builder()
+					.user(findUser)
+					.date(today)
+					.attendanceStatus(AttendanceStatus.NO_ATTENDED)
+					.build();
+				attendanceRepository.save(attendance);
+			}
+		}
 	}
 
 	@Transactional
@@ -57,6 +77,7 @@ public class AuthService {
 			UsernamePasswordAuthenticationToken authToken =
 				new UsernamePasswordAuthenticationToken(request.loginId(), request.password());
 
+			// 세션에 인증 정보 저장
 			Authentication authentication = authenticationManager.authenticate(authToken);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 

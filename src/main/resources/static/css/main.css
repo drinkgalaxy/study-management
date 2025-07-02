@@ -24,7 +24,7 @@
     align-items: center;
 }
 
-.header-main, .header-my {
+.header-main, .header-my, .header-logout {
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -298,7 +298,7 @@
 }
 
 /* 휴가 */
-.on-leave {
+.vacation {
     color: #090909;
     background-color: #F2F4F6;
 }
@@ -328,6 +328,7 @@
 .month-ranking-text-and {
     display: flex;
     align-items: center;
+    color: #191F28;
 }
 
 .month-ranking-text {

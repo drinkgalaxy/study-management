@@ -1,26 +1,81 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
 
-    // todo 백엔드에서 유저네임 호출
-    const username = "이현진";
+    let username;
+    let consecutiveStudyDay;
+    let introduce;
+    let thisMonthLeave;
+    let hours;
+    let minutes;
+    let seconds;
+
+    // 서버에 로그인 한 유저 마이 페이지 정보 조회
+    try {
+        const response = await fetch("http://localhost:8080/api/users/my", {
+            method: "GET",
+            credentials: 'include',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (response.ok) {
+            const res = await response.json();
+            const data = res.data;
+            username = data.name;
+            consecutiveStudyDay = data.consecutiveStudyDays;
+            introduce = data.introduce;
+            const thisMonth = formatDurationToString(data.thisMonthStudyTimes);
+            hours = thisMonth.hours;
+            minutes = thisMonth.minutes;
+            seconds = thisMonth.seconds;
+            thisMonthLeave = data.thisMonthLeave;
+        } else if (response.status === 403) {
+            alert("로그인 후 이용해주세요.");
+            window.location.href = 'login.html';
+        } else {
+            console.error('마이 페이지 정보 조회 실패:', response.status);
+            alert("서버 연결 중 오류가 발생했습니다.");
+        }
+
+    } catch (err) {
+        console.error("마이 페이지 정보 조회 중 오류:", err);
+        alert("서버 연결 중 오류가 발생했습니다.");
+    }
+
+    // 백엔드에서 유저네임 호출
     document.getElementById('username').textContent = username;
 
-    // todo 백엔드에서 연속 학습 일자 호출
-    const learning = 1;
-    document.getElementById('learning-day').textContent = learning;
+    // 백엔드에서 연속 학습 일자 호출
+    document.getElementById('learning-day').textContent = consecutiveStudyDay;
+
+    // 로그아웃
+    const logoutBtn = document.querySelector('.header-logout');
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            const response = await fetch("http://localhost:8080/api/logout", {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                // 버튼 상태 초기화
+                alert("로그아웃 되었습니다. 로그인 화면으로 이동합니다.")
+                window.location.href='login.html'
+            } else {
+                alert("중단 요청이 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 연결 중 오류가 발생했습니다.");
+        }
+    })
 
     const textarea = document.getElementById("content");
     const maxLengthDisplay = document.getElementById("max-word-length");
 
-    // todo 서버에서 기존 자기소개 호출
-    // fetch('/api/my-intro') // 백엔드에서 이 엔드포인트에서 JSON 리턴한다고 가정
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         textarea.value = data.intro || ''; // intro 필드가 없으면 빈 문자열
-    //         maxLengthDisplay.innerText = `${textarea.value.length}/60`;
-    //     });
-
     // 초기 글자 수 세팅
-    textarea.value = '안녕하세요.';
+    textarea.value = introduce;
     maxLengthDisplay.innerHTML = `<span class="max-word-length-bold">${textarea.value.length}</span>/60`;
     let originalText = textarea.value;
 
@@ -63,76 +118,93 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 저장 버튼 기능
-    saveButton.addEventListener('click', () => {
+    saveButton.addEventListener('click', async () => {
         const content = textarea.value;
-        // todo 실제 서버로 변경 사항 전송
-        alert('변경사항이 저장되었습니다.');
+        // 실제 서버로 변경 사항 전송
+        try {
+            const response = await fetch("http://localhost:8080/api/users/introduce", {
+                method: "PATCH",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    introduce: content
+                })
+            });
 
-        // 저장 완료 후 상태 초기화
-        originalText = content;
+            if (response.ok) {
+                alert('변경사항이 저장되었습니다.');
 
-        saveBefore.style.display = 'inline';
-        saveAfter.style.display = 'none';
+                // 저장 완료 후 상태 초기화
+                originalText = content;
+
+                saveBefore.style.display = 'inline';
+                saveAfter.style.display = 'none';
+            } else {
+                alert("자기소개 저장에 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 연결 중 오류가 발생했습니다.");
+        }
     });
 
-    // todo 백엔드에서 이번달 공부 시간 호출
-    let hours = 13;
-    let minutes = 10;
-    let seconds = 15;
+    // 백엔드에서 이번달 공부 시간 호출
     document.querySelector('.hours').textContent = hours;
     document.querySelector('.minutes').textContent = minutes;
     document.querySelector('.seconds').textContent = seconds;
 
-    // todo 백엔드에서 이번달 남은 휴가 호출
-    let leaveDayReal = 3; // 임시데이터
-    document.querySelector('.leave-day-real').textContent = leaveDayReal;
+    // 백엔드에서 이번달 남은 휴가 호출
+    document.querySelector('.leave-day-real').textContent = thisMonthLeave;
 
 
     // 캘린더 기능 추가
     // 달력 관련 변수들
     let currentDate = new Date();
     let selectedDate = null;
-
-    // todo 백엔드에서 해당 month 의 출석 데이터 호출
-    let attendanceData = {}; //전역에서 빈 객체로 설정
+    let attendanceData = {};
     async function fetchAttendanceData(year, month) {
-        // 호출 임시 데이터
-        if (month == 6) {
-            return attendanceData = {
-                attendanceCount: 7,
-                absentCount: 2,
-                vacationCount: 1,
-                attendanceRecords: {
-                    '2025-06-01': 'attended',
-                    '2025-06-02': 'attended',
-                    '2025-06-03': 'absent',
-                    '2025-06-04': 'attended',
-                    '2025-06-05': 'vacation',
-                    '2025-06-06': 'attended',
-                    '2025-06-07': 'attended',
-                    '2025-06-08': 'attended',
-                    '2025-06-09': 'attended',
-                    '2025-06-10': 'absent'
+
+        // 백엔드에서 해당 month 의 출석 데이터 불러오기
+        try {
+            const response = await fetch(`http://localhost:8080/api/users/${month}/attendances`, {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
                 }
-            }
-        } else if (month == 7) {
-            return attendanceData = {
-                attendanceCount: 1,
-                absentCount: 0,
-                vacationCount: 0,
-                attendanceRecords: {
-                    '2025-07-01': 'attended'
+            });
+
+            if (response.ok) {
+                const res = await response.json();
+                const rawData = res.data;
+
+                // 출석 배열을 Map 형식으로 변환
+                const attendanceMap = {};
+                for (const entry of rawData.attendances) {
+                    attendanceMap[entry.date] = entry.status;
                 }
+
+                return {
+                    thisMonthAttended: rawData.thisMonthAttended,
+                    thisMonthAbsent: rawData.thisMonthAbsent,
+                    thisMonthVacation: rawData.thisMonthVacation,
+                    attendances: attendanceMap
+                };
+            } else {
+                console.error('출석 데이터 조회 실패:', response.status);
             }
-        } else {
-            return attendanceData = {
-                attendanceCount: 0,
-                absentCount: 0,
-                vacationCount: 0,
-                attendanceRecords: {
-                }
-            }
+
+        } catch (err) {
+            console.error("출석 데이터 조회 중 오류:", err);
+            alert("서버 연결 중 오류가 발생했습니다.");
         }
+        return {
+            thisMonthAttended: 0,
+            thisMonthAbsent: 0,
+            thisMonthVacation: 0,
+            attendances: {}
+        };
     }
 
     async function createCalendar() {
@@ -147,12 +219,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const month = currentDate.getMonth();
 
         // 출석 데이터 불러오기
-        attendanceData = await fetchAttendanceData(year, month + 1); // JS에서는 0-based month
+        attendanceData = await fetchAttendanceData(year, month + 1);
 
         // 출석 요약 정보 반영
-        document.querySelector('.attendance-count-1').textContent = attendanceData.attendanceCount;
-        document.querySelector('.attendance-count-2').textContent = attendanceData.absentCount;
-        document.querySelector('.attendance-count-3').textContent = attendanceData.vacationCount;
+        document.querySelector('.attendance-count-1').textContent = attendanceData.thisMonthAttended;
+        document.querySelector('.attendance-count-2').textContent = attendanceData.thisMonthAbsent;
+        document.querySelector('.attendance-count-3').textContent = attendanceData.thisMonthVacation;
 
         calendarTitle.textContent = `${year}년 ${month + 1}월`;
 
@@ -160,6 +232,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const lastDay = new Date(year, month + 1, 0);
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+        const statusToClassMap = {
+            "ATTENDED": "attended",
+            "NO_ATTENDED": "absent",
+            "ABSENT": "absent",
+            "VACATION": "vacation"
+        };
 
         for (let i = 0; i < 42; i++) {
             const date = new Date(startDate);
@@ -179,8 +258,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-            if (attendanceData.attendanceRecords[dateKey]) {
-                dayElement.classList.add(attendanceData.attendanceRecords[dateKey]);
+            const attendanceStatus = attendanceData.attendances[dateKey];
+
+            if (attendanceStatus) {
+                const cssClass = statusToClassMap[attendanceStatus];
+                if (cssClass) {
+                    dayElement.classList.add(cssClass);
+                }
             }
 
             dayElement.addEventListener('click', () => {
@@ -376,7 +460,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const datePicker = new DatePicker('selectedDate');
 
     // 폼 제출 처리
-    document.querySelector('.submit-btn').addEventListener('click', () => {
+    document.querySelector('.submit-btn').addEventListener('click', async (e) => {
+        e.preventDefault();
+
         const selectedDate = datePicker.getSelectedDate();
         const formattedDate = datePicker.getFormattedDate();
 
@@ -385,15 +471,46 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (leaveDayReal < 1) {
+        if (thisMonthLeave < 1) {
             alert('잔여 휴가 일수를 초과했습니다.');
             return;
         }
 
-        // todo 서버로 데이터 전송 (전송할 때 휴가도 --)
-        //alert(formattedDate + " => 전송된 데이터");
-        alert(formattedDate + ' 날짜에 휴가 신청이 완료되었습니다.')
+        // 서버로 데이터 전송 (전송할 때 휴가도 --)
+        try {
+            const response = await fetch("http://localhost:8080/api/attendance/vacation", {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    leaveRequestDay: formattedDate
+                })
+            });
+
+            if (response.ok) {
+                alert(formattedDate + ' 날짜에 휴가 신청이 완료되었습니다.')
+                location.reload();
+            } else {
+                alert("휴가 신청에 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 연결 중 오류가 발생했습니다.");
+        }
     });
+
+    function formatDurationToString(durationStr) {
+        // 예: "PT10H10M30S", "PT10H10S", "PT5M", "PT45S"
+        const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+        const matches = durationStr.match(regex);
+
+        return {
+            hours: matches[1] ? parseInt(matches[1], 10) : 0,
+            minutes: matches[2] ? parseInt(matches[2], 10) : 0,
+            seconds: matches[3] ? parseInt(matches[3], 10) : 0,
+        };
+    }
 });
 
 
