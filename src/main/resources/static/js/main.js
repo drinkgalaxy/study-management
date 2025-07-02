@@ -65,6 +65,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.querySelector('.seconds').textContent = seconds;
 
     const localKeyPrefix = `user_${username}_`;
+    // 오늘 날짜가 아닐 경우 자동으로 로컬 스토리지 데이터 초기화
+    const todayDate = new Date().toISOString().slice(0, 10);  // 현재 날짜: "YYYY-MM-DD"
+    const savedDate = localStorage.getItem(localKeyPrefix + 'studyTimerDate');
+    if (savedDate !== todayDate) {
+        // 날짜가 다르면 localStorage 초기화
+        localStorage.removeItem(localKeyPrefix + 'studyTimerDate');
+    }
+
 
     // 오늘의 날짜 가져오기
     const today = new Date();
@@ -351,6 +359,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (response.ok) {
                 isPaused = false;
                 setTimerButtonsState(true, false);
+                localStorage.removeItem(localKeyPrefix + 'studyTimer');
+                localStorage.setItem(localKeyPrefix + 'studyTimerDate', new Date().toISOString().slice(0, 10));
                 localStorage.setItem(localKeyPrefix + 'isRunning', 'true');
                 localStorage.setItem(localKeyPrefix + 'isPaused', 'false');
 
@@ -482,7 +492,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert('오늘의 공부 시간이 저장되었습니다.');
                 clearInterval(timerInterval);
                 setTimerButtonsState(false, false);
-                localStorage.removeItem(localKeyPrefix + 'studyTimer');
+                // localStorage.removeItem(localKeyPrefix + 'studyTimer'); //
                 localStorage.removeItem(localKeyPrefix + 'isRunning');
                 localStorage.removeItem(localKeyPrefix + 'isPaused');
                 updateTimerDisplay();
