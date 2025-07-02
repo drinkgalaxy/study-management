@@ -332,44 +332,133 @@ document.addEventListener('DOMContentLoaded', async function () {
         setTimerButtonsState(false, false);
     }
 
-    startButton.addEventListener('click', () => {
-        isPaused = false;
-        setTimerButtonsState(true, false);
-        localStorage.setItem('isRunning', 'true');
-        localStorage.setItem('isPaused', 'false');
+    startButton.addEventListener('click', async () => {
+        // 출석 완료
+        try {
+            const response = await fetch("http://localhost:8080/api/attendance/attended", {
+                method: "PATCH",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
 
-        timerInterval = setInterval(() => {
-            totalSeconds++;
-            updateTimerDisplay();
-            localStorage.setItem('studyTimer', totalSeconds);
-        }, 1000);
+            if (response.ok) {
+                isPaused = false;
+                setTimerButtonsState(true, false);
+                localStorage.setItem('isRunning', 'true');
+                localStorage.setItem('isPaused', 'false');
+
+                timerInterval = setInterval(() => {
+                    totalSeconds++;
+                    updateTimerDisplay();
+                    localStorage.setItem('studyTimer', totalSeconds);
+                }, 1000);
+            } else {
+                alert("시작 요청이 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+        }
+
+        // 공부 중
+        try {
+            const response = await fetch("http://localhost:8080/api/attendance/study/studying", {
+                method: "PATCH",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert("시작 요청이 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+        }
     });
 
-    stopButton.addEventListener('click', () => {
+    stopButton.addEventListener('click', async () => {
         if (isPaused) {
-            // 재개 시 타이머 다시 시작
-            isPaused = false;
-            stopButton.textContent = '중단';
-            setTimerButtonsState(true, false);
-            localStorage.setItem('isPaused', 'false');
+            // 공부 중
+            try {
+                const response = await fetch("http://localhost:8080/api/attendance/study/studying", {
+                    method: "PATCH",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
 
-            timerInterval = setInterval(() => {
-                totalSeconds++;
-                updateTimerDisplay();
-                localStorage.setItem('studyTimer', totalSeconds);
-            }, 1000);
+                if (response.ok) {
+                    isPaused = false;
+                    stopButton.textContent = '중단';
+                    setTimerButtonsState(true, false);
+                    localStorage.setItem('isPaused', 'false');
+
+                    timerInterval = setInterval(() => {
+                        totalSeconds++;
+                        updateTimerDisplay();
+                        localStorage.setItem('studyTimer', totalSeconds);
+                    }, 1000);
+                    location.reload();
+                } else {
+                    alert("시작 요청이 실패했습니다.");
+                }
+            } catch (err) {
+                alert("서버 오류가 발생했습니다.");
+            }
         } else {
-            // 중단
-            clearInterval(timerInterval);
-            isPaused = true;
-            stopButton.textContent = '재개';
-            setTimerButtonsState(true, true);
-            localStorage.setItem('isPaused', 'true');
+            // 공부 중단
+            try {
+                const response = await fetch("http://localhost:8080/api/attendance/study/paused", {
+                    method: "PATCH",
+                    credentials: 'include',
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.ok) {
+                    clearInterval(timerInterval);
+                    isPaused = true;
+                    stopButton.textContent = '재개';
+                    setTimerButtonsState(true, true);
+                    localStorage.setItem('isPaused', 'true');
+                    location.reload();
+                } else {
+                    alert("중단 요청이 실패했습니다.");
+                }
+            } catch (err) {
+                alert("서버 오류가 발생했습니다.");
+            }
         }
     });
 
     endButton.addEventListener('click', async () => {
         // 그 날의 타이머 데이터 저장
+        // 공부 종료
+        try {
+            const response = await fetch("http://localhost:8080/api/attendance/study/finished", {
+                method: "PATCH",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+            } else {
+                alert("중단 요청이 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+        }
+
+        // 시간 저장
         try {
             const response = await fetch("http://localhost:8080/api/attendance/time", {
                 method: "POST",
@@ -494,34 +583,56 @@ document.addEventListener('DOMContentLoaded', async function () {
     modalOverlay.addEventListener('click', closeResetModal);
 
     // 확인 후 초기화 -> alert -> 모달 닫기
-    confirmBtn.addEventListener('click', () => {
-        // 버튼 상태 초기화
-        document.getElementById('nowHour').textContent = '00';
-        document.getElementById('nowMinute').textContent = '00';
-        document.getElementById('nowSecond').textContent = '00';
+    confirmBtn.addEventListener('click', async () => {
 
-        totalSeconds = 0;
-        clearInterval(timerInterval);
+        // 공부 중단
+        try {
+            const response = await fetch("http://localhost:8080/api/attendance/study/paused", {
+                method: "PATCH",
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
 
-        startButton.disabled = false;
-        startButton.classList.remove('button-disabled');
-        startButton.classList.add('button-enabled-blue');
+            if (response.ok) {
+                // 버튼 상태 초기화
+                document.getElementById('nowHour').textContent = '00';
+                document.getElementById('nowMinute').textContent = '00';
+                document.getElementById('nowSecond').textContent = '00';
 
-        stopButton.disabled = true;
-        stopButton.textContent = '중단';
-        stopButton.classList.remove('button-enabled-yellow');
-        stopButton.classList.remove('button-enabled-blue');
-        stopButton.classList.add('button-disabled');
+                totalSeconds = 0;
+                clearInterval(timerInterval);
 
-        endButton.disabled = true;
-        endButton.classList.remove('button-enabled-blue');
-        endButton.classList.add('button-disabled');
+                startButton.disabled = false;
+                startButton.classList.remove('button-disabled');
+                startButton.classList.add('button-enabled-blue');
 
-        localStorage.removeItem('studyTimer');
+                stopButton.disabled = true;
+                stopButton.textContent = '중단';
+                stopButton.classList.remove('button-enabled-yellow');
+                stopButton.classList.remove('button-enabled-blue');
+                stopButton.classList.add('button-disabled');
 
-        alert('타이머가 초기화되었습니다.');
+                endButton.disabled = true;
+                endButton.classList.remove('button-enabled-blue');
+                endButton.classList.add('button-disabled');
 
-        closeResetModal();
+                setTimerButtonsState(false, false);
+                localStorage.removeItem('studyTimer');
+                localStorage.removeItem('isRunning');
+                localStorage.removeItem('isPaused');
+
+                alert('타이머가 초기화되었습니다.');
+
+                closeResetModal();
+                location.reload();
+            } else {
+                alert("중단 요청이 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+        }
     });
 
     function formatStringToDuration(durationStr) {
