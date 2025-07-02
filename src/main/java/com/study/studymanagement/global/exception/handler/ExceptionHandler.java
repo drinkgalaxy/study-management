@@ -1,5 +1,6 @@
 package com.study.studymanagement.global.exception.handler;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,4 +17,5 @@ public class ExceptionHandler {
 
 		return ResponseEntity.status(exception.getHttpStatus()).body(ErrorResponse.from(exception));
 	}
+
 }
