@@ -31,7 +31,7 @@ public class SecurityConfig {
 
 		httpSecurity
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/login.html", "/join.html", "/css/**", "/js/**", "/images/**").permitAll()
+				.requestMatchers("../templates/login.html", "../templates/join.html", "/css/**", "/js/**", "/images/**").permitAll()
 				.requestMatchers("/api/login", "/api/signup", "/api/users/loginId").permitAll()
 				.anyRequest().authenticated()
 			);
