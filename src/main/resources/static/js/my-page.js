@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // 백엔드에서 해당 month 의 출석 데이터 불러오기
         try {
-            const response = await fetch("http://"+ host +"/api/users/${month}/attendances", {
+            const response = await fetch(`http://${host}/api/users/${month}/attendances`, {
                 method: "GET",
                 credentials: 'include',
                 headers: {
