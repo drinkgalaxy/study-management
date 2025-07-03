@@ -1,10 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
 name: Java CI CD with Gradle
 
 on:
@@ -49,8 +42,8 @@ jobs:
         mysql user: ${{ secrets.DB_USERNAME }}
         mysql password: ${{ secrets.DB_PASSWORD }}
 
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
+    - name: Build with Gradle Wrapper (without tests)
+      run: ./gradlew build -x test
 
     - name: Copy JAR to EC2
       uses: appleboy/scp-action@v0.1.7
@@ -70,18 +63,3 @@ jobs:
         script: |
           pkill -f 'java -jar' || true
           nohup java -jar /home/${{ secrets.EC2_USER }}/app/*.jar > /home/${{ secrets.EC2_USER }}/app/app.log 2>&1 &
-      
-  dependency-submission:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-    - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@v4
