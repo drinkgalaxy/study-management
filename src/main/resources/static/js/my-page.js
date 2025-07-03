@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             consecutiveStudyDay = data.consecutiveStudyDays;
             introduce = data.introduce;
             const thisMonth = formatDurationToString(data.thisMonthStudyTimes);
-            hours = thisMonth.hours;
-            minutes = thisMonth.minutes;
-            seconds = thisMonth.seconds;
+            hours = checkDigit(thisMonth.hours);
+            minutes = checkDigit(thisMonth.minutes);
+            seconds = checkDigit(thisMonth.seconds);
             thisMonthLeave = data.thisMonthLeave;
         } else if (response.status === 403) {
             alert("로그인 후 이용해주세요.");
@@ -510,6 +510,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             minutes: matches[2] ? parseInt(matches[2], 10) : 0,
             seconds: matches[3] ? parseInt(matches[3], 10) : 0,
         };
+    }
+
+    function checkDigit(number) {
+        return number < 10 ? '0' + number : number.toString();
     }
 });
 

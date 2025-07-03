@@ -28,13 +28,13 @@ document.addEventListener('DOMContentLoaded', async function () {
             const thisWeek = formatDurationToString(data.thisWeekStudyTimes);
             const thisMonth = formatDurationToString(data.thisMonthStudyTimes);
 
-            hour = thisWeek.hours;
-            minute = thisWeek.minutes;
-            second = thisWeek.seconds;
+            hour = checkDigit(thisWeek.hours)
+            minute = checkDigit(thisWeek.minutes)
+            second = checkDigit(thisWeek.seconds)
 
-            hours = thisMonth.hours;
-            minutes = thisMonth.minutes;
-            seconds = thisMonth.seconds;
+            hours = checkDigit(thisMonth.hours)
+            minutes = checkDigit(thisMonth.minutes)
+            seconds = checkDigit(thisMonth.seconds)
 
 
         } else if (response.status === 403) {
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const time = document.createElement('div');
         time.classList.add('ranking-time');
-        time.textContent = user.time.hours + ':' + user.time.minutes + ':' + user.time.seconds;
+        time.textContent = checkDigit(user.time.hours) + ':' + checkDigit(user.time.minutes) + ':' + checkDigit(user.time.seconds);
 
         item.appendChild(rank);
         item.appendChild(name);
@@ -526,7 +526,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         modalName.textContent = user.name;
         modalEmail.textContent = user.email || '이메일 정보 없음';
         modalIntro.textContent = user.introduce || '소개 정보 없음';
-        modalStudyTime.textContent = user.time.hours + ':' + user.time.minutes + ':' + user.time.seconds || '00 : 00 : 00';
+        modalStudyTime.textContent = checkDigit(user.time.hours) + ':' + checkDigit(user.time.minutes) + ':' + checkDigit(user.time.seconds) || '00 : 00 : 00';
 
         modalOverlay.style.display = 'flex';
         memberModal.style.display = 'block';
@@ -700,5 +700,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             case 'ON_LEAVE': return 'on-leave';
             default: return 'not-attended';
         }
+    }
+
+    function checkDigit(number) {
+        return number < 10 ? '0' + number : number.toString();
     }
 });
