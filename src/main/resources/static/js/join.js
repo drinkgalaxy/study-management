@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('join-form');
 
+    const host = '3.39.151.168:8080';
+
     const idCheckBtn = document.querySelector('.id-duplication');
     const emailCheckBtn = document.querySelector('.email-duplication');
     const emailCodeWrapper = document.querySelector('.email-code-wrapper');
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 중복확인 상태 백엔드 호출
         try {
-            const response = await fetch("http://localhost:8080/api/users/loginId", {
+            const response = await fetch("http://"+ host +"/api/users/loginId", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -122,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 서버에 회원가입 요청
         try {
-            const response = await fetch("http://localhost:8080/api/signup", {
+            const response = await fetch("http://"+ host +"/api/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

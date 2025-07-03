@@ -1,11 +1,13 @@
 document.getElementById("login-form").addEventListener("submit", async function(event) {
     event.preventDefault(); // 폼 제출 기본 동작 막기
 
+    const host = '3.39.151.168:8080';
+
     const loginId = document.getElementById("loginId").value;
     const password = document.getElementById("password").value;
 
     try {
-        const response = await fetch("http://localhost:8080/api/login", {
+        const response = await fetch("http://"+ host +"/api/login", {
             method: "POST",
             credentials: 'include',
             headers: {

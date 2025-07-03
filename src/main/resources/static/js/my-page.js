@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
+    const host = '3.39.151.168:8080';
+
     let username;
     let consecutiveStudyDay;
     let introduce;
@@ -10,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // 서버에 로그인 한 유저 마이 페이지 정보 조회
     try {
-        const response = await fetch("http://localhost:8080/api/users/my", {
+        const response = await fetch("http://"+ host +"/api/users/my", {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -51,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const logoutBtn = document.querySelector('.header-logout');
     logoutBtn.addEventListener('click', async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/logout", {
+            const response = await fetch("http://"+ host +"/api/logout", {
                 method: "POST",
                 credentials: 'include',
                 headers: {
@@ -122,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const content = textarea.value;
         // 실제 서버로 변경 사항 전송
         try {
-            const response = await fetch("http://localhost:8080/api/users/introduce", {
+            const response = await fetch("http://"+ host +"/api/users/introduce", {
                 method: "PATCH",
                 credentials: 'include',
                 headers: {
@@ -167,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // 백엔드에서 해당 month 의 출석 데이터 불러오기
         try {
-            const response = await fetch(`http://localhost:8080/api/users/${month}/attendances`, {
+            const response = await fetch("http://"+ host +"/api/users/${month}/attendances", {
                 method: "GET",
                 credentials: 'include',
                 headers: {
@@ -478,7 +480,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // 서버로 데이터 전송 (전송할 때 휴가도 --)
         try {
-            const response = await fetch("http://localhost:8080/api/attendance/vacation", {
+            const response = await fetch("http://"+ host +"/api/attendance/vacation", {
                 method: "POST",
                 credentials: 'include',
                 headers: {

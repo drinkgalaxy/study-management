@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
+    const host = '3.39.151.168:8080';
+
     let username;
     let introduce;
     let hour;
@@ -12,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // 서버에 로그인 한 유저 홈 정보 조회 요청
     try {
-        const response = await fetch("http://localhost:8080/api/users/home", {
+        const response = await fetch("http://"+ host +"/api/users/home", {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -97,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // 전체 유저 정보 조회
     try {
-        const response = await fetch("http://localhost:8080/api/users", {
+        const response = await fetch("http://"+ host +"/api/users", {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -131,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     let attendanceTrue;
 
     try {
-        const response = await fetch("http://localhost:8080/api/users/count/attending", {
+        const response = await fetch("http://"+ host +"/api/users/count/attending", {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -205,7 +207,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     let studyingMemberList = [];
 
     try {
-        const response = await fetch("http://localhost:8080/api/users/count/studying", {
+        const response = await fetch("http://"+ host +"/api/users/count/studying", {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -348,7 +350,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     startButton.addEventListener('click', async () => {
         // 출석 완료
         try {
-            const response = await fetch("http://localhost:8080/api/attendance/attended", {
+            const response = await fetch("http://"+ host +"/api/attendance/attended", {
                 method: "PATCH",
                 credentials: 'include',
                 headers: {
@@ -378,7 +380,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // 공부 중
         try {
-            const response = await fetch("http://localhost:8080/api/attendance/study/studying", {
+            const response = await fetch("http://"+ host +"/api/attendance/study/studying", {
                 method: "PATCH",
                 credentials: 'include',
                 headers: {
@@ -400,7 +402,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (isPaused) {
             // 공부 중
             try {
-                const response = await fetch("http://localhost:8080/api/attendance/study/studying", {
+                const response = await fetch("http://"+ host +"/api/attendance/study/studying", {
                     method: "PATCH",
                     credentials: 'include',
                     headers: {
@@ -429,7 +431,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         } else {
             // 공부 중단
             try {
-                const response = await fetch("http://localhost:8080/api/attendance/study/paused", {
+                const response = await fetch("http://"+ host +"/api/attendance/study/paused", {
                     method: "PATCH",
                     credentials: 'include',
                     headers: {
@@ -457,7 +459,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         // 그 날의 타이머 데이터 저장
         // 공부 종료
         try {
-            const response = await fetch("http://localhost:8080/api/attendance/study/finished", {
+            const response = await fetch("http://"+ host +"/api/attendance/study/finished", {
                 method: "PATCH",
                 credentials: 'include',
                 headers: {
@@ -475,7 +477,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // 시간 저장
         try {
-            const response = await fetch("http://localhost:8080/api/attendance/time", {
+            const response = await fetch("http://"+ host +"/api/attendance/time", {
                 method: "POST",
                 credentials: 'include',
                 headers: {
@@ -601,7 +603,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const logoutBtn = document.querySelector('.header-logout');
     logoutBtn.addEventListener('click', async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/logout", {
+            const response = await fetch("http://"+ host +"/api/logout", {
                 method: "POST",
                 credentials: 'include',
                 headers: {
@@ -626,7 +628,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // 공부 중단
         try {
-            const response = await fetch("http://localhost:8080/api/attendance/study/paused", {
+            const response = await fetch("http://"+ host +"/api/attendance/study/paused", {
                 method: "PATCH",
                 credentials: 'include',
                 headers: {
