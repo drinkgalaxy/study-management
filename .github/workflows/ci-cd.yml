@@ -15,8 +15,8 @@ jobs:
       DB_NAME: ${{ secrets.DB_NAME }}
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      SERVER_HOST: ${{ secrets.SERVER_HOST }}
-      SERVER_PORT: ${{ secrets.SERVER_PORT }}
+      SERVER_HOST: ${{ secrets.DB_HOST }}
+      SERVER_PORT: ${{ secrets.DB_PORT }}
       
     steps:
     - name: Checkout code
@@ -33,14 +33,6 @@ jobs:
         
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
-
-    - name: Start MySQL
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql root password: ${{ secrets.DB_PASSWORD }}
-        mysql database: ${{ secrets.DB_NAME }}
-        mysql user: ${{ secrets.DB_USERNAME }}
-        mysql password: ${{ secrets.DB_PASSWORD }}
 
     - name: Build with Gradle Wrapper (without tests)
       run: ./gradlew build -x test
