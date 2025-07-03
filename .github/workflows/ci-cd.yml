@@ -37,7 +37,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-        source: build/libs/*.jar
+        source: app/build/libs/*.jar
         target: /home/${{ secrets.EC2_USER }}/app
 
     - name: Deploy on EC2
