@@ -41,6 +41,14 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
 
+    - name: Start MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql root password: ${{ secrets.DB_PASSWORD }}
+        mysql database: ${{ secrets.DB_NAME }}
+        mysql user: ${{ secrets.DB_USERNAME }}
+        mysql password: ${{ secrets.DB_PASSWORD }}
+
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
