@@ -56,3 +56,4 @@ jobs:
           # 가장 최신 JAR 파일 실행
           JAR_FILE=$(ls /home/${{ secrets.EC2_USER }}/app/*.jar | head -n 1)
           nohup java -jar $JAR_FILE > /home/${{ secrets.EC2_USER }}/app/app.log 2>&1 &
+          exit 0

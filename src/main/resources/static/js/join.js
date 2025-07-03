@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('join-form');
 
-    const host = '3.39.151.168:8080';
+    const host = '43.200.176.218:8080';
 
     const idCheckBtn = document.querySelector('.id-duplication');
     const emailCheckBtn = document.querySelector('.email-duplication');

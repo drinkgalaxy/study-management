@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    const host = '3.39.151.168:8080';
+    const host = '43.200.176.218:8080';
 
     let username;
     let consecutiveStudyDay;
