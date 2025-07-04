@@ -54,6 +54,7 @@ jobs:
           pkill -f 'java -jar' || true
 
           # 가장 최신 JAR 파일 실행 (절대 경로 명확히 지정)
-          JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | head -n 1)
-          # nohup java -jar "$JAR_FILE" > /home/${{ secrets.EC2_USER }}/app/app.log 2>&1 &
-          setsid java -jar "$JAR_FILE" > /home/${{ secrets.EC2_USER }}/app/app.log 2>&1 < /dev/null &
+          #JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | head -n 1)
+          JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | grep -v 'plain.jar' | head -n 1)
+          nohup java -jar "$JAR_FILE" 2>&1 &
+          disown
