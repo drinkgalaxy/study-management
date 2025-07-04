@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 time: formatDurationToString(user.thisMonthStudyTimes),
                 email: user.email,
                 introduce: user.introduce || '',
-                status: mapAttendanceStatus(user.todayAttendanceStatus)
+                status: user.todayAttendanceStatus
             }));
 
 
@@ -693,15 +693,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
         const seconds = String(totalSeconds % 60).padStart(2, '0');
         return `${hours}-${minutes}-${seconds}`;
-    }
-
-    function mapAttendanceStatus(statusStr) {
-        switch (statusStr) {
-            case 'ATTENDED': return 'attended';
-            case 'NO_ATTENDED': return 'not-attended';
-            case 'ON_LEAVE': return 'on-leave';
-            default: return 'not-attended';
-        }
     }
 
     function checkDigit(number) {
