@@ -25,7 +25,7 @@ public class AttendanceScheduler {
 	private final AttendanceRepository attendanceRepository;
 
 	//@Scheduled(cron = "0 0 0 * * *")
-	@Scheduled(cron = "0 0 3 * * *") // 초 분 시 (수동으로 생성-테스트용)
+	@Scheduled(cron = "0 20 3 * * *") // 초 분 시 (수동으로 생성-테스트용)
 	@Transactional
 	public void createTodayAttendanceForAllUsers() { // 매일 기존 유저들 새로운 데이터 생성
 		List<User> users = userRepository.findAll();

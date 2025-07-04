@@ -256,11 +256,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 dayElement.classList.add('other-month');
             }
 
-            const today = new Date();
-            if (date.toDateString() === today.toDateString()) {
-                dayElement.classList.add('today');
-            }
-
             const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
             const attendanceStatus = attendanceData.attendances[dateKey];
 
