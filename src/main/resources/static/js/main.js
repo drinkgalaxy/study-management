@@ -71,12 +71,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const todayDate = new Date().toISOString().slice(0, 10);  // 현재 날짜: "YYYY-MM-DD"
     const savedDate = localStorage.getItem(localKeyPrefix + 'studyTimerDate');
     if (savedDate !== todayDate) {
-        // 날짜가 다르면 관련 로컬스토리지 모두 초기화
+        // 날짜가 다르면 localStorage 초기화
         localStorage.removeItem(localKeyPrefix + 'studyTimerDate');
-        localStorage.removeItem(localKeyPrefix + 'studyTimer');
-        localStorage.removeItem(localKeyPrefix + 'startTime');
-        localStorage.removeItem(localKeyPrefix + 'isRunning');
-        localStorage.removeItem(localKeyPrefix + 'isPaused');
     }
 
 
@@ -281,18 +277,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     // 타이머 및 버튼 제어 로직 종료 후 데이터 서버로 전송
     let timerInterval;
     let totalSeconds = 0;
-    let startTime = null;
-    let lastSavedSeconds = 0;
     let isPaused = false;
 
     const savedTime = localStorage.getItem(localKeyPrefix + 'studyTimer');
-    const savedStartTime = localStorage.getItem(localKeyPrefix + 'startTime');
     const savedIsPaused = localStorage.getItem(localKeyPrefix + 'isPaused');
     const savedIsRunning = localStorage.getItem(localKeyPrefix + 'isRunning');
 
     if (savedTime !== null) {
-        lastSavedSeconds = parseInt(savedTime);
-        totalSeconds = lastSavedSeconds;
+        totalSeconds = parseInt(savedTime);
         isPaused = savedIsPaused === 'true';
         updateTimerDisplay();
     }
@@ -342,19 +334,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
 
-    // 타이머 시간 보정
-    if (savedIsRunning === 'true' && !isPaused && savedStartTime) {
-        startTime = parseInt(savedStartTime);
-        timerInterval = setInterval(() => {
-            const now = Date.now();
-            totalSeconds = lastSavedSeconds + Math.floor((now - startTime) / 1000);
-            updateTimerDisplay();
-        }, 1000);
-        setTimerButtonsState(true, false);
+    if (savedIsRunning === 'true') {
+        setTimerButtonsState(true, isPaused);
+        if (!isPaused) {
+            timerInterval = setInterval(() => {
+                totalSeconds++;
+                updateTimerDisplay();
+                localStorage.setItem(localKeyPrefix + 'studyTimer', totalSeconds);
+            }, 1000);
+        }
     } else {
         setTimerButtonsState(false, false);
     }
-
 
     startButton.addEventListener('click', async () => {
         // 출석 완료
@@ -368,23 +359,18 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             if (response.ok) {
-                clearInterval(timerInterval);
                 isPaused = false;
-                startTime = Date.now();
-                lastSavedSeconds = 0;
-                totalSeconds = 0;
+                setTimerButtonsState(true, false);
                 localStorage.removeItem(localKeyPrefix + 'studyTimer');
-                localStorage.setItem(localKeyPrefix + 'startTime', startTime);
+                localStorage.setItem(localKeyPrefix + 'studyTimerDate', new Date().toISOString().slice(0, 10));
                 localStorage.setItem(localKeyPrefix + 'isRunning', 'true');
                 localStorage.setItem(localKeyPrefix + 'isPaused', 'false');
-                localStorage.setItem(localKeyPrefix + 'studyTimerDate', new Date().toISOString().slice(0, 10));
 
                 timerInterval = setInterval(() => {
-                    const now = Date.now();
-                    totalSeconds = lastSavedSeconds + Math.floor((now - startTime) / 1000);
+                    totalSeconds++;
                     updateTimerDisplay();
+                    localStorage.setItem(localKeyPrefix + 'studyTimer', totalSeconds);
                 }, 1000);
-                setTimerButtonsState(true, false);
             } else {
                 alert("시작 요청이 실패했습니다.");
             }
@@ -427,21 +413,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                 if (response.ok) {
                     isPaused = false;
                     stopButton.textContent = '중단';
-
-                    lastSavedSeconds = parseInt(localStorage.getItem(localKeyPrefix + 'studyTimer')) || 0;
-                    startTime = Date.now();
-
-                    localStorage.setItem(localKeyPrefix + 'startTime', startTime);
-                    localStorage.setItem(localKeyPrefix + 'isRunning', 'true');
+                    setTimerButtonsState(true, false);
                     localStorage.setItem(localKeyPrefix + 'isPaused', 'false');
 
                     timerInterval = setInterval(() => {
-                        const now = Date.now();
-                        totalSeconds = lastSavedSeconds + Math.floor((now - startTime) / 1000);
+                        totalSeconds++;
                         updateTimerDisplay();
+                        localStorage.setItem(localKeyPrefix + 'studyTimer', totalSeconds);
                     }, 1000);
-
-                    setTimerButtonsState(true, false);
+                    location.reload();
                 } else {
                     alert("시작 요청이 실패했습니다.");
                 }
@@ -460,18 +440,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                 });
 
                 if (response.ok) {
-                    clearInterval(timerInterval); // 기존 타이머 중단
-                    const now = Date.now();
-                    totalSeconds = lastSavedSeconds + Math.floor((now - startTime) / 1000);
-                    lastSavedSeconds = totalSeconds;
-
-                    localStorage.setItem(localKeyPrefix + 'studyTimer', totalSeconds);
-                    localStorage.removeItem(localKeyPrefix + 'startTime');
-                    localStorage.setItem(localKeyPrefix + 'isPaused', 'true');
+                    clearInterval(timerInterval);
                     isPaused = true;
-
                     stopButton.textContent = '재개';
                     setTimerButtonsState(true, true);
+                    localStorage.setItem(localKeyPrefix + 'isPaused', 'true');
+                    location.reload();
                 } else {
                     alert("중단 요청이 실패했습니다.");
                 }
@@ -518,23 +492,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             if (response.ok) {
                 alert('오늘의 공부 시간이 저장되었습니다.');
-                if (!isPaused && startTime) {
-                    const now = Date.now();
-                    totalSeconds = lastSavedSeconds + Math.floor((now - startTime) / 1000);
-                } else {
-                    totalSeconds = lastSavedSeconds;
-                }
                 clearInterval(timerInterval);
                 setTimerButtonsState(false, false);
-                // localStorage.removeItem(localKeyPrefix + 'studyTimer');
+                // localStorage.removeItem(localKeyPrefix + 'studyTimer'); //
                 localStorage.removeItem(localKeyPrefix + 'isRunning');
                 localStorage.removeItem(localKeyPrefix + 'isPaused');
-
-                lastSavedSeconds = 0;
-                totalSeconds = 0;
                 updateTimerDisplay();
                 location.reload();
-                setTimerButtonsState(false, false);
             } else {
                 alert("오늘의 공부 시간 저장에 실패했습니다.");
             }
@@ -696,6 +660,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 endButton.classList.add('button-disabled');
 
                 setTimerButtonsState(false, false);
+                localStorage.removeItem(localKeyPrefix + 'studyTimer');
                 localStorage.removeItem(localKeyPrefix + 'isRunning');
                 localStorage.removeItem(localKeyPrefix + 'isPaused');
 
