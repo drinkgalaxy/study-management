@@ -1,0 +1,17 @@
+name: Stop Running App on EC2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  stop-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stop running java process on EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            pkill -f 'java -jar' || true
