@@ -71,8 +71,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     const todayDate = new Date().toISOString().slice(0, 10);  // 현재 날짜: "YYYY-MM-DD"
     const savedDate = localStorage.getItem(localKeyPrefix + 'studyTimerDate');
     if (savedDate !== todayDate) {
-        // 날짜가 다르면 localStorage 초기화
+        // 날짜가 다르면 관련 로컬스토리지 모두 초기화
         localStorage.removeItem(localKeyPrefix + 'studyTimerDate');
+        localStorage.removeItem(localKeyPrefix + 'studyTimer');
+        localStorage.removeItem(localKeyPrefix + 'startTime');
+        localStorage.removeItem(localKeyPrefix + 'isRunning');
+        localStorage.removeItem(localKeyPrefix + 'isPaused');
     }
 
 
@@ -369,7 +373,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 startTime = Date.now();
                 lastSavedSeconds = 0;
                 totalSeconds = 0;
-                timerInterval = 0;
+                localStorage.removeItem(localKeyPrefix + 'studyTimer');
                 localStorage.setItem(localKeyPrefix + 'startTime', startTime);
                 localStorage.setItem(localKeyPrefix + 'isRunning', 'true');
                 localStorage.setItem(localKeyPrefix + 'isPaused', 'false');
@@ -692,7 +696,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 endButton.classList.add('button-disabled');
 
                 setTimerButtonsState(false, false);
-                localStorage.removeItem(localKeyPrefix + 'studyTimer');
                 localStorage.removeItem(localKeyPrefix + 'isRunning');
                 localStorage.removeItem(localKeyPrefix + 'isPaused');
 
