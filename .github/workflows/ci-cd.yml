@@ -3,62 +3,66 @@ name: Java CI CD with Gradle
 on:
   push:
     branches: [ "main", "dev" ]
-  workflow_run:
-    workflows: ["Stop Running App on EC2"]
-    types:
-      - completed  
   # pull_request:
-  #   branches: [ "main", "dev" ]
+  #   branches: [ "main", "dev" ]  
 
 jobs:
-  build:
+  stop-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stop running java process on EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            pkill -f 'java -jar' || true
+
+  build-deploy:
+    needs: stop-app
     runs-on: ubuntu-latest
     permissions:
       contents: read
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x ./gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
-    - name: Build with Gradle Wrapper (without tests)
-      run: ./gradlew build -x test
+      - name: Build with Gradle Wrapper (without tests)
+        run: ./gradlew build -x test
 
-    - name: Copy JAR to EC2
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-        source: build/libs/*.jar
-        target: /home/${{ secrets.EC2_USER }}/app
+      - name: Copy JAR to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          source: build/libs/*.jar
+          target: /home/${{ secrets.EC2_USER }}/app
 
-    - name: Deploy on EC2
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-        script: |
-          # .bashrc에서 환경변수 불러오기
-          source ~/.bashrc
-
-          # 기존 jar 및 nohup 로그 삭제
-          # rm -f /home/${{ secrets.EC2_USER }}/app/*.jar
-          # rm -f /home/${{ secrets.EC2_USER }}/app/nohup.out
-
-          # 가장 최신 JAR 파일 실행
-          JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | grep -v 'plain.jar' | head -n 1)
-          nohup java -jar "$JAR_FILE" 2>&1 &
-          exit 0
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            # .bashrc에서 환경변수 불러오기
+            source ~/.bashrc
+            
+            # 가장 최신 JAR 파일 실행
+            JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/*.jar | grep -v 'plain.jar' | head -n 1)
+            nohup java -jar "$JAR_FILE" > /home/${{ secrets.EC2_USER }}/app/nohup.out 2>&1 &
