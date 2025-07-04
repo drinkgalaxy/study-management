@@ -51,10 +51,9 @@ jobs:
           source ~/.bashrc
 
           # 기존 애플리케이션 종료 (있으면)
-          pkill -f 'java -jar' || true
+          #pkill -f 'java -jar' || true
 
           # 가장 최신 JAR 파일 실행 (절대 경로 명확히 지정)
           #JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | head -n 1)
           JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | grep -v 'plain.jar' | head -n 1)
           nohup java -jar "$JAR_FILE" 2>&1 &
-          disown
