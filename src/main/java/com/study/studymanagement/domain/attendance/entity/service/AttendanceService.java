@@ -16,6 +16,7 @@ import com.study.studymanagement.domain.attendance.entity.repository.AttendanceR
 import com.study.studymanagement.domain.user.entity.StudyStatus;
 import com.study.studymanagement.domain.user.entity.User;
 import com.study.studymanagement.domain.user.repository.UserRepository;
+import com.study.studymanagement.global.exception.exception.AttandanceException;
 import com.study.studymanagement.global.exception.exception.UserException;
 
 import lombok.RequiredArgsConstructor;
@@ -109,7 +110,14 @@ public class AttendanceService {
 			attendanceRepository.save(attendance);
 			user.changeMonthLeave();
 		} else {
-			throw new UserException(INVALID_REQUEST_VALUE);
+			Attendance byUserAndDate = attendanceRepository.findByUserAndDate(user, requestDate);
+			if (byUserAndDate.getAttendanceStatus() == AttendanceStatus.ATTENDED) {
+				throw new AttandanceException(INVALID_DATE_ALREADY_ATTENDED);
+			} else if (byUserAndDate.getAttendanceStatus() == AttendanceStatus.ABSENT) {
+				throw new AttandanceException(INVALID_DATE_ALREADY_ABSENT);
+			} else if (byUserAndDate.getAttendanceStatus() == AttendanceStatus.VACATION) {
+				throw new AttandanceException(INVALID_DATE_ALREADY_VACATION);
+			}
 		}
 
 	}

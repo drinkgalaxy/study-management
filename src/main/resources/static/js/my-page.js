@@ -114,9 +114,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     // 리셋 버튼 기능
     document.querySelector('.reset-button').addEventListener('click', async () => {
         textarea.value = '';
+        originalText = '';
         maxLengthDisplay.innerText = '';
         saveBefore.style.display = 'none';
         saveAfter.style.display = 'inline';
+        saveButton.disabled = false;
     });
 
     // 저장 버튼 기능
@@ -489,7 +491,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert(formattedDate + ' 날짜에 휴가 신청이 완료되었습니다.')
                 location.reload();
             } else if (response.status === 400) {
-                alert("해당 날짜에 휴가를 신청할 수 없습니다.")
+                alert(response.statusText)
             } else {
                 console.log("휴가 신청 실패")
             }
