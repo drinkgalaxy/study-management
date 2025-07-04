@@ -16,7 +16,9 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          script: bash -c "pkill -f 'java -jar' || true; exit 0"
+          script: |
+            pkill -f 'java -jar' || true
+            exit 0
 
   build-deploy:
     needs: stop-app
