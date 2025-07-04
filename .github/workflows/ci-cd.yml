@@ -50,8 +50,6 @@ jobs:
           # .bashrc에서 환경변수 불러오기
           source ~/.bashrc
 
-          pkill -f 'java -jar' || true
-
           # 기존 jar 및 nohup 로그 삭제
           # rm -f /home/${{ secrets.EC2_USER }}/app/*.jar
           # rm -f /home/${{ secrets.EC2_USER }}/app/nohup.out
