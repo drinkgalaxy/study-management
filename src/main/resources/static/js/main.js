@@ -184,13 +184,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         statusDiv.classList.add('attendance-user-box');
 
         // 상태에 따른 클래스 및 텍스트 설정
-        if (user.status === 'attended') {
+        if (user.status === 'ATTENDED') {
             statusDiv.classList.add('attended');
             statusDiv.textContent = '출석 완료';
-        } else if (user.status === 'not-attended') {
+        } else if (user.status === 'NO_ATTENDED') {
             statusDiv.classList.add('not-attended');
             statusDiv.textContent = '출석 전';
-        } else if (user.status === 'vacation') {
+        } else if (user.status === 'VACATION') {
             statusDiv.classList.add('vacation');
             statusDiv.textContent = '휴가';
         }
