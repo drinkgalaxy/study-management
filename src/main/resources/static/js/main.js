@@ -369,7 +369,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 startTime = Date.now();
                 lastSavedSeconds = 0;
                 totalSeconds = 0;
-                localStorage.setItem(localKeyPrefix + 'startTime', startTime);
+                timerInterval = 0;
                 localStorage.setItem(localKeyPrefix + 'isRunning', 'true');
                 localStorage.setItem(localKeyPrefix + 'isPaused', 'false');
                 localStorage.setItem(localKeyPrefix + 'studyTimerDate', new Date().toISOString().slice(0, 10));
