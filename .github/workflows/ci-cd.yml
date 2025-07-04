@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           fail-on-error: false
           script: |
-            pkill -f 'java -jar'
+            pkill -f 'java -jar' || true
 
   build-deploy:
     needs: stop-app
