@@ -491,7 +491,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 alert(formattedDate + ' 날짜에 휴가 신청이 완료되었습니다.')
                 location.reload();
             } else if (response.status === 400) {
-                alert(response.statusText)
+                alert(response.message)
             } else {
                 console.log("휴가 신청 실패")
             }

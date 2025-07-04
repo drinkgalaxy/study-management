@@ -364,9 +364,11 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             if (response.ok) {
+                clearInterval(timerInterval);
                 isPaused = false;
                 startTime = Date.now();
                 lastSavedSeconds = 0;
+                totalSeconds = 0;
                 localStorage.setItem(localKeyPrefix + 'startTime', startTime);
                 localStorage.setItem(localKeyPrefix + 'isRunning', 'true');
                 localStorage.setItem(localKeyPrefix + 'isPaused', 'false');
