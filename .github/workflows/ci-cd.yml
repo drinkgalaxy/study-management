@@ -38,7 +38,7 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         source: build/libs/*.jar
-        target: /home/${{ secrets.EC2_USER }}/app
+        target: /home/${{ secrets.EC2_USER }}/app/build/libs
 
     - name: Deploy on EC2
       uses: appleboy/ssh-action@v1.0.0
@@ -54,6 +54,6 @@ jobs:
           pkill -f 'java -jar' || true
 
           # 가장 최신 JAR 파일 실행 (절대 경로 명확히 지정)
-          #JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | head -n 1)
-          JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/*.jar | head -n 1)
+          JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | head -n 1)
           nohup java -jar "$JAR_FILE" > /home/${{ secrets.EC2_USER }}/app/app.log 2>&1 &
+          #setsid java -jar "$JAR_FILE" > /home/${{ secrets.EC2_USER }}/app/app.log 2>&1 < /dev/null &
