@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!isIdChecked) {
             alert('아이디 중복확인을 해주세요.');
+            idInput.focus();
             return;
         }
 
@@ -100,13 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (name.length < 2 || name.length > 10) {
             alert('이름은 2글자 이상 10글자 이하로 입력해주세요.');
             nameInput.focus();
-            return;
-        }
-
-        // 아이디 검사
-        if (!/^[A-Za-z]{5,10}$/.test(id)) {
-            alert('아이디는 영문 대소문자만 사용하며, 5자 이상 10자 이하로 입력해주세요.');
-            idInput.focus();
             return;
         }
 
