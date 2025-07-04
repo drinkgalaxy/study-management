@@ -107,9 +107,11 @@ public class AttendanceService {
 				.attendanceStatus(AttendanceStatus.VACATION)
 				.build();
 			attendanceRepository.save(attendance);
+			user.changeMonthLeave();
+		} else {
+			throw new UserException(INVALID_REQUEST_VALUE);
 		}
 
-		user.changeMonthLeave();
 	}
 
 	private Duration parseStudyTime(String timeStr) {

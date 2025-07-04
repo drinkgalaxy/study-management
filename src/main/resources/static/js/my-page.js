@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     // 리셋 버튼 기능
-    document.querySelector('.reset-button').addEventListener('click', () => {
+    document.querySelector('.reset-button').addEventListener('click', async () => {
         textarea.value = '';
         maxLengthDisplay.innerText = '';
         saveBefore.style.display = 'none';
@@ -388,12 +388,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                     dayElement.classList.add('other-month');
                 }
 
-                // 오늘 날짜 표시
-                const today = new Date();
-                if (date.toDateString() === today.toDateString()) {
-                    dayElement.classList.add('today');
-                }
-
                 // 임시 선택된 날짜 표시
                 if (this.tempSelectedDate && date.toDateString() === this.tempSelectedDate.toDateString()) {
                     dayElement.classList.add('selected');
@@ -494,8 +488,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (response.ok) {
                 alert(formattedDate + ' 날짜에 휴가 신청이 완료되었습니다.')
                 location.reload();
+            } else if (response.status === 400) {
+                alert("해당 날짜에 휴가를 신청할 수 없습니다.")
             } else {
-                alert("휴가 신청에 실패했습니다.");
+                console.log("휴가 신청 실패")
             }
         } catch (err) {
             alert("서버 연결 중 오류가 발생했습니다.");

@@ -451,7 +451,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 });
 
                 if (response.ok) {
-                    clearInterval(timerInterval);
                     const now = Date.now();
                     totalSeconds = lastSavedSeconds + Math.floor((now - startTime) / 1000);
                     lastSavedSeconds = totalSeconds;
@@ -507,7 +506,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             if (response.ok) {
                 alert('오늘의 공부 시간이 저장되었습니다.');
-                clearInterval(timerInterval);
                 if (!isPaused) {
                     const now = Date.now();
                     totalSeconds = lastSavedSeconds + Math.floor((now - startTime) / 1000);
