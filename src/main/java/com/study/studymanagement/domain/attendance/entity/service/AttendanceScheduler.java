@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
 import com.study.studymanagement.domain.attendance.entity.repository.AttendanceRepository;
+import com.study.studymanagement.domain.user.entity.StudyStatus;
 import com.study.studymanagement.domain.user.entity.User;
 import com.study.studymanagement.domain.user.repository.UserRepository;
 
@@ -38,6 +39,8 @@ public class AttendanceScheduler {
 					.date(today)
 					.attendanceStatus(AttendanceStatus.NO_ATTENDED)
 					.build();
+				user.changeStatus(AttendanceStatus.NO_ATTENDED);
+				user.changeStudyStatus(StudyStatus.PAUSED);
 				attendanceRepository.save(attendance);
 			}
 		}
