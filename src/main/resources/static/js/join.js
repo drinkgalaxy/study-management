@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
     idCheckBtn.addEventListener('click', async function () {
         const id = document.getElementById('loginId').value.trim();
 
-        if (!/^[A-Za-z]{5,10}$/.test(id)) {
-            alert('아이디는 영문 5자 이상 10자 이하로 입력해주세요.');
+        if (!/^[A-Za-z0-9]{5,10}$/.test(id)) {
+            alert('아이디는 5자 이상 10자 이하로 입력해주세요.');
             return;
         }
 
