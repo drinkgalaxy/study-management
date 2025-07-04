@@ -3,6 +3,10 @@ name: Java CI CD with Gradle
 on:
   push:
     branches: [ "main", "dev" ]
+  workflow_run:
+    workflows: ["Stop Running App on EC2"]
+    types:
+      - completed  
   # pull_request:
   #   branches: [ "main", "dev" ]
 
