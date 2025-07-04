@@ -50,8 +50,11 @@ jobs:
           # .bashrc에서 환경변수 불러오기
           source ~/.bashrc
 
+          # 기존 jar 및 nohup 로그 삭제
+          rm -f /home/${{ secrets.EC2_USER }}/app/*.jar
+          rm -f /home/${{ secrets.EC2_USER }}/app/nohup.out
+
           # 가장 최신 JAR 파일 실행
-          JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | head -n 1)
-          #JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | grep -v 'plain.jar' | head -n 1)
+          JAR_FILE=$(ls -t /home/${{ secrets.EC2_USER }}/app/build/libs/*.jar | grep -v 'plain.jar' | head -n 1)
           nohup java -jar "$JAR_FILE" 2>&1 &
           exit 0
