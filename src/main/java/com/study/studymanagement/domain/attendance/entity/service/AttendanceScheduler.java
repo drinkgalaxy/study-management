@@ -24,8 +24,8 @@ public class AttendanceScheduler {
 	private final UserRepository userRepository;
 	private final AttendanceRepository attendanceRepository;
 
-	//@Scheduled(cron = "0 0 0 * * *")
-	@Scheduled(cron = "0 20 3 * * *") // 초 분 시 (수동으로 생성-테스트용)
+	@Scheduled(cron = "0 0 0 * * *")
+	//@Scheduled(cron = "0 20 3 * * *") // 초 분 시 (수동으로 생성-테스트용)
 	@Transactional
 	public void createTodayAttendanceForAllUsers() { // 매일 기존 유저들 새로운 데이터 생성
 		List<User> users = userRepository.findAll();
@@ -74,8 +74,8 @@ public class AttendanceScheduler {
 	}
 
 	// 23:59:59 에도 출석 전인 유저는 자동으로 결석 상태 처리
-	//@Scheduled(cron = "59 59 23 * * *")  // 매일 23시 59분 59초
-	@Scheduled(cron = "0 13 3 * * *") // 초 분 시 (수동으로 생성-테스트용)
+	@Scheduled(cron = "59 59 23 * * *")  // 매일 23시 59분 59초
+	//@Scheduled(cron = "0 13 3 * * *") // 초 분 시 (수동으로 생성-테스트용)
 	@Transactional
 	public void markAbsentIfNotAttended() {
 		LocalDate today = LocalDate.now();
