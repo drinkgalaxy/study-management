@@ -2,7 +2,7 @@
 
 **웹사이트 접속 링크**
 - http://43.200.176.218:8080/login.html
-- 로그인 시 Id: test12, PW: test12!!
+- 로그인 시 Id: studit, PW: studit11!!
 - 회원가입도 가능
 
 ### 주제 설명
@@ -21,27 +21,24 @@
 
 ### 화면 및 기능 설명
 
-**로그인/회원가입 화면** <br>
-<img src="img.png" alt="로그인화면" width="500" />
-<img src="img_1.png" alt="회원가입화면" width="500" />
+**🔐 로그인/회원가입 화면** <br>
+<img src="src/main/resources/static/img/img.png" alt="로그인화면" width="500" />
+<img src="src/main/resources/static/img/img_1.png" alt="회원가입화면" width="500" />
 - Spring Security를 이용한 쿠키 기반 로그인을 구현했습니다.
 - 회원가입 시 아이디 중복확인과 이메일 인증이 필수입니다.
 
-
----
-
-**메인 홈 화면** <br>
-<img src="img_2.png" alt="메인 홈 화면" />
+**🏠 메인 홈 화면** <br>
+<img src="src/main/resources/static/img/img_2.png" alt="메인 홈 화면" />
 
 **⏱️ 타이머로 공부 시간 기록** <br>
 - 사용자는 타이머 기능으로 실시간 공부 시간을 기록할 수 있습니다.
 - 상황에 따라 중단, 재개, 초기화가 가능합니다.
 - 시간 초기화 시 더블 체크가 가능하도록 모달창이 등장합니다.
 
-<img src="img_6.png" alt="타이머 화면" />
+<img src="src/main/resources/static/img/img_6.png" alt="타이머 화면" />
 
-**스터디원 정보 확인** <br>
-<img src="img_5.png" alt="스터디원 정보 확인" />
+**🧑‍🤝‍🧑 스터디원 정보 확인** <br>
+<img src="src/main/resources/static/img/img_5.png" alt="스터디원 정보 확인" />
 - 모든 곳에서 스터디원 이름을 누르면 스터디원의 이메일, 간단한 자기소개와 한달 공부 시간을 확인할 수 있습니다.
 
 **✅ 출석 현황 시각화** <br>
@@ -53,37 +50,35 @@
 **🏆 랭킹 시스템 제공** <br>
 - 한달 누적 시간 기반 랭킹을 통해 경쟁을 유도하고 학습 동기를 향상시킵니다.
 
-**로그아웃** <br>
+**🚪 로그아웃** <br>
 - 로그아웃 시 쿠키에 저장된 세션 값이 사라지며 로그인 페이지로 이동합니다.
 
----
+**👤 마이페이지 화면** <br>
+<img src="src/main/resources/static/img/img_7.png" alt="마이페이지" />
 
-**마이페이지 화면** <br>
-<img src="img_7.png" alt="마이페이지" />
-
-**자기 소개 수정** <br>
+**✍️ 자기 소개 수정** <br>
 - 스터디원들에게 보여질 자기소개를 수정하거나 삭제할 수 있습니다.
 
-**연속 학습 시간** <br>
+**📈 연속 학습 시간** <br>
 - 연속으로 출석 완료한 날짜를 체크하여 동기부여를 합니다.
 
-**개인 출석부** <br>
+**📅 개인 출석부** <br>
 - 달 별로 출석한 날짜와 결석한 날짜, 휴가를 쓴 날짜를 시각적으로 보여줍니다.
 
-**휴가 신청** <br>
+**🌴 휴가 신청** <br>
 - 공부를 꾸준히 하기 위해선 정기적인 휴가가 필수입니다.
 - 한 달에 매 3회씩 휴가가 제공됩니다.
 
-<img src="img_8.png" alt="휴가 신청 화면" />
+<img src="src/main/resources/static/img/img_8.png" alt="휴가 신청 화면" />
 
-### API
+### API 설계
 
-<img src="img_10.png" alt="API1" width="500" />
-<img src="img_11.png" alt="API2" width="500" />
+<img src="src/main/resources/static/img/img_10.png" alt="API1" width="500" />
+<img src="src/main/resources/static/img/img_11.png" alt="API2" width="500" />
 
-### 데이터베이스
+### 데이터베이스 구조 
 
-<img src="img_9.png" alt="데이터베이스 ERD" width="500" />
+<img src="src/main/resources/static/img/img_9.png" alt="데이터베이스 ERD" width="500" />
 
 ### 프로젝트 구조도
 
