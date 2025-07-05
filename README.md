@@ -13,11 +13,11 @@
 - 개인 100%
 
 ### 사용 기술
-- **기획 디자인:** figma <br>
-- **프론트엔드:** html, css, javaScript <br>
-- **백엔드:** java 17, SpringBoot <br>
-- **데이터베이스:** MySQL + AWS RDS <br>
-- **배포:** GithubActions + AWS EC2 <br>
+- **기획 디자인:** Figma <br>
+- **프론트엔드:** HTML, CSS, JavaScript <br>
+- **백엔드:** Java 17, Spring Boot <br>
+- **데이터베이스:** MySQL (AWS RDS) <br>
+- **배포:** GitHub Actions, AWS EC2 <br>
 
 ### 화면 및 기능 설명
 
