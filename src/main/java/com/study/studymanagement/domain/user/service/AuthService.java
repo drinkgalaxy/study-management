@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
-import com.study.studymanagement.domain.attendance.entity.repository.AttendanceRepository;
+import com.study.studymanagement.domain.attendance.repository.AttendanceRepository;
 import com.study.studymanagement.domain.user.dto.UserRequest;
 import com.study.studymanagement.domain.user.entity.StudyStatus;
 import com.study.studymanagement.domain.user.entity.User;

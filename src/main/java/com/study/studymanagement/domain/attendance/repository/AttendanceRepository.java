@@ -1,4 +1,4 @@
-package com.study.studymanagement.domain.attendance.entity.repository;
+package com.study.studymanagement.domain.attendance.repository;
 
 import java.time.LocalDate;
 import java.util.List;

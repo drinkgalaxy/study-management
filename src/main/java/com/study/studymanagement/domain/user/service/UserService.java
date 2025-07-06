@@ -5,14 +5,13 @@ import static com.study.studymanagement.global.exception.handler.ExceptionCode.*
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
-import com.study.studymanagement.domain.attendance.entity.dto.AttendanceResponse;
+import com.study.studymanagement.domain.attendance.dto.AttendanceResponse;
 import com.study.studymanagement.domain.user.dto.UserRequest;
 import com.study.studymanagement.domain.user.dto.UserResponse;
 import com.study.studymanagement.domain.user.entity.StudyStatus;

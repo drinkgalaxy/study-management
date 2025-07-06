@@ -1,4 +1,4 @@
-package com.study.studymanagement.domain.attendance.entity.service;
+package com.study.studymanagement.domain.attendance.service;
 
 import static com.study.studymanagement.global.exception.handler.ExceptionCode.*;
 
@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
-import com.study.studymanagement.domain.attendance.entity.dto.AttendanceRequest;
-import com.study.studymanagement.domain.attendance.entity.repository.AttendanceRepository;
+import com.study.studymanagement.domain.attendance.dto.AttendanceRequest;
+import com.study.studymanagement.domain.attendance.repository.AttendanceRepository;
 import com.study.studymanagement.domain.user.entity.StudyStatus;
 import com.study.studymanagement.domain.user.entity.User;
 import com.study.studymanagement.domain.user.repository.UserRepository;

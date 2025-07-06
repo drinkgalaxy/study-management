@@ -1,4 +1,4 @@
-package com.study.studymanagement.domain.attendance.entity.service;
+package com.study.studymanagement.domain.attendance.service;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.study.studymanagement.domain.attendance.entity.Attendance;
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
-import com.study.studymanagement.domain.attendance.entity.repository.AttendanceRepository;
+import com.study.studymanagement.domain.attendance.repository.AttendanceRepository;
 import com.study.studymanagement.domain.user.entity.StudyStatus;
 import com.study.studymanagement.domain.user.entity.User;
 import com.study.studymanagement.domain.user.repository.UserRepository;

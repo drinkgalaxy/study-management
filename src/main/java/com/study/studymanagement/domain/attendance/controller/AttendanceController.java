@@ -1,4 +1,4 @@
-package com.study.studymanagement.domain.attendance.entity.controller;
+package com.study.studymanagement.domain.attendance.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.study.studymanagement.domain.attendance.entity.dto.AttendanceRequest;
-import com.study.studymanagement.domain.attendance.entity.service.AttendanceService;
+import com.study.studymanagement.domain.attendance.dto.AttendanceRequest;
+import com.study.studymanagement.domain.attendance.service.AttendanceService;
 import com.study.studymanagement.global.common.ApiResponse;
 
 import jakarta.validation.Valid;

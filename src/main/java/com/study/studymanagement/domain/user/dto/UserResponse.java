@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.List;
 
 import com.study.studymanagement.domain.attendance.entity.AttendanceStatus;
-import com.study.studymanagement.domain.attendance.entity.dto.AttendanceResponse;
+import com.study.studymanagement.domain.attendance.dto.AttendanceResponse;
 
 public class UserResponse {
 

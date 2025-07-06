@@ -1,4 +1,4 @@
-package com.study.studymanagement.domain.attendance.entity.dto;
+package com.study.studymanagement.domain.attendance.dto;
 
 public class AttendanceRequest {
 
