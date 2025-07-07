@@ -92,11 +92,11 @@
 |           \---studymanagement
 |               +---domain
 |               |   +---attendance
-|               |   |   \---entity
-|               |   |       +---controller
-|               |   |       +---dto
-|               |   |       +---repository
-|               |   |       \---service
+|               |   |   +---controller
+|               |   |   +---dto
+|               |   |   +---entity
+|               |   |   +---repository
+|               |   |   \---service
 |               |   \---user
 |               |       +---controller
 |               |       +---dto
@@ -112,11 +112,11 @@
 |                   \---security
 |                       \---config
 \---resources
-+---static
-|   +---css
-|   +---img
-|   \---js
-\---templates
+    \---static
+        +---css
+        +---img
+        \---js
+
 ```
 
 
