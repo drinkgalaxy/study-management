@@ -317,10 +317,6 @@ textarea {
     color: #ccc;
 }
 
-.calendar-day.today {
-    background-color: #A7A7A7;
-}
-
 .calendar-day.selected {
     background-color: #0169EA;
 }
@@ -332,6 +328,11 @@ textarea {
 .calendar-day.absent {
     background-color: #FFD8D6;
 }
+
+.calendar-day.no-attended {
+    background-color: #FFFFFF;
+}
+
 
 .calendar-day.vacation {
     background-color: #E5E8EB;
