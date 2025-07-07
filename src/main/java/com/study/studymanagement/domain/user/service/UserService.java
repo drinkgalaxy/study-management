@@ -118,8 +118,8 @@ public class UserService {
 
 		return new UserResponse.MyHome(
 			user.getName(),
-			user.getThisWeekStudyTimes(),
-			user.getThisMonthStudyTimes()
+			user.getThisMonthStudyTimes(),
+			user.getThisWeekStudyTimes()
 		);
 	}
 
