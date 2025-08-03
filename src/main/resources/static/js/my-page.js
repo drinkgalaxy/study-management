@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-    //const host = '43.200.176.218:8080';
-    const host = 'localhost:8080';
+    const host = '43.200.176.218:8080';
+    //const host = 'localhost:8080';
 
     let username;
     let consecutiveStudyDay;

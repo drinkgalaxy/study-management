@@ -1,8 +1,8 @@
 document.getElementById("login-form").addEventListener("submit", async function(event) {
     event.preventDefault(); // 폼 제출 기본 동작 막기
 
-    //const host = '43.200.176.218:8080';
-    const host = 'localhost:8080';
+    const host = '43.200.176.218:8080';
+    //const host = 'localhost:8080';
 
     const loginId = document.getElementById("loginId").value;
     const password = document.getElementById("password").value;
