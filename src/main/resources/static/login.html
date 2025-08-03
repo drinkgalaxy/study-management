@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/login.css">
+    <title>로그인 페이지</title>
+</head>
+<body>
+<div class="contents">
+    <p class="login">로그인</p>
+    <form id="login-form">
+        <div class="contents-id">
+            <p class="id">아이디</p>
+            <input type="text" class="input-id" id="loginId" name="id" placeholder="아이디를 입력해주세요." required>
+        </div>
+        <div class="contents-pw">
+            <p class="pw">비밀번호</p>
+            <input type="password" class="input-pw" id="password" name="password" placeholder="비밀번호를 입력해주세요." required>
+        </div>
+        <button class="login-button" type="submit">로그인</button>
+    </form>
+    <p class="move-to-join" onclick=window.location.href="join.html">계정이 없으신가요?</p>
+</div>
+<script src="js/login.js"></script>
+</body>
+</html>

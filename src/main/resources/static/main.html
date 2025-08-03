@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/main.css">
+    <title>홈 화면</title>
+</head>
+<header class="main-header">
+    <div class="logo-and-text">
+        <img class="main-logo" src="img/mainLogo.png" alt="메인 로고">
+        <p class="header-text">ICT 합격 스터디</p>
+    </div>
+    <div class="header-contents">
+        <div class="header-main" onclick=location.href='main.html'>
+            <img class="logo" src="img/home.png" alt="홈 화면 로고">
+            <p class="main-text">홈</p>
+        </div>
+        <div class="header-my" onclick=location.href='my-page.html'>
+            <img class="logo" src="img/my.png" alt="마이 페이지 로고">
+            <p class="my-text">마이페이지</p>
+        </div>
+        <div class="header-logout">
+            <img class="logo" src="img/logout.png" alt="로그아웃 로고">
+            <p class="logout-text">로그아웃</p>
+        </div>
+    </div>
+</header>
+<body>
+<div class="main-container">
+    <p class="hello-text">안녕하세요, <span id="username"></span> 님</p>
+    <div class="main-div">
+        <div class="div-left">
+            <div class="div-left-top">
+                <div class="div-left-top-1">
+                    <img class="logo" src="img/fire.png" alt="불 로고">
+                    <div class="div-left-top-1-this">
+                        <div class="this-time">이번주 공부 시간</div>
+                        <div class="week-time">
+                            <span id="hour"></span>
+                            :
+                            <span id="minute"></span>
+                            :
+                            <span id="second"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="div-left-top-2">
+                    <img class="logo" src="img/fire.png" alt="불 로고">
+                    <div class="div-left-top-2-this">
+                        <div class="this-time">이번달 공부 시간</div>
+                        <div class="month-time">
+                            <span class="hours"></span>
+                            :
+                            <span class="minutes"></span>
+                            :
+                            <span class="seconds"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="div-left-bottom">
+                <p class="today-date">
+                    <span id="year"></span>
+                    년
+                    <span id="month"></span>
+                    월
+                    <span id="day"></span>
+                    일
+                    (<span id="week"></span>)
+                </p>
+                <div class="div-left-bottom-timeBlock">
+                    <span id="nowHour"></span>
+                    :
+                    <span id="nowMinute"></span>
+                    :
+                    <span id="nowSecond"></span>
+                </div>
+                <div class="buttons">
+                    <button class="start-button">시작</button>
+                    <div class="stop-and-end-button">
+                        <button class="stop-button">중단</button>
+                        <button class="end-button">종료</button>
+                    </div>
+                    <p class="reset-text">초기화</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="div-right">
+            <div class="div-right-top">
+                <div class="attendance-status-and-member-count">
+                    <p class="attendance-status-text">출석 현황</p>
+                    <p class="member-count">
+                        <span id="attendance-status-true"></span>
+                        /
+                        <span id="attendance-all"></span>
+                    </p>
+                </div>
+                <hr class="div-right-top-hr">
+                <div class="attendance-container">
+                </div>
+
+            </div>
+            <div class="div-right-middle">
+                <div class="studying-users">
+                    <span class="studying-text">지금 공부중인 멤버</span>
+                    <span id="studying-user-count"></span>
+                </div>
+                <hr class="div-right-top-hr">
+                <div class="studying-container"></div>
+            </div>
+            <div class="div-right-bottom">
+                <div class="month-ranking-text-and">
+                    <span class="month-ranking-text">이번 달 랭킹</span>
+                    <span class="month-ranking-and">‘종료’를 누르면 오늘 공부 시간이 랭킹에 반영돼요.</span>
+                </div>
+                <hr class="div-right-top-hr">
+                <div class="ranking-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공통 오버레이 -->
+<div class="modal-overlay" id="modal-overlay"></div>
+
+<!-- 특정 멤버 선택 모달창 -->
+<div class="member-modal" id="member-modal">
+    <button class="close-btn" id="close-member-modal">&times;</button>
+    <p class="member-name">
+        <span class="member-name-text">이름</span>
+        <span class="member-email">이메일</span>
+    </p>
+    <p class="member-intro">자기소개</p>
+    <p class="member-study-time">이번 달 누적 공부 시간
+        <span class="blue-text">이번 달 실제 시간</span>
+    </p>
+</div>
+
+<!-- 초기화 모달창 -->
+<div class="reset-modal" id="reset-modal">
+    <p class="reset-title">정말 초기화하시겠습니까?</p>
+    <div class="reset-buttons">
+        <button class="reset-cancel">취소</button>
+        <button class="reset-confirm" id="reset-confirm">확인</button>
+    </div>
+</div>
+
+
+<script src="js/main.js"></script>
+</body>
+</html>
